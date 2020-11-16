@@ -31,7 +31,7 @@ Probably errors: incorrect node ID <br>
 Method returns an inputed node's list of files <br> 
 
 <h2>6. Upload files </h2>
-Input parameters: node ID, list of files paths <br>
+Input parameters: node ID, list of files paths, files <br>
 Output parameters: none <br>
 Probably errors: incorrect node ID, non-existent filename<br>
 Uploads choose files to the selected node by current node ID <br> 
@@ -55,7 +55,7 @@ Probably errors: incorrect session token<br>
 Creates a new node on the server. Returns a created node id.<br> 
 
 <h2>10. Download files (doesn't require authorization)</h2>
-Input parameters: node ID, list of choosed files<br>
+Input parameters: node ID, list of choosed files, choosed files<br>
 Output parameters: none <br>
 Probably errors: incorrect node ID, non-existent filename<br>
 Downloads choose files to the user's PC.<br> 
@@ -64,13 +64,19 @@ Downloads choose files to the user's PC.<br>
 Input parameters: session token<br>
 Output parameters: temporary password <br>
 Probably errors: incorrect session token<br>
-Resets current user's passoword and returns a new temporary password back to the user<br> 
+Resets current user's passoword and returns a new temporary password back to the user's email<br> 
 
 <h2>12. Rename file</h2>
 Input parameters: session token, node ID, old filename, new filename <br>
 Output parameters: none <br>
-Probably errors: incorrect session token, incorrect node ID, non-existent filename<br>
+Probably errors: incorrect session token, incorrect node ID, non-existent filename, existent filename<br>
 Renames file<br> 
+
+<h2>13. Change password</h2>
+Input parameters: session token, node ID, old filename, new filename <br>
+Output parameters: none <br>
+Probably errors: incorrect session token, wrong password<br>
+Changes user's current pasword<br> 
 
 <h1>Probably errors:</h1>
 <h2>1.Incorrect email</h2><br>
@@ -98,6 +104,7 @@ No node with this identifier exists<br>
 <h2>8.Non-existent filename</h2><br>
 File with this name does not exist<br>
 
-
+<h2>9.Existent filename</h2><br>
+The current node already contains a file with the same filename<br>
 
 
