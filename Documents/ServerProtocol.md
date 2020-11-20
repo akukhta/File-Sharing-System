@@ -6,6 +6,9 @@ Server based on sockets.<br>For multiplexing "poll" is using. <br><h5> Communica
 3. Use first byte for command recognition(0- Account registration, 1 - authorization ... (see ServerAPI.md)) <br>
 4. Run handler function <br>
 5. Send answer if needed <br>
+The function arguments are taken from the received data packet. <br>
+Data packet template: <br>
+<i>function descriptor (first byte), argument 1 length, argument 1, ... . </i> <br>
 <h6>Example:</h6>
 Account registration: <br>
 Data size: 29<br>
