@@ -4,15 +4,14 @@
 //POLLSIZE - maximum users' connection
 Server::Server(size_t POLLSIZE)
 {
-    this->db = new DataBaseObject;
-    this->accountManager = new AccountManager(db);
     masterSocket = socket(AF_INET,SOCK_STREAM, 0);
     this->POLLSIZE = POLLSIZE;
     masterSocketAddr.sin_family = AF_INET;
-    masterSocketAddr.sin_port = htons(2441);
+    masterSocketAddr.sin_port = htons(4441);
     masterSocketAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
     int r = bind(masterSocket, (sockaddr*)&masterSocketAddr, sizeof(masterSocketAddr));
     pollSet = new pollfd[POLLSIZE];
+    handler = new RequestHandler;
 }
 
 //Main method for start server
@@ -20,10 +19,11 @@ void Server::run()
 {
     listen(masterSocket, SOMAXCONN);
     pollSet[0].fd = masterSocket;
-    pollSet[0].events = POLLIN;
+    pollSet[0].events = POLLIN | POLLHUP;
 
     while(true)
     {
+        updatePollSet();
         poll(pollSet, setSize, -1);
         socketsPollHandler();
     }
@@ -56,22 +56,29 @@ void Server::socketsPollHandler()
             {
                 //Handling users' connections
                 std::uint32_t packetSize;
-                recv(pollSet[i].fd, reinterpret_cast<char*>(&packetSize), sizeof(std::uint32_t),0);
-                std::vector<char> buffer(packetSize);
-                recv(pollSet[i].fd, buffer.data(), packetSize, 0);
-                if (*reinterpret_cast<std::uint8_t*>(&buffer[0]) == 0)
+                if (!recv(pollSet[i].fd, reinterpret_cast<char*>(&packetSize), sizeof(std::uint32_t),0))
                 {
-                    buffer.erase(buffer.begin());
-                    handle(buffer);
+                    closeConnection(pollSet[i].fd);
+                    break;
                 }
-//                if (!recv(pollSet[i].fd, buffer.data(), 256,0))
-//                {
-//                    shutdown(pollSet[i].fd, SHUT_RDWR);
-//                    close(pollSet[i].fd);
-//                    connectedSockets.erase(pollSet[i].fd);
-//                }
-//                else
-//                    std::cout << buffer.data() << std::endl;
+                std::vector<char> buffer(packetSize);
+                if (!recv(pollSet[i].fd, buffer.data(), packetSize, 0))
+                {
+                    closeConnection(pollSet[i].fd);
+                    break;
+                }
+                std::vector<char> answer = handler->handle(buffer);
+                size_t size = answer.size();
+                if (!send(pollSet[i].fd, reinterpret_cast<char*>(&size),sizeof(size_t),0))
+                {
+                    closeConnection(pollSet[i].fd);
+                    break;
+                }
+                if (!send(pollSet[i].fd, answer.data(), size,0))
+                {
+                    closeConnection(pollSet[i].fd);
+                    break;
+                }
             }
             else
             {
@@ -85,7 +92,7 @@ void Server::socketsPollHandler()
         }
 
         //If socket disconnected
-        if (pollSet[i].revents & (POLLERR|POLLHUP|POLLNVAL))
+        else if (pollSet[i].revents & (POLLERR|POLLHUP|POLLNVAL))
         {
             std::cout << "Client disconnected!" << std::endl;
             connectedSockets.erase(pollSet[i].fd);
@@ -95,16 +102,9 @@ void Server::socketsPollHandler()
     }
 }
 
-void Server::handle(std::vector<char> &buffer)
+void Server::closeConnection(int sockfd)
 {
-    std::uint8_t *stringSize = new std::uint8_t;
-    reinterpret_cast<std::uint8_t*>(buffer[0]);
-    buffer.erase(buffer.begin());
-    std::string email(buffer.begin(), buffer.begin() + *stringSize);
-    buffer.erase(buffer.begin() + *stringSize);
-    reinterpret_cast<std::uint8_t*>(buffer[0]);
-    buffer.erase(buffer.begin());
-    std::string password(buffer.begin(), buffer.begin() + *stringSize);
-    std::cout << accountManager->createAccount(email, password) << std::endl;
-
+        shutdown(sockfd, SHUT_RDWR);
+        close(sockfd);
+        connectedSockets.erase(sockfd);
 }

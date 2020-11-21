@@ -9,13 +9,15 @@
 #include <vector>
 #include <unistd.h>
 #include <iostream>
-#include "databaseobject.h"
-#include "AccountManager.h"
+#include "../Common/databaseobject.h"
+#include "../BL/AccountManager.h"
+#include "RequestHandler.h"
 
 class Server
 {
 public:
-    Server(size_t POLLSIZE = 32);
+    explicit Server(size_t POLLSIZE = 32);
+    Server(Server const &) = delete;
     void run();
 
 private:
@@ -26,9 +28,8 @@ private:
     std::set<int> connectedSockets;
     void updatePollSet();
     void socketsPollHandler();
-    void handle(std::vector<char> &buffer);
-    DataBaseObject *db;
-    AccountManager *accountManager;
+    RequestHandler *handler;
+    void closeConnection(int sockfd);
 };
 
 #endif // SERVER_H
