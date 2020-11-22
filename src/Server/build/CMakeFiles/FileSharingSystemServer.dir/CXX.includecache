@@ -6,10 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/alex/File-Sharing-System/src/Server/API/RequestHandler.cpp
-RequestHandler.h
-/home/alex/File-Sharing-System/src/Server/API/RequestHandler.h
-
 /home/alex/File-Sharing-System/src/Server/API/RequestHandler.h
 ../BL/AccountManager.h
 /home/alex/File-Sharing-System/src/Server/BL/AccountManager.h
@@ -17,10 +13,6 @@ vector
 -
 ../Common/databaseobject.h
 /home/alex/File-Sharing-System/src/Server/Common/databaseobject.h
-
-/home/alex/File-Sharing-System/src/Server/API/Server.cpp
-Server.h
-/home/alex/File-Sharing-System/src/Server/API/Server.h
 
 /home/alex/File-Sharing-System/src/Server/API/Server.h
 sys/socket.h
@@ -46,10 +38,6 @@ iostream
 RequestHandler.h
 /home/alex/File-Sharing-System/src/Server/API/RequestHandler.h
 
-/home/alex/File-Sharing-System/src/Server/BL/AccountManager.cpp
-AccountManager.h
-/home/alex/File-Sharing-System/src/Server/BL/AccountManager.h
-
 /home/alex/File-Sharing-System/src/Server/BL/AccountManager.h
 iostream
 -
@@ -62,18 +50,8 @@ thread
 ../Common/EMailManager.h
 /home/alex/File-Sharing-System/src/Server/Common/EMailManager.h
 
-/home/alex/File-Sharing-System/src/Server/Common/EMailManager.cpp
-EMailManager.h
-/home/alex/File-Sharing-System/src/Server/Common/EMailManager.h
-
 /home/alex/File-Sharing-System/src/Server/Common/EMailManager.h
 string
--
-
-/home/alex/File-Sharing-System/src/Server/Common/databaseobject.cpp
-databaseobject.h
-/home/alex/File-Sharing-System/src/Server/Common/databaseobject.h
-cstring
 -
 
 /home/alex/File-Sharing-System/src/Server/Common/databaseobject.h
@@ -89,6 +67,4 @@ iostream
 -
 API/Server.h
 /home/alex/File-Sharing-System/src/Server/API/Server.h
-Common/EMailManager.h
-/home/alex/File-Sharing-System/src/Server/Common/EMailManager.h
 

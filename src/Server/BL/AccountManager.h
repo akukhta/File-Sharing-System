@@ -12,7 +12,9 @@ public:
     AccountManager(DataBaseObject *db = nullptr);
     std::uint32_t createAccount(std::string email, std::string password);
 private:
+    //Pointer to database object
     DataBaseObject *database = nullptr;
+    //Messages which send by email to client
     const std::string registrationMessage = "You are registered!", subject = "File sharing system";
 };
 

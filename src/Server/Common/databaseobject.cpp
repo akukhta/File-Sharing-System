@@ -19,4 +19,6 @@ bool DataBaseObject::query(std::string querystr)
 DataBaseObject::~DataBaseObject()
 {
     sqlite3_close(this->db);
+    if (error != nullptr)
+        delete[] error;
 }

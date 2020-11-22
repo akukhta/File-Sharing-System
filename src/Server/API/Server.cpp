@@ -19,11 +19,10 @@ void Server::run()
 {
     listen(masterSocket, SOMAXCONN);
     pollSet[0].fd = masterSocket;
-    pollSet[0].events = POLLIN | POLLHUP;
+    pollSet[0].events = POLLIN;
 
     while(true)
     {
-
         poll(pollSet, setSize, -1);
         socketsPollHandler();
     }
@@ -31,13 +30,15 @@ void Server::run()
 }
 
 //Method for poll updating. Called if we have new connection/disconnection.
+//This method put sockets in poll set for future communication
 void Server::updatePollSet()
 {
+    setSize = 1 + connectedSockets.size();
     size_t index = 1;
     for (auto iter = connectedSockets.begin(); iter != connectedSockets.end(); iter++)
     {
         pollSet[index].fd = *iter;
-        pollSet[index].events = POLLIN | POLLHUP;
+        pollSet[index].events = POLLIN;
         index++;
     }
 }
@@ -55,50 +56,58 @@ void Server::socketsPollHandler()
             if (i)
             {
                 //Handling users' connections
-                std::uint32_t packetSize;
-
+                //Sockets with descriptors greater than zero - clients' sockets
                 try {
-                   std::vector<char> buf;
-                   buf = reciveFromClient(pollSet[i].fd, sizeof(std::uint32_t));
-                   packetSize = *reinterpret_cast<std::uint32_t*>(buf.data());
-                   buf = reciveFromClient(pollSet[i].fd, packetSize);
-                   std::vector<char> answer = handler->handle(buf);
-                   size_t size = answer.size();
-                   sendToClient(pollSet[i].fd, reinterpret_cast<char*>(&size), sizeof(size_t));
-                   sendToClient(pollSet[i].fd, answer.data(), size);
+                   std::uint32_t packetSize; //Size of packet
+                   std::vector<char> buf; //Buffer for receiving
+                   buf = reciveFromClient(pollSet[i].fd, sizeof(std::uint32_t)); //Receiving size
+                   packetSize = *reinterpret_cast<std::uint32_t*>(buf.data()); //Cast from char to size_t
+                   buf = reciveFromClient(pollSet[i].fd, packetSize); //Receiving "packetSize" bytes of data
+                   std::vector<char> answer = handler->handle(buf); //Run needed function
+                   size_t size = answer.size(); // Size of answer to client
+                   sendToClient(pollSet[i].fd, reinterpret_cast<char*>(&size), sizeof(size_t)); //Send size to client
+                   sendToClient(pollSet[i].fd, answer.data(), size); //Send answer to client
                 }  catch (std::runtime_error err) {
-                    closeConnection(pollSet[i].fd);
-                    continue;
+                    //Close connection if we have problems
+                    std::cout << err.what() << std::endl;
+                    if (errno != EAGAIN)
+                        closeConnection(pollSet[i].fd); //Close connection, if socket is unaviable
+                    updatePollSet(); //Update pollset
+                    break;
                 }
             }
             else
             {
-                //Handling master socket for new connections
+                //Handling master socket for new connections.
+                //Master socket has null index in pollSet
                 int connectedSocket = accept(masterSocket,0,0);
                 connectedSockets.insert(connectedSocket);
                 std::cout << "New socket connected!" << std::endl;
                 updatePollSet();
-                setSize = 1 + connectedSockets.size();
             }
         }
 
-        //If socket disconnected
+        //If have errors with socket
         else if (pollSet[i].revents & (POLLERR|POLLHUP|POLLNVAL))
         {
-            std::cout << "Client disconnected!" << std::endl;
+            std::cout << "Socket's error!Closing connection!" << std::endl;
             connectedSockets.erase(pollSet[i].fd);
             updatePollSet();
-            setSize = 1 + connectedSockets.size();
         }
     }
 }
 
+//Closes client's connection
 void Server::closeConnection(int sockfd)
 {
+        std::cout << "Client disconnected!" << std::endl;
+        shutdown(sockfd, SHUT_RDWR);
         close(sockfd);
         connectedSockets.erase(sockfd);
+        updatePollSet();
 }
 
+//Receive data from client
 std::vector<char> Server::reciveFromClient(int sockfd, size_t size)
 {
     std::vector<char> buffer(size);
@@ -108,6 +117,7 @@ std::vector<char> Server::reciveFromClient(int sockfd, size_t size)
         return buffer;
 }
 
+//Send data to client
 void Server::sendToClient(int sockfd, char* const buffer, size_t bufferSize)
 {
     if (send(sockfd, buffer,bufferSize,0) != bufferSize)

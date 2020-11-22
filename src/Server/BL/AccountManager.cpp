@@ -1,11 +1,13 @@
 #include "AccountManager.h"
 
+
 AccountManager::AccountManager(DataBaseObject *db) : database(db)
 {
-    //srand(time(NULL));
-    //rand();
+    srand(time(NULL));
+    rand();
 }
 
+//Creates a new user's account
 std::uint32_t AccountManager::createAccount(std::string email, std::string password)
 {
     if (database == nullptr)
@@ -14,8 +16,11 @@ std::uint32_t AccountManager::createAccount(std::string email, std::string passw
     {
         //std::thread(EMailManager::Send, email,subject, registrationMessage).detach();
         EMailManager::Send(email, subject, registrationMessage);
+        //It's testing return value.
         return rand() % RAND_MAX;
     }
     else
+        //If have some problems with registration, send 0 as session token.
+        //0 - incorrect session token
         return 0x0000000000;
 }

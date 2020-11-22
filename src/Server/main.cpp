@@ -1,6 +1,5 @@
 #include <iostream>
 #include "API/Server.h"
-#include "Common/EMailManager.h"
 using namespace std;
 
 int main()
