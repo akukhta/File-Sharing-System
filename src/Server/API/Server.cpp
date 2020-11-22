@@ -70,29 +70,6 @@ void Server::socketsPollHandler()
                     closeConnection(pollSet[i].fd);
                     continue;
                 }
-//                if (!recv(pollSet[i].fd, reinterpret_cast<char*>(&packetSize), sizeof(std::uint32_t),0))
-//                {
-//                    closeConnection(pollSet[i].fd);
-//                    break;
-//                }
-//                std::vector<char> buffer(packetSize);
-//                if (!recv(pollSet[i].fd, buffer.data(), packetSize, 0))
-//                {
-//                    closeConnection(pollSet[i].fd);
-//                    break;
-//                }
-//                std::vector<char> answer = handler->handle(buffer);
-//                size_t size = answer.size();
-//                if (!send(pollSet[i].fd, reinterpret_cast<char*>(&size),sizeof(size_t),0))
-//                {
-//                    closeConnection(pollSet[i].fd);
-//                    break;
-//                }
-//                if (!send(pollSet[i].fd, answer.data(), size,0))
-//                {
-//                    closeConnection(pollSet[i].fd);
-//                    break;
-//                }
             }
             else
             {
