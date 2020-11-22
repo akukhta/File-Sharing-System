@@ -23,7 +23,7 @@ void Server::run()
 
     while(true)
     {
-        updatePollSet();
+
         poll(pollSet, setSize, -1);
         socketsPollHandler();
     }
@@ -56,29 +56,43 @@ void Server::socketsPollHandler()
             {
                 //Handling users' connections
                 std::uint32_t packetSize;
-                if (!recv(pollSet[i].fd, reinterpret_cast<char*>(&packetSize), sizeof(std::uint32_t),0))
-                {
+
+                try {
+                   std::vector<char> buf;
+                   buf = reciveFromClient(pollSet[i].fd, sizeof(std::uint32_t));
+                   packetSize = *reinterpret_cast<std::uint32_t*>(buf.data());
+                   buf = reciveFromClient(pollSet[i].fd, packetSize);
+                   std::vector<char> answer = handler->handle(buf);
+                   size_t size = answer.size();
+                   sendToClient(pollSet[i].fd, reinterpret_cast<char*>(&size), sizeof(size_t));
+                   sendToClient(pollSet[i].fd, answer.data(), size);
+                }  catch (std::runtime_error err) {
                     closeConnection(pollSet[i].fd);
-                    break;
+                    continue;
                 }
-                std::vector<char> buffer(packetSize);
-                if (!recv(pollSet[i].fd, buffer.data(), packetSize, 0))
-                {
-                    closeConnection(pollSet[i].fd);
-                    break;
-                }
-                std::vector<char> answer = handler->handle(buffer);
-                size_t size = answer.size();
-                if (!send(pollSet[i].fd, reinterpret_cast<char*>(&size),sizeof(size_t),0))
-                {
-                    closeConnection(pollSet[i].fd);
-                    break;
-                }
-                if (!send(pollSet[i].fd, answer.data(), size,0))
-                {
-                    closeConnection(pollSet[i].fd);
-                    break;
-                }
+//                if (!recv(pollSet[i].fd, reinterpret_cast<char*>(&packetSize), sizeof(std::uint32_t),0))
+//                {
+//                    closeConnection(pollSet[i].fd);
+//                    break;
+//                }
+//                std::vector<char> buffer(packetSize);
+//                if (!recv(pollSet[i].fd, buffer.data(), packetSize, 0))
+//                {
+//                    closeConnection(pollSet[i].fd);
+//                    break;
+//                }
+//                std::vector<char> answer = handler->handle(buffer);
+//                size_t size = answer.size();
+//                if (!send(pollSet[i].fd, reinterpret_cast<char*>(&size),sizeof(size_t),0))
+//                {
+//                    closeConnection(pollSet[i].fd);
+//                    break;
+//                }
+//                if (!send(pollSet[i].fd, answer.data(), size,0))
+//                {
+//                    closeConnection(pollSet[i].fd);
+//                    break;
+//                }
             }
             else
             {
@@ -104,7 +118,23 @@ void Server::socketsPollHandler()
 
 void Server::closeConnection(int sockfd)
 {
-        shutdown(sockfd, SHUT_RDWR);
         close(sockfd);
         connectedSockets.erase(sockfd);
+}
+
+std::vector<char> Server::reciveFromClient(int sockfd, size_t size)
+{
+    std::vector<char> buffer(size);
+    if (recv(sockfd, buffer.data(),size,MSG_NOSIGNAL) != size)
+        throw std::runtime_error("Receiving error");
+    else
+        return buffer;
+}
+
+void Server::sendToClient(int sockfd, char* const buffer, size_t bufferSize)
+{
+    if (send(sockfd, buffer,bufferSize,0) != bufferSize)
+        throw std::runtime_error("Sending error");
+    else
+        return;
 }

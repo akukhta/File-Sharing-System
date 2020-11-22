@@ -9,8 +9,8 @@
 #include <vector>
 #include <unistd.h>
 #include <iostream>
-#include "../Common/databaseobject.h"
-#include "../BL/AccountManager.h"
+#include "databaseobject.h"
+#include "AccountManager.h"
 #include "RequestHandler.h"
 
 class Server
@@ -30,6 +30,8 @@ private:
     void socketsPollHandler();
     RequestHandler *handler;
     void closeConnection(int sockfd);
+    std::vector<char> reciveFromClient(int sockfd, size_t size);
+    void sendToClient(int sockfd, char* const buffer, size_t bufferSize);
 };
 
 #endif // SERVER_H
