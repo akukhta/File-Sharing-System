@@ -28,7 +28,7 @@ Data packet (converted to string):<br>
 
 <h4>Functions parameters</h4><br>
 <h1>Account registration/Authorization</h1><br>
-![AccReg](AccReg.png)
+<img src="AccReg.png" width="350" title="Account registration">
 
 
 
