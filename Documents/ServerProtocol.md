@@ -66,7 +66,7 @@ Bytes from 2 to 33 - node id;<br>After it: (filename length)(filename)(32 bytes 
 
 <h4>Get file info:</h4>
 <h6>First byte - 7;<br>
-Bytes from 2 to 33 - node id;<br>After it: (filename length)(filename)</h6>
+Bytes from 2 to 33 - node ID;<br>After it: (filename length)(filename)</h6>
 <h5>Answer to client:</h5>
 <h6>On success: first byte - 1, after it: (text length)(text)<br>Otherwise: first byte - 0, second byte - error's ID.</h5>
 
@@ -99,5 +99,9 @@ Bytes from 2 to 33 - session token.<br></h6>
 (session token)(old password size1)(old password 1)(old password size 2)(old password 2)(new password size)(new password)<br></h6>
 <h5>Answer to client:</h5>
 <h6>On success: single byte - 1.<br>Otherwise: first byte - 0, second byte - error's ID.</h5>
+
+<h3>Fixed sizes:</h3>
+<h4>Session token - 32 bytes</h4>
+<h4>Node ID - 32 bytes</h4>
 
 
