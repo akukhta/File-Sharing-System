@@ -26,3 +26,9 @@ Data packet (converted to string):<br>
 477df96bf4a8dc6c4ffe52f6a5f93860 - session token <br>
 </h5>
 
+<h4>Functions parameters</h4><br>
+<h1>Account registration/Authorization</h1><br>
+![AccReg](AccReg.png)
+
+
+
