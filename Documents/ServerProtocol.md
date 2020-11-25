@@ -26,10 +26,23 @@ Data packet (converted to string):<br>
 477df96bf4a8dc6c4ffe52f6a5f93860 - session token <br>
 </h5>
 
-<h4>Functions parameters</h4><br>
-<h3>Account registration/Authorization:</h3><br>
+<h3>Functions parameters</h3><br>
+<h4>Account registration/Authorization:</h4><br>
 <img src="AccReg.png" width="600" height = "150" title="Account registration">
-<h3>Answer to client:</h3><br>
+<h5>Answer to client:</h5><br>
 <img src="AccAnswer1.png" width="600" height = "150" title="Account answer">
+<h6>First byte - function ID(0 - registration, 1 - log in). Second byte - an email length. After second byte goes an user's email. After the user's email goes a password's size and after it goes password.If authorization function on server's side returns with some errors: first byte - 0; second byte - error's ID (client's side has a table with errors' description).Otherwise: first byte - 1; byte from 2 to 33 - session token.</h6><br>
 
+<h4>Logout:</h4>
+<h5>First byte - 2;<br> 
+Bytes from 2 to 33 - session token.<br></h5>
+<h5>Answer to client:</h5>
+<h6>On success: single byte - 1. <br>
+Otherwise: single byte - 0. <br></h6>
+
+<h4>Get list of nodes:</h4>
+<h6>First byte - 3;<br>
+Bytes from 2 to 33 - Node ID;<br></h6>
+<h5>Answer to client:</h5>
+<h6>On success:<br> first byte - 1;<br>second byte - filenames count;<br>After them: (byte of filename length)(filename).<br>Otherwise:<br> Fist byte - 0;<br>Second byte - error's ID<br></h5>
 
