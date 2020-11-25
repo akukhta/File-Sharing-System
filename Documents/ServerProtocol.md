@@ -1,6 +1,6 @@
 # Server communication protocol desctiption
 
-Server based on sockets.<br>For multiplexing "poll" is using. <br><h5> Communications algorithm: <br>
+Server based on TCP sockets.<br>For multiplexing "poll" is using. <br><h5> Communications algorithm: <br>
 1. Receive packet size (this size garanted will be 4 bytes). <br>
 2. Receive packet <br>
 3. Use first byte for command recognition(0- Account registration, 1 - authorization ... (see ServerAPI.md)) <br>
@@ -38,11 +38,66 @@ Data packet (converted to string):<br>
 Bytes from 2 to 33 - session token.<br></h6>
 <h5>Answer to client:</h5>
 <h6>On success: single byte - 1. <br>
-Otherwise: single byte - 0. <br></h6>
+Otherwise: first byte - 0, second byte - error's ID. <br></h6>
 
 <h4>Get list of nodes:</h4>
 <h6>First byte - 3;<br>
-Bytes from 2 to 33 - Node ID;<br></h6>
+Bytes from 2 to 33 - session token;<br></h6>
 <h5>Answer to client:</h5>
-<h6>On success:<br> first byte - 1;<br>second byte - filenames count;<br>After them: (byte of filename length)(filename).<br>Otherwise:<br> Fist byte - 0;<br>Second byte - error's ID<br></h5>
+<h6>On success:<br> first byte - 1;<br>second byte - nodes count;<br>After them: (byte of nodes length)(nodes ID).<br>Otherwise:<br> Fist byte - 0;<br>Second byte - error's ID<br></h5>
+
+<h4>Get list of files:</h4>
+<h6>First byte - 4;<br>
+Bytes from 2 to 33 - node id;<br></h6>
+<h5>Answer to client:</h5>
+<h6>On success:<br> first byte - 1;<br>second byte - filenames count;<br>After them: (byte of filenames length)(filename).<br>Otherwise:<br> Fist byte - 0;<br>Second byte - error's ID<br></h5>
+
+<h4>Upload files:</h4>
+<h6>First byte - 5;<br>
+Bytes from 2 to 33 - node id;<br> Byte 34 - files' count;<br>After them: (filename length)(filename)(filesize)(file's buffer) </h6>
+<h5>Answer to client:</h5>
+<h6>On success: single byte - 1;<br>Otherwise: first byte - 0, second byte - error's ID.</h5>
+
+<h4>Delete file from node:</h4>
+<h6>First byte - 6;<br>
+Bytes from 2 to 33 - node id;<br>After it: (filename length)(filename)(32 bytes of session token)</h6>
+<h5>Answer to client:</h5>
+<h6>On success: single byte - 1;<br>Otherwise: first byte - 0, second byte - error's ID.</h5>
+
+<h4>Get file info:</h4>
+<h6>First byte - 7;<br>
+Bytes from 2 to 33 - node id;<br>After it: (filename length)(filename)</h6>
+<h5>Answer to client:</h5>
+<h6>On success: first byte - 1, after it: (text length)(text)<br>Otherwise: first byte - 0, second byte - error's ID.</h5>
+
+<h4>Create a new node:</h4>
+<h6>First byte - 8;<br>
+Bytes from 2 to 33 - session token.<br></h6>
+<h5>Answer to client:</h5>
+<h6>On success: first byte - 1, bytes from 2 to 33: node ID.<br>Otherwise: first byte - 0, second byte - error's ID.</h5>
+
+<h4>Download files:</h4>
+<h6>First byte - 9;<br>
+Bytes from 2 to 33 - session token.(files list size)(files list)(files' buffers)<br></h6>
+<h5>Answer to client:</h5>
+<h6>On success: single byte - 1.<br>Otherwise: first byte - 0, second byte - error's ID.</h5>
+
+<h4>Reset password:</h4>
+<h6>First byte - 10;<br>
+Bytes from 2 to 33 - session token.<br></h6>
+<h5>Answer to client:</h5>
+<h6>On success: first byte - 1, bytes from 2 to 66: temporary password.<br>Otherwise: first byte - 0, second byte - error's ID.</h5>
+
+<h4>Rename file:</h4>
+<h6>First byte - 11;<br>
+(session token)(node ID)(old filename size)(filename)(new filename size)(new filename)<br></h6>
+<h5>Answer to client:</h5>
+<h6>On success: single byte - 1.<br>Otherwise: first byte - 0, second byte - error's ID.</h5>
+
+<h4>Change password:</h4>
+<h6>First byte - 12;<br>
+(session token)(old password size1)(old password 1)(old password size 2)(old password 2)(new password size)(new password)<br></h6>
+<h5>Answer to client:</h5>
+<h6>On success: single byte - 1.<br>Otherwise: first byte - 0, second byte - error's ID.</h5>
+
 

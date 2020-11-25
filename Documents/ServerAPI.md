@@ -73,7 +73,7 @@ Probably errors: incorrect session token, incorrect node ID, non-existent filena
 Renames file<br> 
 
 <h2>13. Change password</h2>
-Input parameters: session token, node ID, old filename, new filename <br>
+Input parameters: session token, old password, repeated old password, new password <br>
 Output parameters: none <br>
 Probably errors: incorrect session token, wrong password<br>
 Changes user's current pasword<br> 
