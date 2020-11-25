@@ -27,8 +27,9 @@ Data packet (converted to string):<br>
 </h5>
 
 <h4>Functions parameters</h4><br>
-<h1>Account registration/Authorization</h1><br>
+<h3>Account registration/Authorization:</h3><br>
 <img src="AccReg.png" width="600" height = "150" title="Account registration">
-
+<h3>Answer to client:</h3><br>
+<img src="AccAnswer1.png" width="600" height = "150" title="Account answer">
 
 
