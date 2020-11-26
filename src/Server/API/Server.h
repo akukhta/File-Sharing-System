@@ -12,11 +12,13 @@
 #include "../Common/databaseobject.h"
 #include "../BL/AccountManager.h"
 #include "RequestHandler.h"
-
+#include <memory>
+#include "../Common/Configuration.h"
 class Server
 {
 public:
-    explicit Server(size_t POLLSIZE = 32);
+    explicit Server(std::string IP = Configuration::getDefaultIP(),
+                    int port = Configuration::getDafultPort(),size_t POLLSIZE = 32);
     /*
      * Because we don't need copy of this server.
      * If we can have copy we get some problems with server's port.
@@ -36,13 +38,13 @@ private:
     //Server's address.
     sockaddr_in masterSocketAddr;
     //Pollset structure. Use for poll.
-    pollfd *pollSet;
+    std::vector<pollfd> pollSet;
     //Set of connected sockets.
     std::set<int> connectedSockets;
     void updatePollSet();
     void socketsPollHandler();
     //Pointer to server request handler
-    RequestHandler *handler;
+    std::unique_ptr<RequestHandler> handler;
     void closeConnection(int sockfd);
     std::vector<char> reciveFromClient(int sockfd, size_t size);
     void sendToClient(int sockfd, char* const buffer, size_t bufferSize);

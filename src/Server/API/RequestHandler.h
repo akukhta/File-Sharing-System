@@ -1,9 +1,9 @@
 #ifndef REQUESTHANDLER_H
 #define REQUESTHANDLER_H
-#include "../BL/AccountManager.h"
+#include "AccountManager.h"
 #include <vector>
 #include "../Common/databaseobject.h"
-
+#include <memory>
 //Class for user's requests treatment
 class RequestHandler
 {
@@ -12,9 +12,9 @@ public:
     std::vector<char> handle(std::vector<char> buffer);
 private:
     //Pointer to account manager(create, change/reset password, etc).
-    AccountManager *accountManager;
+    std::unique_ptr<AccountManager> accountManager;
     //Only for test
-    DataBaseObject *dataBase;
+    std::unique_ptr<DataBaseObject> dataBase;
 
     std::vector<char> userRegistration(std::vector<char> buffer); //Method for user registration. FIRST BYTE NUMBER - 0
 };

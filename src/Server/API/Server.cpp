@@ -2,16 +2,23 @@
 
 //Inizialasing onstructor.
 //POLLSIZE - maximum users' connection
-Server::Server(size_t POLLSIZE)
+Server::Server(std::string IP,
+int port,size_t POLLSIZE)
 {
     masterSocket = socket(AF_INET,SOCK_STREAM, 0);
     this->POLLSIZE = POLLSIZE;
     masterSocketAddr.sin_family = AF_INET;
-    masterSocketAddr.sin_port = htons(4441);
-    masterSocketAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    masterSocketAddr.sin_port = port;
+    masterSocketAddr.sin_addr.s_addr = inet_addr(IP.c_str());
     int r = bind(masterSocket, (sockaddr*)&masterSocketAddr, sizeof(masterSocketAddr));
-    pollSet = new pollfd[POLLSIZE];
-    handler = new RequestHandler;
+    pollSet = std::vector<pollfd>(POLLSIZE);
+    try{
+    handler = std::make_unique<RequestHandler>();
+    } catch (std::runtime_error const & err)
+    {
+            throw;
+    }
+    setSize = 1;
 }
 
 //Main method for start server
@@ -23,7 +30,7 @@ void Server::run()
 
     while(true)
     {
-        poll(pollSet, setSize, -1);
+        poll(pollSet.data(), setSize, -1);
         socketsPollHandler();
     }
 
@@ -35,9 +42,9 @@ void Server::updatePollSet()
 {
     setSize = 1 + connectedSockets.size();
     size_t index = 1;
-    for (auto iter = connectedSockets.begin(); iter != connectedSockets.end(); iter++)
+    for (auto iter : connectedSockets)
     {
-        pollSet[index].fd = *iter;
+        pollSet[index].fd = iter;
         pollSet[index].events = POLLIN;
         index++;
     }
@@ -48,30 +55,30 @@ void Server::updatePollSet()
 */
 void Server::socketsPollHandler()
 {
-    for (size_t i = 0; i < setSize; i++)
+    for (auto sock : pollSet)
     {
         //If socket has a data to read
-        if (pollSet[i].revents & POLLIN)
+        if (sock.revents & POLLIN)
         {
-            if (i)
+            if (sock.fd != pollSet[0].fd)
             {
                 //Handling users' connections
                 //Sockets with descriptors greater than zero - clients' sockets
                 try {
                    std::uint32_t packetSize; //Size of packet
                    std::vector<char> buf; //Buffer for receiving
-                   buf = reciveFromClient(pollSet[i].fd, sizeof(std::uint32_t)); //Receiving size
+                   buf = reciveFromClient(sock.fd, sizeof(std::uint32_t)); //Receiving size
                    packetSize = *reinterpret_cast<std::uint32_t*>(buf.data()); //Cast from char to size_t
-                   buf = reciveFromClient(pollSet[i].fd, packetSize); //Receiving "packetSize" bytes of data
+                   buf = reciveFromClient(sock.fd, packetSize); //Receiving "packetSize" bytes of data
                    std::vector<char> answer = handler->handle(buf); //Run needed function
                    size_t size = answer.size(); // Size of answer to client
-                   sendToClient(pollSet[i].fd, reinterpret_cast<char*>(&size), sizeof(size_t)); //Send size to client
-                   sendToClient(pollSet[i].fd, answer.data(), size); //Send answer to client
+                   sendToClient(sock.fd, reinterpret_cast<char*>(&size), sizeof(size_t)); //Send size to client
+                   sendToClient(sock.fd, answer.data(), size); //Send answer to client
                 }  catch (std::runtime_error err) {
                     //Close connection if we have problems
                     std::cout << err.what() << std::endl;
                     if (errno != EAGAIN)
-                        closeConnection(pollSet[i].fd); //Close connection, if socket is unaviable
+                        closeConnection(sock.fd); //Close connection, if socket is unaviable
                     updatePollSet(); //Update pollset
                     break;
                 }
@@ -88,10 +95,10 @@ void Server::socketsPollHandler()
         }
 
         //If have errors with socket
-        else if (pollSet[i].revents & (POLLERR|POLLHUP|POLLNVAL))
+        else if (sock.revents & (POLLERR|POLLHUP|POLLNVAL))
         {
             std::cout << "Socket's error!Closing connection!" << std::endl;
-            connectedSockets.erase(pollSet[i].fd);
+            connectedSockets.erase(sock.fd);
             updatePollSet();
         }
     }

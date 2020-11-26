@@ -3,7 +3,7 @@
 
 DataBaseObject::DataBaseObject(std::string const &dbpath)
 {
-    if (sqlite3_open(dbpath.c_str(), &this->db) != SQLITE_OK)
+    if (sqlite3_open(dbpath.c_str(), &db) != SQLITE_OK)
         throw std::runtime_error("Database didn't open!");
 
 }
@@ -12,13 +12,11 @@ DataBaseObject::DataBaseObject(std::string const &dbpath)
 bool DataBaseObject::query(std::string querystr)
 {
     if (this->db == nullptr)
-    returnVal =  sqlite3_exec(this->db, querystr.c_str(), nullptr,nullptr, &error);
+    returnVal =  sqlite3_exec(this->db, querystr.c_str(), nullptr,nullptr, nullptr);
     return returnVal;
 }
 
 DataBaseObject::~DataBaseObject()
 {
     sqlite3_close(this->db);
-    if (error != nullptr)
-        delete[] error;
 }

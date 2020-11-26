@@ -4,8 +4,8 @@ RequestHandler::RequestHandler()
 {
     try
     {
-    this->dataBase = new DataBaseObject;
-    this->accountManager = new AccountManager(dataBase);
+    this->dataBase = std::unique_ptr<DataBaseObject>(new DataBaseObject);
+    this->accountManager = std::unique_ptr<AccountManager>(new AccountManager(std::move(dataBase)));
     } catch (std::runtime_error const &err)
     {
         throw;

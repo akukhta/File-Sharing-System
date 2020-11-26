@@ -3,18 +3,17 @@
 #include <string>
 #include <sqlite3.h>
 #include <stdexcept>
-
+#include <memory>
+#include <Configuration.h>
 class DataBaseObject
 {
 public:
-    DataBaseObject(std::string const & dbpath = "/home/alex/build-serverTEESTT-Desktop-Debug/users.db");
+    DataBaseObject(std::string const & dbpath = Configuration::getDefaultPathDB());
     bool query(std::string querystr);
     ~DataBaseObject();
 private:
     //Connection pointer to sqlite3 database
     sqlite3 *db;
-    //Error message
-    char *error = nullptr;
     //Only for test
     int returnVal;
 };

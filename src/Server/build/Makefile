@@ -204,6 +204,33 @@ BL/AccountManager.cpp.s:
 	$(MAKE) -f CMakeFiles/FileSharingSystemServer.dir/build.make CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.s
 .PHONY : BL/AccountManager.cpp.s
 
+Common/Configuration.o: Common/Configuration.cpp.o
+
+.PHONY : Common/Configuration.o
+
+# target to build an object file
+Common/Configuration.cpp.o:
+	$(MAKE) -f CMakeFiles/FileSharingSystemServer.dir/build.make CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.o
+.PHONY : Common/Configuration.cpp.o
+
+Common/Configuration.i: Common/Configuration.cpp.i
+
+.PHONY : Common/Configuration.i
+
+# target to preprocess a source file
+Common/Configuration.cpp.i:
+	$(MAKE) -f CMakeFiles/FileSharingSystemServer.dir/build.make CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.i
+.PHONY : Common/Configuration.cpp.i
+
+Common/Configuration.s: Common/Configuration.cpp.s
+
+.PHONY : Common/Configuration.s
+
+# target to generate assembly for a file
+Common/Configuration.cpp.s:
+	$(MAKE) -f CMakeFiles/FileSharingSystemServer.dir/build.make CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.s
+.PHONY : Common/Configuration.cpp.s
+
 Common/EMailManager.o: Common/EMailManager.cpp.o
 
 .PHONY : Common/EMailManager.o
@@ -303,6 +330,9 @@ help:
 	@echo "... BL/AccountManager.o"
 	@echo "... BL/AccountManager.i"
 	@echo "... BL/AccountManager.s"
+	@echo "... Common/Configuration.o"
+	@echo "... Common/Configuration.i"
+	@echo "... Common/Configuration.s"
 	@echo "... Common/EMailManager.o"
 	@echo "... Common/EMailManager.i"
 	@echo "... Common/EMailManager.s"
