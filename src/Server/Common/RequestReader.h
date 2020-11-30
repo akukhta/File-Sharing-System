@@ -18,6 +18,9 @@ public:
     template<class T,typename std::enable_if_t<std::is_fundamental<T>::value>* = nullptr>
     T read()
     {
+        if (currentOffset == buffer->size())
+            throw std::runtime_error("Buffer has been ended!");
+
         if (currentOffset + sizeof(T) > buffer->size())
             throw std::runtime_error("Cannot get a parameter");
         std::vector<char> subbuffer(buffer->begin() + currentOffset, buffer->begin() + currentOffset + sizeof(T));
@@ -29,6 +32,9 @@ public:
     template<class T, typename std::enable_if_t<std::is_same<std::vector<char>,T>::value>* = nullptr>
     std::vector<char> read()
     {
+        if (currentOffset == buffer->size())
+            throw std::runtime_error("Buffer has been ended!");
+
         size_t blockSize;
 
         try{
@@ -48,6 +54,10 @@ public:
     template<class T, typename std::enable_if_t<std::is_same<std::string,T>::value>* = nullptr>
     std::string read()
     {
+        if (currentOffset == buffer->size())
+            throw std::runtime_error("Buffer has been ended!");
+
+
         size_t blockSize;
 
         try{
