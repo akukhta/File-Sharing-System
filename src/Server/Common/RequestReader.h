@@ -8,7 +8,7 @@
 class RequestReader
 {
 public:
-    RequestReader(std::shared_ptr<std::vector<char>> buffer): currentOffset(0),
+    RequestReader(std::shared_ptr<std::vector<char>> buffer = nullptr): currentOffset(0),
         buffer(buffer)
     {
         currentOffset = 0;
@@ -18,8 +18,12 @@ public:
     template<class T,typename std::enable_if_t<std::is_fundamental<T>::value>* = nullptr>
     T read()
     {
-        if (currentOffset == buffer->size())
-            throw std::runtime_error("Buffer has been ended!");
+        try{
+            check();
+        } catch(std::runtime_error const &)
+        {
+            throw;
+        }
 
         if (currentOffset + sizeof(T) > buffer->size())
             throw std::runtime_error("Cannot get a parameter");
@@ -32,8 +36,12 @@ public:
     template<class T, typename std::enable_if_t<std::is_same<std::vector<char>,T>::value>* = nullptr>
     std::vector<char> read()
     {
-        if (currentOffset == buffer->size())
-            throw std::runtime_error("Buffer has been ended!");
+        try{
+            check();
+        } catch(std::runtime_error const &)
+        {
+            throw;
+        }
 
         size_t blockSize;
 
@@ -54,9 +62,12 @@ public:
     template<class T, typename std::enable_if_t<std::is_same<std::string,T>::value>* = nullptr>
     std::string read()
     {
-        if (currentOffset == buffer->size())
-            throw std::runtime_error("Buffer has been ended!");
-
+        try{
+            check();
+        } catch(std::runtime_error const &)
+        {
+            throw;
+        }
 
         size_t blockSize;
 
@@ -74,11 +85,29 @@ public:
         return result;
     }
 
+    void release()
+    {
+        currentOffset = 0;
+        buffer = nullptr;
+    }
 
+    void setBuffer(std::shared_ptr<std::vector<char>> buffer)
+    {
+        currentOffset = 0;
+        this->buffer = buffer;
+    }
 
 private:
     size_t currentOffset;
     std::shared_ptr<std::vector<char>> buffer;
+
+    void check()
+    {
+        if (!buffer)
+            throw std::runtime_error("Buffer is null!");
+        if (currentOffset == buffer->size())
+            throw std::runtime_error("Buffer has been ended!");
+    }
 
 };
 

@@ -7,7 +7,7 @@
 class RequestWritter
 {
 public:
-    RequestWritter(){;};
+    RequestWritter() = default;
 
      template<class T,typename std::enable_if_t<std::is_fundamental<T>::value>* = nullptr>
      void write(T const & arg)
@@ -35,6 +35,11 @@ public:
      std::vector<char>  getBuffer()
      {
          return buffer;
+     }
+
+     void release()
+     {
+         buffer.clear();
      }
 
 private:
