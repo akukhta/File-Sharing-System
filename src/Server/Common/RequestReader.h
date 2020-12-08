@@ -8,25 +8,29 @@
 class RequestReader
 {
 public:
-    RequestReader(std::shared_ptr<std::vector<char>> buffer = nullptr): currentOffset(0),
+    RequestReader(std::shared_ptr<std::vector<char>> buffer): currentOffset(0),
         buffer(buffer)
     {
-        currentOffset = 0;
-    }
+        if (!buffer)
+        {
+            throw std::runtime_error("Buffer is nullptr!");
+        }
+    };
 
 
     template<class T,typename std::enable_if_t<std::is_fundamental<T>::value>* = nullptr>
     T read()
     {
-        try{
-            check();
-        } catch(std::runtime_error const &)
+        if (!check())
         {
-            throw;
+            throw std::runtime_error("Reading error!");
         }
 
         if (currentOffset + sizeof(T) > buffer->size())
+        {
             throw std::runtime_error("Cannot get a parameter");
+        }
+
         std::vector<char> subbuffer(buffer->begin() + currentOffset, buffer->begin() + currentOffset + sizeof(T));
         T result = *reinterpret_cast<T*>(subbuffer.data());
         currentOffset += sizeof(T);
@@ -36,15 +40,12 @@ public:
     template<class T, typename std::enable_if_t<std::is_same<std::vector<char>,T>::value>* = nullptr>
     std::vector<char> read()
     {
-        try{
-            check();
-        } catch(std::runtime_error const &)
+        if (!check())
         {
-            throw;
+            throw std::runtime_error("Reading error!");
         }
 
         size_t blockSize;
-
         try{
             blockSize = this->read<size_t>();
         } catch (std::runtime_error const &)
@@ -53,7 +54,10 @@ public:
         }
 
         if (blockSize > buffer->size() - currentOffset)
+        {
             throw std::runtime_error("Wrong buffer size!");
+        }
+
         std::vector<char> result(buffer->begin() + currentOffset, buffer->begin() + currentOffset + blockSize);
         currentOffset += blockSize;
         return result;
@@ -62,12 +66,8 @@ public:
     template<class T, typename std::enable_if_t<std::is_same<std::string,T>::value>* = nullptr>
     std::string read()
     {
-        try{
-            check();
-        } catch(std::runtime_error const &)
-        {
-            throw;
-        }
+        if (!check())
+            throw std::runtime_error("Reading error!");
 
         size_t blockSize;
 
@@ -85,28 +85,13 @@ public:
         return result;
     }
 
-    void release()
-    {
-        currentOffset = 0;
-        buffer = nullptr;
-    }
-
-    void setBuffer(std::shared_ptr<std::vector<char>> buffer)
-    {
-        currentOffset = 0;
-        this->buffer = buffer;
-    }
-
 private:
     size_t currentOffset;
     std::shared_ptr<std::vector<char>> buffer;
 
-    void check()
+    bool check()
     {
-        if (!buffer)
-            throw std::runtime_error("Buffer is null!");
-        if (currentOffset == buffer->size())
-            throw std::runtime_error("Buffer has been ended!");
+        return currentOffset < buffer->size();
     }
 
 };
