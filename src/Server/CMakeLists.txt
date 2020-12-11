@@ -7,8 +7,8 @@ API/RequestHandler.cpp
 API/Server.cpp
 BL/AccountManager.cpp 
 Data/databaseobject.cpp 
-Common/EMailManager.cpp
+Data/EMailManager.cpp
 Common/Configuration.cpp)
 target_link_libraries(FileSharingSystemServer sqlite3)
-file(COPY Common/email.sh
+file(COPY Resources/email.sh
      DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

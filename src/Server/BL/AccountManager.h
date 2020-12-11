@@ -4,7 +4,7 @@
 #include <thread>
 #include <memory>
 #include "Data/databaseobject.h"
-#include "Common/EMailManager.h"
+#include "Data/EMailManager.h"
 
 class AccountManager
 {

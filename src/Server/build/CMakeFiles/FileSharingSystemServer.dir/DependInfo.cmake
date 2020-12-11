@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/alex/File-Sharing-System/src/Server/API/Server.cpp" "/home/alex/File-Sharing-System/src/Server/build/CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.o"
   "/home/alex/File-Sharing-System/src/Server/BL/AccountManager.cpp" "/home/alex/File-Sharing-System/src/Server/build/CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.o"
   "/home/alex/File-Sharing-System/src/Server/Common/Configuration.cpp" "/home/alex/File-Sharing-System/src/Server/build/CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.o"
-  "/home/alex/File-Sharing-System/src/Server/Common/EMailManager.cpp" "/home/alex/File-Sharing-System/src/Server/build/CMakeFiles/FileSharingSystemServer.dir/Common/EMailManager.cpp.o"
+  "/home/alex/File-Sharing-System/src/Server/Data/EMailManager.cpp" "/home/alex/File-Sharing-System/src/Server/build/CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.o"
   "/home/alex/File-Sharing-System/src/Server/Data/databaseobject.cpp" "/home/alex/File-Sharing-System/src/Server/build/CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.o"
   "/home/alex/File-Sharing-System/src/Server/main.cpp" "/home/alex/File-Sharing-System/src/Server/build/CMakeFiles/FileSharingSystemServer.dir/main.cpp.o"
   )

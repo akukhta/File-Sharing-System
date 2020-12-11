@@ -122,18 +122,18 @@ CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alex/File-Sharing-System/src/Server/Data/databaseobject.cpp -o CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.s
 
-CMakeFiles/FileSharingSystemServer.dir/Common/EMailManager.cpp.o: CMakeFiles/FileSharingSystemServer.dir/flags.make
-CMakeFiles/FileSharingSystemServer.dir/Common/EMailManager.cpp.o: ../Common/EMailManager.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alex/File-Sharing-System/src/Server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/FileSharingSystemServer.dir/Common/EMailManager.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/FileSharingSystemServer.dir/Common/EMailManager.cpp.o -c /home/alex/File-Sharing-System/src/Server/Common/EMailManager.cpp
+CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.o: CMakeFiles/FileSharingSystemServer.dir/flags.make
+CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.o: ../Data/EMailManager.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alex/File-Sharing-System/src/Server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.o -c /home/alex/File-Sharing-System/src/Server/Data/EMailManager.cpp
 
-CMakeFiles/FileSharingSystemServer.dir/Common/EMailManager.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/FileSharingSystemServer.dir/Common/EMailManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alex/File-Sharing-System/src/Server/Common/EMailManager.cpp > CMakeFiles/FileSharingSystemServer.dir/Common/EMailManager.cpp.i
+CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alex/File-Sharing-System/src/Server/Data/EMailManager.cpp > CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.i
 
-CMakeFiles/FileSharingSystemServer.dir/Common/EMailManager.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/FileSharingSystemServer.dir/Common/EMailManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alex/File-Sharing-System/src/Server/Common/EMailManager.cpp -o CMakeFiles/FileSharingSystemServer.dir/Common/EMailManager.cpp.s
+CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alex/File-Sharing-System/src/Server/Data/EMailManager.cpp -o CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.s
 
 CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.o: CMakeFiles/FileSharingSystemServer.dir/flags.make
 CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.o: ../Common/Configuration.cpp
@@ -155,7 +155,7 @@ FileSharingSystemServer_OBJECTS = \
 "CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.o" \
 "CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.o" \
 "CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.o" \
-"CMakeFiles/FileSharingSystemServer.dir/Common/EMailManager.cpp.o" \
+"CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.o" \
 "CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.o"
 
 # External object files for target FileSharingSystemServer
@@ -166,7 +166,7 @@ FileSharingSystemServer: CMakeFiles/FileSharingSystemServer.dir/API/RequestHandl
 FileSharingSystemServer: CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.o
 FileSharingSystemServer: CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.o
 FileSharingSystemServer: CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.o
-FileSharingSystemServer: CMakeFiles/FileSharingSystemServer.dir/Common/EMailManager.cpp.o
+FileSharingSystemServer: CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.o
 FileSharingSystemServer: CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.o
 FileSharingSystemServer: CMakeFiles/FileSharingSystemServer.dir/build.make
 FileSharingSystemServer: CMakeFiles/FileSharingSystemServer.dir/link.txt

@@ -3,9 +3,9 @@
 
 CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.o: ../BL/AccountManager.h
 CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.o: ../Common/Configuration.h
-CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.o: ../Common/EMailManager.h
 CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.o: ../Common/RequestReader.h
 CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.o: ../Common/RequestWritter.h
+CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.o: ../Data/EMailManager.h
 CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.o: ../Data/databaseobject.h
 CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.o: ../API/RequestHandler.cpp
 CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.o: ../API/RequestHandler.h
@@ -13,15 +13,15 @@ CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.o: ../API/RequestH
 CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.o: ../API/RequestHandler.h
 CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.o: ../BL/AccountManager.h
 CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.o: ../Common/Configuration.h
-CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.o: ../Common/EMailManager.h
 CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.o: ../Common/RequestReader.h
 CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.o: ../Common/RequestWritter.h
+CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.o: ../Data/EMailManager.h
 CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.o: ../Data/databaseobject.h
 CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.o: ../API/Server.cpp
 CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.o: ../API/Server.h
 
 CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.o: ../Common/Configuration.h
-CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.o: ../Common/EMailManager.h
+CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.o: ../Data/EMailManager.h
 CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.o: ../Data/databaseobject.h
 CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.o: ../BL/AccountManager.cpp
 CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.o: ../BL/AccountManager.h
@@ -29,8 +29,8 @@ CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.o: ../BL/AccountMan
 CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.o: ../Common/Configuration.cpp
 CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.o: ../Common/Configuration.h
 
-CMakeFiles/FileSharingSystemServer.dir/Common/EMailManager.cpp.o: ../Common/EMailManager.cpp
-CMakeFiles/FileSharingSystemServer.dir/Common/EMailManager.cpp.o: ../Common/EMailManager.h
+CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.o: ../Data/EMailManager.cpp
+CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.o: ../Data/EMailManager.h
 
 CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.o: ../Common/Configuration.h
 CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.o: ../Data/databaseobject.cpp
@@ -39,9 +39,9 @@ CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.o: ../Data/databa
 CMakeFiles/FileSharingSystemServer.dir/main.cpp.o: ../API/RequestHandler.h
 CMakeFiles/FileSharingSystemServer.dir/main.cpp.o: ../BL/AccountManager.h
 CMakeFiles/FileSharingSystemServer.dir/main.cpp.o: ../Common/Configuration.h
-CMakeFiles/FileSharingSystemServer.dir/main.cpp.o: ../Common/EMailManager.h
 CMakeFiles/FileSharingSystemServer.dir/main.cpp.o: ../Common/RequestReader.h
 CMakeFiles/FileSharingSystemServer.dir/main.cpp.o: ../Common/RequestWritter.h
+CMakeFiles/FileSharingSystemServer.dir/main.cpp.o: ../Data/EMailManager.h
 CMakeFiles/FileSharingSystemServer.dir/main.cpp.o: ../Data/databaseobject.h
 CMakeFiles/FileSharingSystemServer.dir/main.cpp.o: ../API/Server.h
 CMakeFiles/FileSharingSystemServer.dir/main.cpp.o: ../main.cpp

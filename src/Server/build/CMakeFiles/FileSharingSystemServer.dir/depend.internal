@@ -4,9 +4,9 @@
 CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.o
  ../BL/AccountManager.h
  ../Common/Configuration.h
- ../Common/EMailManager.h
  ../Common/RequestReader.h
  ../Common/RequestWritter.h
+ ../Data/EMailManager.h
  ../Data/databaseobject.h
  /home/alex/File-Sharing-System/src/Server/API/RequestHandler.cpp
  /home/alex/File-Sharing-System/src/Server/API/RequestHandler.h
@@ -14,24 +14,24 @@ CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.o
  ../API/RequestHandler.h
  ../BL/AccountManager.h
  ../Common/Configuration.h
- ../Common/EMailManager.h
  ../Common/RequestReader.h
  ../Common/RequestWritter.h
+ ../Data/EMailManager.h
  ../Data/databaseobject.h
  /home/alex/File-Sharing-System/src/Server/API/Server.cpp
  /home/alex/File-Sharing-System/src/Server/API/Server.h
 CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.o
  ../Common/Configuration.h
- ../Common/EMailManager.h
+ ../Data/EMailManager.h
  ../Data/databaseobject.h
  /home/alex/File-Sharing-System/src/Server/BL/AccountManager.cpp
  /home/alex/File-Sharing-System/src/Server/BL/AccountManager.h
 CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.o
  /home/alex/File-Sharing-System/src/Server/Common/Configuration.cpp
  /home/alex/File-Sharing-System/src/Server/Common/Configuration.h
-CMakeFiles/FileSharingSystemServer.dir/Common/EMailManager.cpp.o
- /home/alex/File-Sharing-System/src/Server/Common/EMailManager.cpp
- /home/alex/File-Sharing-System/src/Server/Common/EMailManager.h
+CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.o
+ /home/alex/File-Sharing-System/src/Server/Data/EMailManager.cpp
+ /home/alex/File-Sharing-System/src/Server/Data/EMailManager.h
 CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.o
  ../Common/Configuration.h
  /home/alex/File-Sharing-System/src/Server/Data/databaseobject.cpp
@@ -40,9 +40,9 @@ CMakeFiles/FileSharingSystemServer.dir/main.cpp.o
  ../API/RequestHandler.h
  ../BL/AccountManager.h
  ../Common/Configuration.h
- ../Common/EMailManager.h
  ../Common/RequestReader.h
  ../Common/RequestWritter.h
+ ../Data/EMailManager.h
  ../Data/databaseobject.h
  /home/alex/File-Sharing-System/src/Server/API/Server.h
  /home/alex/File-Sharing-System/src/Server/main.cpp

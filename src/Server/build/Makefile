@@ -231,32 +231,32 @@ Common/Configuration.cpp.s:
 	$(MAKE) -f CMakeFiles/FileSharingSystemServer.dir/build.make CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.s
 .PHONY : Common/Configuration.cpp.s
 
-Common/EMailManager.o: Common/EMailManager.cpp.o
+Data/EMailManager.o: Data/EMailManager.cpp.o
 
-.PHONY : Common/EMailManager.o
+.PHONY : Data/EMailManager.o
 
 # target to build an object file
-Common/EMailManager.cpp.o:
-	$(MAKE) -f CMakeFiles/FileSharingSystemServer.dir/build.make CMakeFiles/FileSharingSystemServer.dir/Common/EMailManager.cpp.o
-.PHONY : Common/EMailManager.cpp.o
+Data/EMailManager.cpp.o:
+	$(MAKE) -f CMakeFiles/FileSharingSystemServer.dir/build.make CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.o
+.PHONY : Data/EMailManager.cpp.o
 
-Common/EMailManager.i: Common/EMailManager.cpp.i
+Data/EMailManager.i: Data/EMailManager.cpp.i
 
-.PHONY : Common/EMailManager.i
+.PHONY : Data/EMailManager.i
 
 # target to preprocess a source file
-Common/EMailManager.cpp.i:
-	$(MAKE) -f CMakeFiles/FileSharingSystemServer.dir/build.make CMakeFiles/FileSharingSystemServer.dir/Common/EMailManager.cpp.i
-.PHONY : Common/EMailManager.cpp.i
+Data/EMailManager.cpp.i:
+	$(MAKE) -f CMakeFiles/FileSharingSystemServer.dir/build.make CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.i
+.PHONY : Data/EMailManager.cpp.i
 
-Common/EMailManager.s: Common/EMailManager.cpp.s
+Data/EMailManager.s: Data/EMailManager.cpp.s
 
-.PHONY : Common/EMailManager.s
+.PHONY : Data/EMailManager.s
 
 # target to generate assembly for a file
-Common/EMailManager.cpp.s:
-	$(MAKE) -f CMakeFiles/FileSharingSystemServer.dir/build.make CMakeFiles/FileSharingSystemServer.dir/Common/EMailManager.cpp.s
-.PHONY : Common/EMailManager.cpp.s
+Data/EMailManager.cpp.s:
+	$(MAKE) -f CMakeFiles/FileSharingSystemServer.dir/build.make CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.s
+.PHONY : Data/EMailManager.cpp.s
 
 Data/databaseobject.o: Data/databaseobject.cpp.o
 
@@ -333,9 +333,9 @@ help:
 	@echo "... Common/Configuration.o"
 	@echo "... Common/Configuration.i"
 	@echo "... Common/Configuration.s"
-	@echo "... Common/EMailManager.o"
-	@echo "... Common/EMailManager.i"
-	@echo "... Common/EMailManager.s"
+	@echo "... Data/EMailManager.o"
+	@echo "... Data/EMailManager.i"
+	@echo "... Data/EMailManager.s"
 	@echo "... Data/databaseobject.o"
 	@echo "... Data/databaseobject.i"
 	@echo "... Data/databaseobject.s"

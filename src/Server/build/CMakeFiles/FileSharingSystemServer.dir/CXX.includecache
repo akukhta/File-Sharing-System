@@ -6,11 +6,11 @@
 
 #IncludeRegexTransform: 
 
-/home/alex/File-Sharing-System/src/Server/Common/EMailManager.cpp
+/home/alex/File-Sharing-System/src/Server/Data/EMailManager.cpp
 EMailManager.h
-/home/alex/File-Sharing-System/src/Server/Common/EMailManager.h
+/home/alex/File-Sharing-System/src/Server/Data/EMailManager.h
 
-/home/alex/File-Sharing-System/src/Server/Common/EMailManager.h
+/home/alex/File-Sharing-System/src/Server/Data/EMailManager.h
 string
 -
 
