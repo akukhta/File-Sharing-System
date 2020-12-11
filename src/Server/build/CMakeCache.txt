@@ -215,6 +215,30 @@ FileSharingSystemServer_BINARY_DIR:STATIC=/home/alex/File-Sharing-System/src/Ser
 //Value Computed by CMake
 FileSharingSystemServer_SOURCE_DIR:STATIC=/home/alex/File-Sharing-System/src/Server
 
+//The directory containing a CMake configuration file for Libsqlite3-dev.
+Libsqlite3-dev_DIR:PATH=Libsqlite3-dev_DIR-NOTFOUND
+
+//The directory containing a CMake configuration file for libsqlite0.
+libsqlite0_DIR:PATH=libsqlite0_DIR-NOTFOUND
+
+//The directory containing a CMake configuration file for libsqlite3-0.
+libsqlite3-0_DIR:PATH=libsqlite3-0_DIR-NOTFOUND
+
+//The directory containing a CMake configuration file for libsqlite3-dev.
+libsqlite3-dev_DIR:PATH=libsqlite3-dev_DIR-NOTFOUND
+
+//The directory containing a CMake configuration file for sqlite0.
+sqlite0_DIR:PATH=sqlite0_DIR-NOTFOUND
+
+//The directory containing a CMake configuration file for sqlite3-0.
+sqlite3-0_DIR:PATH=sqlite3-0_DIR-NOTFOUND
+
+//The directory containing a CMake configuration file for sqlite3-dev.
+sqlite3-dev_DIR:PATH=sqlite3-dev_DIR-NOTFOUND
+
+//The directory containing a CMake configuration file for sqlite3.
+sqlite3_DIR:PATH=sqlite3_DIR-NOTFOUND
+
 
 ########################
 # INTERNAL cache entries

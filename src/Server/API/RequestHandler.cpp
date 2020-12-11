@@ -45,5 +45,5 @@ std::vector<char> RequestHandler::userRegistration(std::vector<char> buffer)
         }
 
     auto responce = writer.getBuffer();
-    return *responce;
+    return responce;
 }

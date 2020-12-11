@@ -1,5 +1,5 @@
 #include "databaseobject.h"
-#include <cstring>
+
 
 DataBaseObject::DataBaseObject(std::string const &dbpath)
 {

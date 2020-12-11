@@ -4,7 +4,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.o"
   "CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.o"
   "CMakeFiles/FileSharingSystemServer.dir/Common/EMailManager.cpp.o"
-  "CMakeFiles/FileSharingSystemServer.dir/Common/databaseobject.cpp.o"
+  "CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.o"
   "CMakeFiles/FileSharingSystemServer.dir/main.cpp.o"
   "FileSharingSystemServer"
   "FileSharingSystemServer.pdb"

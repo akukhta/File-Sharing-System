@@ -1,10 +1,9 @@
-#ifndef DATABASEOBJECT_H
-#define DATABASEOBJECT_H
+#pragma once
 #include <string>
 #include <sqlite3.h>
 #include <stdexcept>
 #include <memory>
-#include <Configuration.h>
+#include <Common/Configuration.h>
 class DataBaseObject
 {
 public:
@@ -17,5 +16,3 @@ private:
     //Only for test
     int returnVal;
 };
-
-#endif // DATABASEOBJECT_H

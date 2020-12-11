@@ -1,5 +1,4 @@
-#ifndef CONFIGURATION_H
-#define CONFIGURATION_H
+#pragma once
 #include <string>
 
 class Configuration
@@ -11,4 +10,3 @@ public:
     std::string static getDefaultPathDB();
 };
 
-#endif // CONFIGURATION_H

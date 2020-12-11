@@ -1,11 +1,10 @@
-#ifndef ACCOUNTMANAGER_H
-#define ACCOUNTMANAGER_H
+#pragma once
 #include <iostream>
 #include <sqlite3.h>
-#include "../Common/databaseobject.h"
 #include <thread>
-#include "../Common/EMailManager.h"
 #include <memory>
+#include "Data/databaseobject.h"
+#include "Common/EMailManager.h"
 
 class AccountManager
 {
@@ -19,4 +18,3 @@ private:
     const std::string registrationMessage = "You are registered!", subject = "File sharing system";
 };
 
-#endif // ACCOUNTMANAGER_H

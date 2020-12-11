@@ -1,6 +1,4 @@
-#ifndef SERVER_H
-#define SERVER_H
-
+#pragma once
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <arpa/inet.h>
@@ -9,11 +7,12 @@
 #include <vector>
 #include <unistd.h>
 #include <iostream>
-#include "../Common/databaseobject.h"
-#include "../BL/AccountManager.h"
-#include "RequestHandler.h"
 #include <memory>
-#include "../Common/Configuration.h"
+#include "Data/databaseobject.h"
+#include "BL/AccountManager.h"
+#include "API/RequestHandler.h"
+#include "Common/Configuration.h"
+
 class Server
 {
 public:
@@ -50,4 +49,3 @@ private:
     void sendToClient(int sockfd, char* const buffer, size_t bufferSize);
 };
 
-#endif // SERVER_H

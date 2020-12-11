@@ -258,32 +258,32 @@ Common/EMailManager.cpp.s:
 	$(MAKE) -f CMakeFiles/FileSharingSystemServer.dir/build.make CMakeFiles/FileSharingSystemServer.dir/Common/EMailManager.cpp.s
 .PHONY : Common/EMailManager.cpp.s
 
-Common/databaseobject.o: Common/databaseobject.cpp.o
+Data/databaseobject.o: Data/databaseobject.cpp.o
 
-.PHONY : Common/databaseobject.o
+.PHONY : Data/databaseobject.o
 
 # target to build an object file
-Common/databaseobject.cpp.o:
-	$(MAKE) -f CMakeFiles/FileSharingSystemServer.dir/build.make CMakeFiles/FileSharingSystemServer.dir/Common/databaseobject.cpp.o
-.PHONY : Common/databaseobject.cpp.o
+Data/databaseobject.cpp.o:
+	$(MAKE) -f CMakeFiles/FileSharingSystemServer.dir/build.make CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.o
+.PHONY : Data/databaseobject.cpp.o
 
-Common/databaseobject.i: Common/databaseobject.cpp.i
+Data/databaseobject.i: Data/databaseobject.cpp.i
 
-.PHONY : Common/databaseobject.i
+.PHONY : Data/databaseobject.i
 
 # target to preprocess a source file
-Common/databaseobject.cpp.i:
-	$(MAKE) -f CMakeFiles/FileSharingSystemServer.dir/build.make CMakeFiles/FileSharingSystemServer.dir/Common/databaseobject.cpp.i
-.PHONY : Common/databaseobject.cpp.i
+Data/databaseobject.cpp.i:
+	$(MAKE) -f CMakeFiles/FileSharingSystemServer.dir/build.make CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.i
+.PHONY : Data/databaseobject.cpp.i
 
-Common/databaseobject.s: Common/databaseobject.cpp.s
+Data/databaseobject.s: Data/databaseobject.cpp.s
 
-.PHONY : Common/databaseobject.s
+.PHONY : Data/databaseobject.s
 
 # target to generate assembly for a file
-Common/databaseobject.cpp.s:
-	$(MAKE) -f CMakeFiles/FileSharingSystemServer.dir/build.make CMakeFiles/FileSharingSystemServer.dir/Common/databaseobject.cpp.s
-.PHONY : Common/databaseobject.cpp.s
+Data/databaseobject.cpp.s:
+	$(MAKE) -f CMakeFiles/FileSharingSystemServer.dir/build.make CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.s
+.PHONY : Data/databaseobject.cpp.s
 
 main.o: main.cpp.o
 
@@ -336,9 +336,9 @@ help:
 	@echo "... Common/EMailManager.o"
 	@echo "... Common/EMailManager.i"
 	@echo "... Common/EMailManager.s"
-	@echo "... Common/databaseobject.o"
-	@echo "... Common/databaseobject.i"
-	@echo "... Common/databaseobject.s"
+	@echo "... Data/databaseobject.o"
+	@echo "... Data/databaseobject.i"
+	@echo "... Data/databaseobject.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

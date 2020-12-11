@@ -1,11 +1,10 @@
-#ifndef REQUESTHANDLER_H
-#define REQUESTHANDLER_H
-#include "AccountManager.h"
+#pragma once
 #include <vector>
-#include "databaseobject.h"
 #include <memory>
-#include "RequestReader.h"
-#include "RequestWritter.h"
+#include "Data/databaseobject.h"
+#include "BL/AccountManager.h"
+#include "Common/RequestReader.h"
+#include "Common/RequestWritter.h"
 
 //Class for user's requests treatment
 class RequestHandler
@@ -20,5 +19,3 @@ private:
     std::unique_ptr<DataBaseObject> dataBase;
     std::vector<char> userRegistration(std::vector<char> buffer); //Method for user registration. FIRST BYTE NUMBER - 0
 };
-
-#endif // REQUESTHANDLER_H

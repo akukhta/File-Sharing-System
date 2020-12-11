@@ -1,5 +1,4 @@
-#ifndef REQUESTREADER_H
-#define REQUESTREADER_H
+#pragma once
 #include <memory>
 #include <vector>
 #include <type_traits>
@@ -21,11 +20,6 @@ public:
     template<class T,typename std::enable_if_t<std::is_fundamental<T>::value>* = nullptr>
     T read()
     {
-        if (!check())
-        {
-            throw std::runtime_error("Reading error!");
-        }
-
         if (currentOffset + sizeof(T) > buffer->size())
         {
             throw std::runtime_error("Cannot get a parameter");
@@ -40,19 +34,8 @@ public:
     template<class T, typename std::enable_if_t<std::is_same<std::vector<char>,T>::value>* = nullptr>
     std::vector<char> read()
     {
-        if (!check())
-        {
-            throw std::runtime_error("Reading error!");
-        }
-
         size_t blockSize;
-        try{
-            blockSize = this->read<size_t>();
-        } catch (std::runtime_error const &)
-        {
-                throw;
-        }
-
+        blockSize = this->read<size_t>();
         if (blockSize > buffer->size() - currentOffset)
         {
             throw std::runtime_error("Wrong buffer size!");
@@ -66,18 +49,8 @@ public:
     template<class T, typename std::enable_if_t<std::is_same<std::string,T>::value>* = nullptr>
     std::string read()
     {
-        if (!check())
-            throw std::runtime_error("Reading error!");
-
         size_t blockSize;
-
-        try{
-            blockSize = this->read<size_t>();
-        } catch (std::runtime_error const &)
-        {
-            throw;
-        }
-
+        blockSize = this->read<size_t>();
         if (blockSize > buffer->size() - currentOffset)
             throw std::runtime_error("Wrong buffer size!");
         std::string result(buffer->begin() + currentOffset, buffer->begin() + currentOffset + blockSize);
@@ -88,12 +61,5 @@ public:
 private:
     size_t currentOffset;
     std::shared_ptr<std::vector<char>> buffer;
-
-    bool check()
-    {
-        return currentOffset < buffer->size();
-    }
-
 };
 
-#endif // REQUESTREADER_H
