@@ -17,11 +17,13 @@ string
 ../Data/databaseobject.h
 string
 -
-sqlite3.h
+cppconn/resultset.h
 -
-stdexcept
+cppconn/statement.h
 -
-memory
+cppconn/driver.h
+-
+cppconn/connection.h
 -
 Common/Configuration.h
 -

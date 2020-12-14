@@ -13,7 +13,7 @@ std::uint32_t AccountManager::createAccount(std::string email, std::string passw
 
     if (!database)
         throw std::runtime_error("Database didn't initialized");
-    if (!database->query("INSERT INTO User(email,password) VALUES(\"" + email + "\",\"" + password + "\");"))
+    if (database->insertQuery("INSERT INTO Users (Email,Password) VALUES(\"" + email + "\",\"" + password + "\");"))
     {
         //std::thread(EMailManager::Send, email,subject, registrationMessage).detach();
         EMailManager::Send(email, subject, registrationMessage);

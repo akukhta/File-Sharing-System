@@ -3,20 +3,40 @@
 
 DataBaseObject::DataBaseObject(std::string const &dbpath)
 {
-    if (sqlite3_open(dbpath.c_str(), &db) != SQLITE_OK)
-        throw std::runtime_error("Database didn't open!");
-
+    try{
+        driver = get_driver_instance();
+        conn = driver->connect(Configuration::getDefaultPathDB(),
+            Configuration::getDefaultUserDB(), Configuration::getDefaultPassDB());
+        conn->setSchema("FileSharingSystem");
+    }
+    catch (sql::SQLException const &ex)
+    {
+        std::cout << ex.what() << std::endl;
+    }
 }
 
 //This method doesn't work, but i dont know why
-bool DataBaseObject::query(std::string querystr)
+bool DataBaseObject::insertQuery(std::string querystr)
 {
-    if (this->db == nullptr)
-    returnVal =  sqlite3_exec(this->db, querystr.c_str(), nullptr,nullptr, nullptr);
-    return returnVal;
+    sql::Statement* statement = conn->createStatement();
+
+    try{
+        statement->execute(querystr);
+    }
+    catch (sql::SQLException const &ex)
+    {
+        std::cout << ex.what() << std::endl;
+        delete statement;
+        return false;
+    }
+
+    delete statement;
+    return true;
 }
 
 DataBaseObject::~DataBaseObject()
 {
-    sqlite3_close(this->db);
+    if (conn->isClosed())
+        conn->close();
+    delete conn;
 }

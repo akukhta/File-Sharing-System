@@ -1,18 +1,20 @@
 #pragma once
 #include <string>
-#include <sqlite3.h>
-#include <stdexcept>
-#include <memory>
+#include <cppconn/resultset.h>
+#include <cppconn/statement.h>
+#include <cppconn/driver.h>
+#include <cppconn/connection.h>
 #include <Common/Configuration.h>
 class DataBaseObject
 {
 public:
     DataBaseObject(std::string const & dbpath = Configuration::getDefaultPathDB());
-    bool query(std::string querystr);
+    bool insertQuery(std::string querystr);
     ~DataBaseObject();
 private:
     //Connection pointer to sqlite3 database
-    sqlite3 *db;
+    sql::Driver *driver;
+    sql::Connection *conn;
     //Only for test
     int returnVal;
 };

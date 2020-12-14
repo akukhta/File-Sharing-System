@@ -12,5 +12,14 @@ int Configuration::getDafultPort()
 
 std::string Configuration::getDefaultPathDB()
 {
-     return "/home/alex/build-serverTEESTT-Desktop-Debug/users.db";
+    return "127.0.0.1";
+}
+
+std::string Configuration::getDefaultUserDB()
+{
+    return "root";
+}
+std::string Configuration::getDefaultPassDB()
+{
+    return "root";
 }

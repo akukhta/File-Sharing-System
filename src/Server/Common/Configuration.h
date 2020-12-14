@@ -8,5 +8,9 @@ public:
     std::string static getDefaultIP();
     int static getDafultPort();
     std::string static getDefaultPathDB();
+    std::string static getDefaultUserDB();
+    std::string static getDefaultPassDB();
+
+
 };
 
