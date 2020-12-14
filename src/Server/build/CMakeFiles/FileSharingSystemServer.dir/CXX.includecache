@@ -6,11 +6,41 @@
 
 #IncludeRegexTransform: 
 
-/home/alex/File-Sharing-System/src/Server/Data/EMailManager.cpp
-EMailManager.h
-/home/alex/File-Sharing-System/src/Server/Data/EMailManager.h
-
-/home/alex/File-Sharing-System/src/Server/Data/EMailManager.h
+../Common/Configuration.h
 string
 -
+
+../Data/EMailManager.h
+string
+-
+
+../Data/databaseobject.h
+string
+-
+sqlite3.h
+-
+stdexcept
+-
+memory
+-
+Common/Configuration.h
+-
+
+/home/alex/File-Sharing-System/src/Server/BL/AccountManager.cpp
+AccountManager.h
+/home/alex/File-Sharing-System/src/Server/BL/AccountManager.h
+
+/home/alex/File-Sharing-System/src/Server/BL/AccountManager.h
+iostream
+-
+sqlite3.h
+-
+thread
+-
+memory
+-
+Data/databaseobject.h
+/home/alex/File-Sharing-System/src/Server/BL/Data/databaseobject.h
+Data/EMailManager.h
+/home/alex/File-Sharing-System/src/Server/BL/Data/EMailManager.h
 
