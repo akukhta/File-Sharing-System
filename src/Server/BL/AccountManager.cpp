@@ -10,6 +10,7 @@ AccountManager::AccountManager(std::shared_ptr<DataBaseObject> db) : database(db
 //Creates a new user's account
 std::uint32_t AccountManager::createAccount(std::string email, std::string password)
 {
+
     if (!database)
         throw std::runtime_error("Database didn't initialized");
     if (!database->query("INSERT INTO User(email,password) VALUES(\"" + email + "\",\"" + password + "\");"))

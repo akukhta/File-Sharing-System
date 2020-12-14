@@ -34,8 +34,16 @@ public:
     template<class T, typename std::enable_if_t<std::is_same<std::vector<char>,T>::value>* = nullptr>
     std::vector<char> read()
     {
-        size_t blockSize;
-        blockSize = this->read<size_t>();
+
+        if (currentOffset + sizeof(size_t) > buffer->size())
+        {
+            throw std::runtime_error("Cannot get a parameter");
+        }
+
+        std::vector<char> sizeBuffer(buffer->begin() + currentOffset, buffer->begin() + currentOffset + sizeof(size_t));
+        size_t blockSize = *reinterpret_cast<size_t*>(sizeBuffer.data());
+        currentOffset += sizeof(size_t);
+        
         if (blockSize > buffer->size() - currentOffset)
         {
             throw std::runtime_error("Wrong buffer size!");
@@ -49,10 +57,21 @@ public:
     template<class T, typename std::enable_if_t<std::is_same<std::string,T>::value>* = nullptr>
     std::string read()
     {
-        size_t blockSize;
-        blockSize = this->read<size_t>();
+
+        if (currentOffset + sizeof(size_t) > buffer->size())
+        {
+            throw std::runtime_error("Cannot get a parameter");
+        }
+
+        std::vector<char> sizeBuffer(buffer->begin() + currentOffset, buffer->begin() + currentOffset + sizeof(size_t));
+        size_t blockSize = *reinterpret_cast<size_t*>(sizeBuffer.data());
+        currentOffset += sizeof(size_t);
+
         if (blockSize > buffer->size() - currentOffset)
+        {
             throw std::runtime_error("Wrong buffer size!");
+        }
+
         std::string result(buffer->begin() + currentOffset, buffer->begin() + currentOffset + blockSize);
         currentOffset += blockSize;
         return result;
