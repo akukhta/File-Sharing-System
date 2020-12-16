@@ -1,9 +1,9 @@
 #include "Configuration.h"
 
-void Configuration::showWindowAsFixed(QWidget& window)
+bool Configuration::showWindowAsFixed(QDialog* window)
 {
-    window.setFixedSize(window.size());
-    window.show();
+    window->setFixedSize(window->size());
+    return window->exec();
 }
 
 std::string Configuration::getServerIP()
@@ -13,5 +13,5 @@ std::string Configuration::getServerIP()
 
 int Configuration::getServerPort()
 {
-    return 5441;
+    return htons(5441);
 }

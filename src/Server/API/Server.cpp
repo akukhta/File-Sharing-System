@@ -65,10 +65,10 @@ void Server::socketsPollHandler()
                 //Handling users' connections
                 //Sockets with descriptors greater than zero - clients' sockets
                 try {
-                   std::uint32_t packetSize; //Size of packet
+                   std::size_t packetSize; //Size of packet
                    std::vector<char> buf; //Buffer for receiving
-                   buf = reciveFromClient(sock.fd, sizeof(std::uint32_t)); //Receiving size
-                   packetSize = *reinterpret_cast<std::uint32_t*>(buf.data()); //Cast from char to size_t
+                   buf = reciveFromClient(sock.fd, sizeof(size_t)); //Receiving size
+                   packetSize = *reinterpret_cast<size_t*>(buf.data()); //Cast from char to size_t
                    buf = reciveFromClient(sock.fd, packetSize); //Receiving "packetSize" bytes of data
                    std::vector<char> answer = handler->handle(buf); //Run needed function
                    size_t size = answer.size(); // Size of answer to client
