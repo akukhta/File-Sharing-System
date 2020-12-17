@@ -1,6 +1,5 @@
 #pragma once
 #include <iostream>
-#include <sqlite3.h>
 #include <thread>
 #include <memory>
 #include "Data/databaseobject.h"
@@ -10,7 +9,8 @@ class AccountManager
 {
 public:
     AccountManager(std::shared_ptr<DataBaseObject> db);
-    std::uint32_t createAccount(std::string email, std::string password);
+    std::uint32_t createAccount(std::string email, std::string password, int socketFD);
+    std::uint32_t logIn(std::string email, std::string password, int socketFD);
 private:
     //Pointer to database object
     std::shared_ptr<DataBaseObject> database;

@@ -70,7 +70,7 @@ void Server::socketsPollHandler()
                    buf = reciveFromClient(sock.fd, sizeof(size_t)); //Receiving size
                    packetSize = *reinterpret_cast<size_t*>(buf.data()); //Cast from char to size_t
                    buf = reciveFromClient(sock.fd, packetSize); //Receiving "packetSize" bytes of data
-                   std::vector<char> answer = handler->handle(buf); //Run needed function
+                   std::vector<char> answer = handler->handle(buf, sock.fd); //Run needed function
                    size_t size = answer.size(); // Size of answer to client
                    sendToClient(sock.fd, reinterpret_cast<char*>(&size), sizeof(size_t)); //Send size to client
                    sendToClient(sock.fd, answer.data(), size); //Send answer to client
@@ -108,6 +108,7 @@ void Server::socketsPollHandler()
 void Server::closeConnection(int sockfd)
 {
         std::cout << "Client disconnected!" << std::endl;
+        handler->destroySession(sockfd);
         shutdown(sockfd, SHUT_RDWR);
         close(sockfd);
         connectedSockets.erase(sockfd);
