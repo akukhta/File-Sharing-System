@@ -34,16 +34,13 @@ bool DataBaseObject::insertQuery(std::string querystr)
     return true;
 }
 
-//Authorization method
-bool DataBaseObject::authorizationQuery(std::string & email,
-        std::string & password, size_t& userID)
-{
-    std::string query = "select * from Users where Email = \'"
-            + email + "\' and Password = \'" + password + "\';";
+//Basic select query
 
+sql::ResultSet* DataBaseObject::abstractSelectQuery(std::string const &query)
+{
     sql::Statement* statement = conn->createStatement();
     sql::ResultSet* result = nullptr;
-    bool returnValue = false;
+    
     try{
         result = statement->executeQuery(query);
     }
@@ -52,24 +49,37 @@ bool DataBaseObject::authorizationQuery(std::string & email,
     {
         std::cout << ex.what() << std::endl;
         delete statement;
-        return false;
+        return nullptr;
     }
+    delete statement;
+    return result;
+}
+
+//Authorization method
+bool DataBaseObject::authorizationQuery(std::string & email,
+        std::string & password, size_t& userID)
+{
+    const std::string query = "select * from Users where Email = \'"
+            + email + "\' and Password = \'" + password + "\';";
+    bool returnValue = false;
+    sql::ResultSet *result = abstractSelectQuery(query);
+    
     if (result != nullptr)
     {
         while(result->next())
             userID = result->getInt("UserID");
         returnValue = true;
     }
-
-    delete statement;
+    
     delete result;
+    
     return returnValue;
 }
 
 //Method for new sessiong creating
 bool DataBaseObject::createSessionQuery(std::uint32_t sessiongToken, int socketID, int userID)
 {
-    std::string query = "insert into Sessions values (" + std::to_string(sessiongToken)
+    const std::string query = "insert into Sessions values (" + std::to_string(sessiongToken)
             + "," + std::to_string(socketID) + "," + std::to_string(userID) + ");";
     return insertQuery(query);
 }
@@ -79,6 +89,23 @@ void DataBaseObject::closeSession(int socketFD)
 {
     std::string query = "delete from Sessions where socketID = " + std::to_string(socketFD) + ";";
     insertQuery(query);
+}
+
+std::vector<std::string> DataBaseObject::nodesQuery(unsigned int sessionToken)
+{
+    const std::string query = "select * from Nodes where UserID = (select UserID from Sessions where sessionToken = " + std::to_string(sessionToken) + ");";
+    sql::ResultSet *result = abstractSelectQuery(query);
+    
+    if (result == nullptr)
+        throw std::runtime_error("Nodes query has been failed!");
+    
+    std::vector<std::string> nodes;
+    while (result->next())
+    {
+        nodes.push_back(std::to_string(result->getInt("NodeID")));
+    }
+
+    return nodes;
 }
 
 DataBaseObject::~DataBaseObject()

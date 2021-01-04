@@ -1,4 +1,0 @@
-/home/alex/File-Sharing-System/src/Client/build/CMakeFiles/rebuild_cache.dir
-/home/alex/File-Sharing-System/src/Client/build/CMakeFiles/edit_cache.dir
-/home/alex/File-Sharing-System/src/Client/build/CMakeFiles/FileSharingSystemClient.dir
-/home/alex/File-Sharing-System/src/Client/build/CMakeFiles/FileSharingSystemClient_autogen.dir

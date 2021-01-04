@@ -3,6 +3,7 @@
 
 CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.o
  ../BL/AccountManager.h
+ ../BL/NodesManager.h
  ../Common/Configuration.h
  ../Common/RequestReader.h
  ../Common/RequestWritter.h
@@ -13,6 +14,7 @@ CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.o
 CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.o
  ../API/RequestHandler.h
  ../BL/AccountManager.h
+ ../BL/NodesManager.h
  ../Common/Configuration.h
  ../Common/RequestReader.h
  ../Common/RequestWritter.h
@@ -26,6 +28,11 @@ CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.o
  ../Data/databaseobject.h
  /home/alex/File-Sharing-System/src/Server/BL/AccountManager.cpp
  /home/alex/File-Sharing-System/src/Server/BL/AccountManager.h
+CMakeFiles/FileSharingSystemServer.dir/BL/NodesManager.cpp.o
+ ../Common/Configuration.h
+ ../Data/databaseobject.h
+ /home/alex/File-Sharing-System/src/Server/BL/NodesManager.cpp
+ /home/alex/File-Sharing-System/src/Server/BL/NodesManager.h
 CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.o
  /home/alex/File-Sharing-System/src/Server/Common/Configuration.cpp
  /home/alex/File-Sharing-System/src/Server/Common/Configuration.h
@@ -39,6 +46,7 @@ CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.o
 CMakeFiles/FileSharingSystemServer.dir/main.cpp.o
  ../API/RequestHandler.h
  ../BL/AccountManager.h
+ ../BL/NodesManager.h
  ../Common/Configuration.h
  ../Common/RequestReader.h
  ../Common/RequestWritter.h

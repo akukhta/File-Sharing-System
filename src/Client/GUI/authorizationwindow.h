@@ -1,7 +1,7 @@
 #pragma once
 #include <QDialog>
 #include <memory>
-#include "BL/ClientInterface.h"
+#include "ClientInterface.h"
 
 namespace Ui {
 class AuthorizationWindow;

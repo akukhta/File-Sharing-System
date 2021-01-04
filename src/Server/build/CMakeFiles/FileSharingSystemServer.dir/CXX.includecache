@@ -6,24 +6,8 @@
 
 #IncludeRegexTransform: 
 
-../API/RequestHandler.h
-vector
--
-memory
--
-Data/databaseobject.h
-../API/Data/databaseobject.h
-BL/AccountManager.h
-../API/BL/AccountManager.h
-Common/RequestReader.h
-../API/Common/RequestReader.h
-Common/RequestWritter.h
-../API/Common/RequestWritter.h
-
 ../BL/AccountManager.h
 iostream
--
-sqlite3.h
 -
 thread
 -
@@ -33,6 +17,16 @@ Data/databaseobject.h
 ../BL/Data/databaseobject.h
 Data/EMailManager.h
 ../BL/Data/EMailManager.h
+
+../BL/NodesManager.h
+memory
+-
+vector
+-
+string
+-
+Data/databaseobject.h
+../BL/Data/databaseobject.h
 
 ../Common/Configuration.h
 string
@@ -61,6 +55,8 @@ string
 -
 
 ../Data/databaseobject.h
+vector
+-
 string
 -
 cppconn/resultset.h
@@ -74,26 +70,12 @@ cppconn/connection.h
 Common/Configuration.h
 -
 
-/home/alex/File-Sharing-System/src/Server/API/Server.cpp
-Server.h
-/home/alex/File-Sharing-System/src/Server/API/Server.h
+/home/alex/File-Sharing-System/src/Server/API/RequestHandler.cpp
+RequestHandler.h
+/home/alex/File-Sharing-System/src/Server/API/RequestHandler.h
 
-/home/alex/File-Sharing-System/src/Server/API/Server.h
-sys/socket.h
--
-sys/types.h
--
-arpa/inet.h
--
-poll.h
--
-set
--
+/home/alex/File-Sharing-System/src/Server/API/RequestHandler.h
 vector
--
-unistd.h
--
-iostream
 -
 memory
 -
@@ -101,8 +83,10 @@ Data/databaseobject.h
 /home/alex/File-Sharing-System/src/Server/API/Data/databaseobject.h
 BL/AccountManager.h
 /home/alex/File-Sharing-System/src/Server/API/BL/AccountManager.h
-API/RequestHandler.h
-/home/alex/File-Sharing-System/src/Server/API/API/RequestHandler.h
-Common/Configuration.h
-/home/alex/File-Sharing-System/src/Server/API/Common/Configuration.h
+Common/RequestReader.h
+/home/alex/File-Sharing-System/src/Server/API/Common/RequestReader.h
+Common/RequestWritter.h
+/home/alex/File-Sharing-System/src/Server/API/Common/RequestWritter.h
+BL/NodesManager.h
+/home/alex/File-Sharing-System/src/Server/API/BL/NodesManager.h
 

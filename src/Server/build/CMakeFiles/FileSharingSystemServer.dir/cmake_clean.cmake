@@ -2,6 +2,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.o"
   "CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.o"
   "CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.o"
+  "CMakeFiles/FileSharingSystemServer.dir/BL/NodesManager.cpp.o"
   "CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.o"
   "CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.o"
   "CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.o"

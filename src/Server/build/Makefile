@@ -204,6 +204,33 @@ BL/AccountManager.cpp.s:
 	$(MAKE) -f CMakeFiles/FileSharingSystemServer.dir/build.make CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.s
 .PHONY : BL/AccountManager.cpp.s
 
+BL/NodesManager.o: BL/NodesManager.cpp.o
+
+.PHONY : BL/NodesManager.o
+
+# target to build an object file
+BL/NodesManager.cpp.o:
+	$(MAKE) -f CMakeFiles/FileSharingSystemServer.dir/build.make CMakeFiles/FileSharingSystemServer.dir/BL/NodesManager.cpp.o
+.PHONY : BL/NodesManager.cpp.o
+
+BL/NodesManager.i: BL/NodesManager.cpp.i
+
+.PHONY : BL/NodesManager.i
+
+# target to preprocess a source file
+BL/NodesManager.cpp.i:
+	$(MAKE) -f CMakeFiles/FileSharingSystemServer.dir/build.make CMakeFiles/FileSharingSystemServer.dir/BL/NodesManager.cpp.i
+.PHONY : BL/NodesManager.cpp.i
+
+BL/NodesManager.s: BL/NodesManager.cpp.s
+
+.PHONY : BL/NodesManager.s
+
+# target to generate assembly for a file
+BL/NodesManager.cpp.s:
+	$(MAKE) -f CMakeFiles/FileSharingSystemServer.dir/build.make CMakeFiles/FileSharingSystemServer.dir/BL/NodesManager.cpp.s
+.PHONY : BL/NodesManager.cpp.s
+
 Common/Configuration.o: Common/Configuration.cpp.o
 
 .PHONY : Common/Configuration.o
@@ -330,6 +357,9 @@ help:
 	@echo "... BL/AccountManager.o"
 	@echo "... BL/AccountManager.i"
 	@echo "... BL/AccountManager.s"
+	@echo "... BL/NodesManager.o"
+	@echo "... BL/NodesManager.i"
+	@echo "... BL/NodesManager.s"
 	@echo "... Common/Configuration.o"
 	@echo "... Common/Configuration.i"
 	@echo "... Common/Configuration.s"

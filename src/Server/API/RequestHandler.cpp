@@ -5,7 +5,8 @@ RequestHandler::RequestHandler()
     try
     {
     this->dataBase = std::make_shared<DataBaseObject>();
-    this->accountManager = std::unique_ptr<AccountManager>(new AccountManager(dataBase));
+    this->accountManager = std::make_unique<AccountManager>(dataBase);
+    this->nodesManager = std::make_unique<NodesManager>(dataBase);
     } catch (std::runtime_error const &err)
     {
         throw;
@@ -23,6 +24,10 @@ std::vector<char> RequestHandler::handle(std::vector<char> buffer, int socketFD)
         break;
     case 1:
         answer = userAuthorization(buffer, socketFD);
+        break;
+    case 3:
+        answer = getListOfNodes(buffer);
+        break;
     default:
         break;
     }
@@ -74,6 +79,33 @@ std::vector<char> RequestHandler::userAuthorization(std::vector<char> buffer, in
 
     return writer.getBuffer();
 }
+
+std::vector<char> RequestHandler::getListOfNodes(std::vector<char> buffer)
+{
+    RequestReader reader(std::make_shared<std::vector<char>>(buffer));
+    const std::uint32_t sessionToken = reader.read<std::uint32_t>();
+    RequestWritter writer;
+    bool success = true;
+    auto nodesList = nodesManager->getNodesList(sessionToken, success);
+
+    if (success == false)
+    {
+        writer.write<char>(0);
+        writer.write<std::string>("Cannot get a nodes' list!");
+    }
+
+    else
+    {
+        writer.write<char>(1);
+        writer.write<size_t>(nodesList.size());
+
+        for (auto node : nodesList)
+            writer.write<std::string>(node);
+    }
+
+    return writer.getBuffer();
+}
+
 
 //Method for session deleting, when client disconnects or pushes "log out" button.
 void RequestHandler::destroySession(int socketFD)

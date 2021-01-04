@@ -60,93 +60,106 @@ include CMakeFiles/FileSharingSystemServer.dir/flags.make
 CMakeFiles/FileSharingSystemServer.dir/main.cpp.o: CMakeFiles/FileSharingSystemServer.dir/flags.make
 CMakeFiles/FileSharingSystemServer.dir/main.cpp.o: ../main.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alex/File-Sharing-System/src/Server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/FileSharingSystemServer.dir/main.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/FileSharingSystemServer.dir/main.cpp.o -c /home/alex/File-Sharing-System/src/Server/main.cpp
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/FileSharingSystemServer.dir/main.cpp.o -c /home/alex/File-Sharing-System/src/Server/main.cpp
 
 CMakeFiles/FileSharingSystemServer.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/FileSharingSystemServer.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alex/File-Sharing-System/src/Server/main.cpp > CMakeFiles/FileSharingSystemServer.dir/main.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alex/File-Sharing-System/src/Server/main.cpp > CMakeFiles/FileSharingSystemServer.dir/main.cpp.i
 
 CMakeFiles/FileSharingSystemServer.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/FileSharingSystemServer.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alex/File-Sharing-System/src/Server/main.cpp -o CMakeFiles/FileSharingSystemServer.dir/main.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alex/File-Sharing-System/src/Server/main.cpp -o CMakeFiles/FileSharingSystemServer.dir/main.cpp.s
 
 CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.o: CMakeFiles/FileSharingSystemServer.dir/flags.make
 CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.o: ../API/RequestHandler.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alex/File-Sharing-System/src/Server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.o -c /home/alex/File-Sharing-System/src/Server/API/RequestHandler.cpp
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.o -c /home/alex/File-Sharing-System/src/Server/API/RequestHandler.cpp
 
 CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alex/File-Sharing-System/src/Server/API/RequestHandler.cpp > CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alex/File-Sharing-System/src/Server/API/RequestHandler.cpp > CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.i
 
 CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alex/File-Sharing-System/src/Server/API/RequestHandler.cpp -o CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alex/File-Sharing-System/src/Server/API/RequestHandler.cpp -o CMakeFiles/FileSharingSystemServer.dir/API/RequestHandler.cpp.s
 
 CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.o: CMakeFiles/FileSharingSystemServer.dir/flags.make
 CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.o: ../API/Server.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alex/File-Sharing-System/src/Server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.o -c /home/alex/File-Sharing-System/src/Server/API/Server.cpp
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.o -c /home/alex/File-Sharing-System/src/Server/API/Server.cpp
 
 CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alex/File-Sharing-System/src/Server/API/Server.cpp > CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alex/File-Sharing-System/src/Server/API/Server.cpp > CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.i
 
 CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alex/File-Sharing-System/src/Server/API/Server.cpp -o CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alex/File-Sharing-System/src/Server/API/Server.cpp -o CMakeFiles/FileSharingSystemServer.dir/API/Server.cpp.s
 
 CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.o: CMakeFiles/FileSharingSystemServer.dir/flags.make
 CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.o: ../BL/AccountManager.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alex/File-Sharing-System/src/Server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.o -c /home/alex/File-Sharing-System/src/Server/BL/AccountManager.cpp
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.o -c /home/alex/File-Sharing-System/src/Server/BL/AccountManager.cpp
 
 CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alex/File-Sharing-System/src/Server/BL/AccountManager.cpp > CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alex/File-Sharing-System/src/Server/BL/AccountManager.cpp > CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.i
 
 CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alex/File-Sharing-System/src/Server/BL/AccountManager.cpp -o CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alex/File-Sharing-System/src/Server/BL/AccountManager.cpp -o CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.s
 
 CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.o: CMakeFiles/FileSharingSystemServer.dir/flags.make
 CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.o: ../Data/databaseobject.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alex/File-Sharing-System/src/Server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.o -c /home/alex/File-Sharing-System/src/Server/Data/databaseobject.cpp
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.o -c /home/alex/File-Sharing-System/src/Server/Data/databaseobject.cpp
 
 CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alex/File-Sharing-System/src/Server/Data/databaseobject.cpp > CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alex/File-Sharing-System/src/Server/Data/databaseobject.cpp > CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.i
 
 CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alex/File-Sharing-System/src/Server/Data/databaseobject.cpp -o CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alex/File-Sharing-System/src/Server/Data/databaseobject.cpp -o CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.s
 
 CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.o: CMakeFiles/FileSharingSystemServer.dir/flags.make
 CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.o: ../Data/EMailManager.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alex/File-Sharing-System/src/Server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.o -c /home/alex/File-Sharing-System/src/Server/Data/EMailManager.cpp
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.o -c /home/alex/File-Sharing-System/src/Server/Data/EMailManager.cpp
 
 CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alex/File-Sharing-System/src/Server/Data/EMailManager.cpp > CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alex/File-Sharing-System/src/Server/Data/EMailManager.cpp > CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.i
 
 CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alex/File-Sharing-System/src/Server/Data/EMailManager.cpp -o CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alex/File-Sharing-System/src/Server/Data/EMailManager.cpp -o CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.s
 
 CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.o: CMakeFiles/FileSharingSystemServer.dir/flags.make
 CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.o: ../Common/Configuration.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alex/File-Sharing-System/src/Server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.o -c /home/alex/File-Sharing-System/src/Server/Common/Configuration.cpp
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.o -c /home/alex/File-Sharing-System/src/Server/Common/Configuration.cpp
 
 CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alex/File-Sharing-System/src/Server/Common/Configuration.cpp > CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alex/File-Sharing-System/src/Server/Common/Configuration.cpp > CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.i
 
 CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alex/File-Sharing-System/src/Server/Common/Configuration.cpp -o CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alex/File-Sharing-System/src/Server/Common/Configuration.cpp -o CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.s
+
+CMakeFiles/FileSharingSystemServer.dir/BL/NodesManager.cpp.o: CMakeFiles/FileSharingSystemServer.dir/flags.make
+CMakeFiles/FileSharingSystemServer.dir/BL/NodesManager.cpp.o: ../BL/NodesManager.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alex/File-Sharing-System/src/Server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/FileSharingSystemServer.dir/BL/NodesManager.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/FileSharingSystemServer.dir/BL/NodesManager.cpp.o -c /home/alex/File-Sharing-System/src/Server/BL/NodesManager.cpp
+
+CMakeFiles/FileSharingSystemServer.dir/BL/NodesManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/FileSharingSystemServer.dir/BL/NodesManager.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alex/File-Sharing-System/src/Server/BL/NodesManager.cpp > CMakeFiles/FileSharingSystemServer.dir/BL/NodesManager.cpp.i
+
+CMakeFiles/FileSharingSystemServer.dir/BL/NodesManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/FileSharingSystemServer.dir/BL/NodesManager.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alex/File-Sharing-System/src/Server/BL/NodesManager.cpp -o CMakeFiles/FileSharingSystemServer.dir/BL/NodesManager.cpp.s
 
 # Object files for target FileSharingSystemServer
 FileSharingSystemServer_OBJECTS = \
@@ -156,7 +169,8 @@ FileSharingSystemServer_OBJECTS = \
 "CMakeFiles/FileSharingSystemServer.dir/BL/AccountManager.cpp.o" \
 "CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.o" \
 "CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.o" \
-"CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.o"
+"CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.o" \
+"CMakeFiles/FileSharingSystemServer.dir/BL/NodesManager.cpp.o"
 
 # External object files for target FileSharingSystemServer
 FileSharingSystemServer_EXTERNAL_OBJECTS =
@@ -168,9 +182,10 @@ FileSharingSystemServer: CMakeFiles/FileSharingSystemServer.dir/BL/AccountManage
 FileSharingSystemServer: CMakeFiles/FileSharingSystemServer.dir/Data/databaseobject.cpp.o
 FileSharingSystemServer: CMakeFiles/FileSharingSystemServer.dir/Data/EMailManager.cpp.o
 FileSharingSystemServer: CMakeFiles/FileSharingSystemServer.dir/Common/Configuration.cpp.o
+FileSharingSystemServer: CMakeFiles/FileSharingSystemServer.dir/BL/NodesManager.cpp.o
 FileSharingSystemServer: CMakeFiles/FileSharingSystemServer.dir/build.make
 FileSharingSystemServer: CMakeFiles/FileSharingSystemServer.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/alex/File-Sharing-System/src/Server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable FileSharingSystemServer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/alex/File-Sharing-System/src/Server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable FileSharingSystemServer"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/FileSharingSystemServer.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

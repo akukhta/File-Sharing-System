@@ -1,7 +1,8 @@
 #pragma once
 #include <QDialog>
+#include <QMessageBox>
 #include <memory>
-#include "BL/ClientInterface.h"
+#include "ClientInterface.h"
 #include "GUI/authorizationwindow.h"
 
 namespace Ui {
@@ -28,5 +29,6 @@ private slots:
 private:
     Ui::StartingWindow *ui;
     std::shared_ptr<ClientInterface> clientInterface;
+    void ErrorMessage(QString const &text, QString const &title);
 };
 

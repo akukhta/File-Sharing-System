@@ -31,7 +31,10 @@ void StartingWindow::on_signInButton_clicked()
         return;
     std::string email = window->getEmail();
     std::string pass = window->getPass();
-    clientInterface->authorize(email, pass);
+    if (clientInterface->authorize(email, pass))
+        accept();
+    else
+        ErrorMessage("Check inputed data.", "Register error");
 }
 
 void StartingWindow::on_logInButton_clicked()
@@ -41,5 +44,16 @@ void StartingWindow::on_logInButton_clicked()
         return;
     std::string email = window->getEmail();
     std::string pass = window->getPass();
-    clientInterface->authorize(email,pass, false);
+    if (clientInterface->authorize(email,pass, false))
+        accept();
+    else
+        ErrorMessage("User with current login and password doesn't exist.\nCheck inputed data.", "Login error");
+}
+
+void StartingWindow::ErrorMessage(QString const &text, QString const &title)
+{
+    QMessageBox box;
+    box.setText(text);
+    box.setWindowTitle(title);
+    box.exec();
 }
