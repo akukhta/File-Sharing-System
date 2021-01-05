@@ -68,8 +68,15 @@ std::vector<char> RequestHandler::userAuthorization(std::vector<char> buffer, in
         std::string const email = reader.read<std::string>();
         std::string const password = reader.read<std::string>();
         std::uint32_t sessionToken = accountManager->logIn(email, password, socketFD);
-        writer.write<char>(1);
-        writer.write<std::uint32_t>(sessionToken);
+        if (sessionToken != 0)
+        {
+            writer.write<char>(1);
+            writer.write<std::uint32_t>(sessionToken);
+        }
+        else
+        {
+            writer.write<char>(0);
+        }
     } catch (std::runtime_error const & err)
     {
         std::string errorMessage(err.what());

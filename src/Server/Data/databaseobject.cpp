@@ -64,10 +64,10 @@ bool DataBaseObject::authorizationQuery(std::string & email,
     bool returnValue = false;
     sql::ResultSet *result = abstractSelectQuery(query);
     
-    if (result != nullptr)
+    if (result != nullptr && result->rowsCount() == 1)
     {
-        while(result->next())
-            userID = result->getInt("UserID");
+        result->next();
+        userID = result->getInt("UserID");
         returnValue = true;
     }
     
