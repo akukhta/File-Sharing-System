@@ -4,6 +4,7 @@
 #include <memory>
 #include "ClientInterface.h"
 #include "GUI/authorizationwindow.h"
+#include "GUI/NodesWindow.h"
 
 namespace Ui {
 class StartingWindow;

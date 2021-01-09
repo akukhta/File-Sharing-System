@@ -18,9 +18,4 @@ void Application::start()
 
     std::unique_ptr<StartingWindow> startingWindow = std::make_unique<StartingWindow>(clientInterface);
     Configuration::showWindowAsFixed(startingWindow.get());
-    if (clientInterface->authorized())
-    {
-        std::unique_ptr<NodesWindow> nodesWindow = std::make_unique<NodesWindow>(clientInterface);
-        Configuration::showWindowAsFixed(nodesWindow.get());
-    }
 }

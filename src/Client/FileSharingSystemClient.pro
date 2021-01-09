@@ -30,6 +30,7 @@ HEADERS += \
     GUI/NodesWindow.h \
     GUI/authorizationwindow.h \
     GUI/startingwindow.h \
+    Common/ServerResults.h \
     mainwindow.h
 
 FORMS += \

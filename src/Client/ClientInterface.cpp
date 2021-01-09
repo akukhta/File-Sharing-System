@@ -18,8 +18,8 @@ bool ClientInterface::authorize(std::string email, std::string password, bool is
     writer.write<std::string>(password);
     client->sendToServer(writer.getBuffer());
     auto answer = client->receiveFromServer();
-    RequestReader reader(std::make_shared<std::vector<char>>(answer));
-    if (reader.read<char>())
+    RequestReader reader(answer);
+    if (reader.read<ServerResult>() == ServerResult::Success)
     {
         sessionToken = reader.read<std::uint32_t>();
         isAuthorized = true;
@@ -39,10 +39,10 @@ std::vector<Node> ClientInterface::getNodes()
     writer.write<std::uint32_t>(sessionToken);
     client->sendToServer(writer.getBuffer());
     auto answer = client->receiveFromServer();
-    RequestReader reader(std::make_shared<std::vector<char>>(answer));
+    RequestReader reader(answer);
     std::vector<Node> nodes;
 
-    if (!reader.read<char>())
+    if (reader.read<ServerResult>() == ServerResult::Failure)
     {
         return nodes;
     }
@@ -60,4 +60,10 @@ std::vector<Node> ClientInterface::getNodes()
 bool ClientInterface::authorized()
 {
     return isAuthorized;
+}
+
+std::unique_ptr<Node> ClientInterface::createNode()
+{
+    RequestWritter writer;
+
 }

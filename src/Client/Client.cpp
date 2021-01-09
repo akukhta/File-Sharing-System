@@ -10,7 +10,7 @@ bool Client::connectToServer(std::string serverIP, int serverPort)
 {
     serverAddress.sin_addr.s_addr = inet_addr(serverIP.c_str());
     serverAddress.sin_port = htons(serverPort);
-    isConnected = (connect(socketFD, (sockaddr*) &serverAddress, sizeof(serverAddress)) == 0 ? true : false);
+    isConnected = (connect(socketFD, (sockaddr*) &serverAddress, sizeof(serverAddress)) == -1 ? false : true);
     return isConnected;
 }
 

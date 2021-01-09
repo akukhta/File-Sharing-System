@@ -15,12 +15,16 @@ class NodesWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit NodesWindow(std::shared_ptr<ClientInterface>& clientInterface, QWidget *parent = nullptr);
+    explicit NodesWindow(std::shared_ptr<ClientInterface> const & clientInterface, QWidget *parent = nullptr);
     ~NodesWindow();
+
+private slots:
+    void on_createNodeBtn_clicked();
 
 private:
     Ui::NodesWindow *ui;
     std::vector<Node> nodes;
     void addNode(std::string nodeID);
+    std::shared_ptr<ClientInterface> clientInterface;
 };
 

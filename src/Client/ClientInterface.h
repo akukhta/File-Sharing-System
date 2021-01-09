@@ -17,6 +17,7 @@ public:
     bool authorize(std::string email, std::string password, bool isRegister = true);
     bool authorized();
     std::vector<Node> getNodes();
+    std::unique_ptr<Node> createNode();
 
 private:
     std::unique_ptr<Client> client;

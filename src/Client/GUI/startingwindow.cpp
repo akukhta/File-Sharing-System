@@ -45,9 +45,15 @@ void StartingWindow::on_logInButton_clicked()
     std::string email = window->getEmail();
     std::string pass = window->getPass();
     if (clientInterface->authorize(email,pass, false))
+    {
         accept();
+        std::unique_ptr<NodesWindow> nodesWindow = std::make_unique<NodesWindow>(clientInterface);
+        Configuration::showWindowAsFixed(nodesWindow.get());
+    }
     else
+    {
         ErrorMessage("User with current login and password doesn't exist.\nCheck inputed data.", "Login error");
+    }
 }
 
 void StartingWindow::ErrorMessage(QString const &text, QString const &title)
