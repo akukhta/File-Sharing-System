@@ -13,7 +13,7 @@ RequestHandler::RequestHandler()
     }
 }
 
-std::vector<char> RequestHandler::handle(std::vector<char> buffer, int socketFD)
+std::vector<char> RequestHandler::handle(std::vector<char> &buffer, int socketFD)
 {
     std::vector<char> answer;
     char action = buffer[0];
@@ -35,21 +35,21 @@ std::vector<char> RequestHandler::handle(std::vector<char> buffer, int socketFD)
 }
 
 //Only for test. In future it will be rewritted.
-std::vector<char> RequestHandler::userRegistration(std::vector<char> buffer, int socketFD)
+std::vector<char> RequestHandler::userRegistration(std::vector<char> &buffer, int socketFD)
 {
-    RequestReader reader(std::make_shared<std::vector<char>>(buffer));
+    RequestReader reader(buffer);
     RequestWritter writer;
     try{
             const std::string email = reader.read<std::string>();
             const std::string password = reader.read<std::string>();
             std::uint32_t sessionToken = accountManager->createAccount(email, password, socketFD);
-            writer.write<char>(1);
+            writer.write<ServerResult>(ServerResult::Success);
             writer.write<std::uint32_t>(sessionToken);
         }
         catch (std::runtime_error const & err)
         {
             std::string errorMessage(err.what());
-            writer.write<char>(0);
+            writer.write<ServerResult>(ServerResult::Failure);
             writer.write<std::string>(errorMessage);
         }
 
@@ -59,9 +59,9 @@ std::vector<char> RequestHandler::userRegistration(std::vector<char> buffer, int
 
 
 //Method for user authorizating. Returns sessiong token.
-std::vector<char> RequestHandler::userAuthorization(std::vector<char> buffer, int socketFD)
+std::vector<char> RequestHandler::userAuthorization(std::vector<char> &buffer, int socketFD)
 {
-    RequestReader reader(std::make_shared<std::vector<char>>(buffer));
+    RequestReader reader(buffer);
     RequestWritter writer;
     try
     {
@@ -70,26 +70,25 @@ std::vector<char> RequestHandler::userAuthorization(std::vector<char> buffer, in
         std::uint32_t sessionToken = accountManager->logIn(email, password, socketFD);
         if (sessionToken != 0)
         {
-            writer.write<char>(1);
+            writer.write<ServerResult>(ServerResult::Success);
             writer.write<std::uint32_t>(sessionToken);
         }
         else
         {
-            writer.write<char>(0);
+            writer.write<ServerResult>(ServerResult::Failure);
         }
     } catch (std::runtime_error const & err)
     {
-        std::string errorMessage(err.what());
-        writer.write<char>(0);
-        writer.write<std::string>(errorMessage);
+        writer.write<ServerResult>(ServerResult::Failure);
+        writer.write<std::string>("Internal server error occurred");
     }
 
     return writer.getBuffer();
 }
 
-std::vector<char> RequestHandler::getListOfNodes(std::vector<char> buffer)
+std::vector<char> RequestHandler::getListOfNodes(std::vector<char> &buffer)
 {
-    RequestReader reader(std::make_shared<std::vector<char>>(buffer));
+    RequestReader reader(buffer);
     const std::uint32_t sessionToken = reader.read<std::uint32_t>();
     RequestWritter writer;
     bool success = true;
@@ -97,13 +96,13 @@ std::vector<char> RequestHandler::getListOfNodes(std::vector<char> buffer)
 
     if (success == false)
     {
-        writer.write<char>(0);
+        writer.write<ServerResult>(ServerResult::Failure);
         writer.write<std::string>("Cannot get a nodes' list!");
     }
 
     else
     {
-        writer.write<char>(1);
+        writer.write<ServerResult>(ServerResult::Success);
         writer.write<size_t>(nodesList.size());
 
         for (auto node : nodesList)

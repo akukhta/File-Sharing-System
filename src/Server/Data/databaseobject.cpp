@@ -56,8 +56,8 @@ sql::ResultSet* DataBaseObject::abstractSelectQuery(std::string const &query)
 }
 
 //Authorization method
-bool DataBaseObject::authorizationQuery(std::string & email,
-        std::string & password, size_t& userID)
+bool DataBaseObject::authorizationQuery(std::string const & email,
+        std::string const & password, size_t &userID)
 {
     const std::string query = "select * from Users where Email = \'"
             + email + "\' and Password = \'" + password + "\';";

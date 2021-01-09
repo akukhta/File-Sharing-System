@@ -2,6 +2,7 @@
 #include <vector>
 #include <iostream>
 #include <memory>
+#include "Common/ServerResults.h"
 
 class RequestWritter
 {
@@ -15,6 +16,24 @@ public:
         std::copy(dataPtr, dataPtr + sizeof(T), std::back_inserter(buffer));
      }
 
+     template <class T,typename std::enable_if_t<std::is_same<T,ServerResult>::value>* = nullptr>
+     void write(ServerResult const & result)
+     {
+         if (!buffer.empty())
+             throw std::runtime_error("Server's result writing has been failed");
+
+         switch (result) {
+            case ServerResult::Failure:
+             write<char>(0);
+             break;
+         case ServerResult::Success:
+             write<char>(1);
+             break;
+         default:
+             break;
+         }
+
+     }
      template<class T, typename std::enable_if_t<std::is_same<std::vector<char>,T>::value>* = nullptr>
      void write(std::vector<char> const &arg)
      {

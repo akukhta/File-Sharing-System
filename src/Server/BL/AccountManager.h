@@ -4,13 +4,14 @@
 #include <memory>
 #include "Data/databaseobject.h"
 #include "Data/EMailManager.h"
+#include "Common/ClientException.h"
 
 class AccountManager
 {
 public:
     AccountManager(std::shared_ptr<DataBaseObject> db);
-    std::uint32_t createAccount(std::string email, std::string password, int socketFD);
-    std::uint32_t logIn(std::string email, std::string password, int socketFD);
+    std::uint32_t createAccount(std::string const & email, std::string const & password, int socketFD);
+    std::uint32_t logIn(std::string const & email, std::string const & password, int socketFD);
 private:
     //Pointer to database object
     std::shared_ptr<DataBaseObject> database;

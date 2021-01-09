@@ -2,8 +2,9 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include <set>
 #include "Data/databaseobject.h"
-
+#include "Common/N
 class NodesManager
 {
 public:

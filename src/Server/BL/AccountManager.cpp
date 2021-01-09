@@ -8,7 +8,7 @@ AccountManager::AccountManager(std::shared_ptr<DataBaseObject> db) : database(db
 }
 
 //Creates a new user's account
-std::uint32_t AccountManager::createAccount(std::string email, std::string password, int socketFD)
+std::uint32_t AccountManager::createAccount(std::string const & email, std::string const & password, int socketFD)
 {
 
     if (!database)
@@ -27,7 +27,7 @@ std::uint32_t AccountManager::createAccount(std::string email, std::string passw
 }
 
 //Log in
-std::uint32_t AccountManager::logIn(std::string email, std::string password, int socketFD)
+std::uint32_t AccountManager::logIn(std::string const & email, std::string const & password, int socketFD)
 {
     if (!database)
         throw std::runtime_error("Data wasn't initialized!");
