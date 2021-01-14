@@ -30,5 +30,21 @@ NodesWindow::~NodesWindow()
 
 void NodesWindow::on_createNodeBtn_clicked()
 {
-    if (clientInterface->
+    if (!clientInterface->authorized())
+        return;
+
+    std::unique_ptr<NodeCreatingWindow> createWindow = std::make_unique<NodeCreatingWindow>();
+    if (!Configuration::showWindowAsFixed(createWindow.get()))
+        return;
+
+    long long lifeTimeInMins = createWindow->getLifeTimeInMins();
+    try{
+        auto node = clientInterface->createNode(lifeTimeInMins);
+        nodes.push_back(node);
+        addNode(node.nodeID);
+    }
+    catch (std::runtime_error const & err)
+    {
+        Configuration::showErrorDialog(err.what());
+    }
 }

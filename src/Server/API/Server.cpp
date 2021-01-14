@@ -10,14 +10,21 @@ int port,size_t POLLSIZE)
     masterSocketAddr.sin_family = AF_INET;
     masterSocketAddr.sin_port = port;
     masterSocketAddr.sin_addr.s_addr = inet_addr(IP.c_str());
-    int r = bind(masterSocket, (sockaddr*)&masterSocketAddr, sizeof(masterSocketAddr));
+
+    if (bind(masterSocket, (sockaddr*)&masterSocketAddr, sizeof(masterSocketAddr)) == -1)
+    {
+        throw std::runtime_error("The Server hasn`t been binded!");
+    }
+
     pollSet = std::vector<pollfd>(POLLSIZE);
+
     try{
-    handler = std::make_unique<RequestHandler>();
+         handler = std::make_unique<RequestHandler>();
     } catch (std::runtime_error const & err)
     {
             throw;
     }
+
     setSize = 1;
 }
 

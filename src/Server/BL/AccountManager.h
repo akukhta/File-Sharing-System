@@ -9,7 +9,7 @@
 class AccountManager
 {
 public:
-    AccountManager(std::shared_ptr<DataBaseObject> db);
+    AccountManager(std::shared_ptr<DataBaseObject> const & db);
     std::uint32_t createAccount(std::string const & email, std::string const & password, int socketFD);
     std::uint32_t logIn(std::string const & email, std::string const & password, int socketFD);
 private:

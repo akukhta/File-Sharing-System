@@ -23,3 +23,18 @@ std::string Configuration::getDefaultPassDB()
 {
     return "root";
 }
+
+std::string Configuration::getCurrentTimeAsStdString()
+{
+    auto t = std::time(nullptr);
+    auto tm = *std::localtime(&t);
+
+    std::ostringstream oss;
+    oss << std::put_time(&tm, "%Y-%m-%d %H:%M:%S");
+    return oss.str();
+}
+
+std::string Configuration::getServerErrorMessage()
+{
+    return "Internal server error occurred";
+}

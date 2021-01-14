@@ -28,6 +28,9 @@ std::vector<char> RequestHandler::handle(std::vector<char> &buffer, int socketFD
     case 3:
         answer = getListOfNodes(buffer);
         break;
+    case 4:
+        answer = createNewNode(buffer);
+        break;
     default:
         break;
     }
@@ -80,7 +83,7 @@ std::vector<char> RequestHandler::userAuthorization(std::vector<char> &buffer, i
     } catch (std::runtime_error const & err)
     {
         writer.write<ServerResult>(ServerResult::Failure);
-        writer.write<std::string>("Internal server error occurred");
+        writer.write<std::string>(Configuration::getServerErrorMessage());
     }
 
     return writer.getBuffer();
@@ -112,6 +115,34 @@ std::vector<char> RequestHandler::getListOfNodes(std::vector<char> &buffer)
     return writer.getBuffer();
 }
 
+std::vector<char> RequestHandler::createNewNode(std::vector<char> &buffer)
+{
+    RequestReader reader(buffer);
+    RequestWritter writer;
+    const std::uint32_t sessionToken = reader.read<std::uint32_t>();
+    const long long lifeTimeInMins = reader.read<long long>();
+    std::uint32_t nodeID;
+
+    try{
+        nodeID = nodesManager->createNode(sessionToken, lifeTimeInMins);
+        if (nodeID)
+        {
+            writer.write<ServerResult>(ServerResult::Success);
+            writer.write<std::uint32_t>(nodeID);
+        }
+        else
+        {
+            writer.write<ServerResult>(ServerResult::Failure);
+            writer.write<std::string>("Couldn`t create a new node!");
+        }
+    } catch (std::runtime_error const & err)
+    {
+        writer.write<ServerResult>(ServerResult::Failure);
+        writer.write<std::string>(Configuration::getServerErrorMessage());
+    }
+
+    return writer.getBuffer();
+}
 
 //Method for session deleting, when client disconnects or pushes "log out" button.
 void RequestHandler::destroySession(int socketFD)

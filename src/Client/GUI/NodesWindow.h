@@ -5,6 +5,7 @@
 #include <vector>
 #include "ClientInterface.h"
 #include "Common/Node.h"
+#include "GUI/NodeCreatingWindow.h"
 
 namespace Ui {
 class NodesWindow;

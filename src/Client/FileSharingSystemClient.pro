@@ -13,6 +13,7 @@ SOURCES += \
     Client.cpp \
     ClientInterface.cpp \
     Common/Configuration.cpp \
+    GUI/NodeCreatingWindow.cpp \
     GUI/NodesWindow.cpp \
     GUI/authorizationwindow.cpp \
     GUI/startingwindow.cpp \
@@ -27,6 +28,7 @@ HEADERS += \
     Common/Node.h \
     Common/RequestReader.h \
     Common/RequestWritter.h \
+    GUI/NodeCreatingWindow.h \
     GUI/NodesWindow.h \
     GUI/authorizationwindow.h \
     GUI/startingwindow.h \
@@ -35,6 +37,7 @@ HEADERS += \
 
 FORMS += \
     GUI/authorizationwindow.ui \
+    GUI/nodecreatingwindow.ui \
     GUI/nodeswindow.ui \
     GUI/startingwindow.ui \
     mainwindow.ui

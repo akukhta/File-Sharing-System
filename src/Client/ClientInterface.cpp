@@ -62,8 +62,21 @@ bool ClientInterface::authorized()
     return isAuthorized;
 }
 
-std::unique_ptr<Node> ClientInterface::createNode()
+Node ClientInterface::createNode(long long lifeTimeInMins)
 {
     RequestWritter writer;
+    writer.write<char>(4);
+    writer.write<std::uint32_t>(sessionToken);
+    writer.write<long long>(lifeTimeInMins);
+    client->sendToServer(writer.getBuffer());
+    auto answer = client->receiveFromServer();
+    RequestReader reader(answer);
 
+    if (reader.read<ServerResult>() == ServerResult::Failure)
+    {
+        throw std::runtime_error(reader.read<std::string>());
+    }
+
+    std::uint32_t nodeID = reader.read<std::uint32_t>();
+    return Node(std::to_string(nodeID));
 }

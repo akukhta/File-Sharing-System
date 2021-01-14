@@ -1,5 +1,6 @@
 #pragma once
 #include <QDialog>
+#include <QMessageBox>
 #include <memory>
 #include <arpa/inet.h>
 
@@ -18,5 +19,7 @@ public:
     static std::string getServerIP();
 //Returns default server's port
     static int getServerPort();
+
+    static void showErrorDialog(std::string const &errorMessage);
 };
 

@@ -26,5 +26,6 @@ private:
     //Server's bussines logic
     std::vector<char> userRegistration(std::vector<char> &buffer, int socketFD); //Method for user registration. FIRST BYTE NUMBER - 0
     std::vector<char> userAuthorization(std::vector<char> &buffer, int socketFD); //Method for user authorization. FIRST BYTE NUMBER - 1
-    std::vector<char> getListOfNodes(std::vector<char> &buffer); //Methor for genering Nodes' list. FIRST BYTE NUMBER - 3
+    std::vector<char> getListOfNodes(std::vector<char> &buffer); //Method for genering Nodes' list. FIRST BYTE NUMBER - 3
+    std::vector<char> createNewNode(std::vector<char> &buffer); //Method for new node's creating
 };
