@@ -2,6 +2,7 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include <chrono>
 #include "Client.h"
 #include "Common/Configuration.h"
 #include "Common/RequestReader.h"

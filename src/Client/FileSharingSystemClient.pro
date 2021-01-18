@@ -13,6 +13,7 @@ SOURCES += \
     Client.cpp \
     ClientInterface.cpp \
     Common/Configuration.cpp \
+    Common/GUINodeItem.cpp \
     GUI/NodeCreatingWindow.cpp \
     GUI/NodesWindow.cpp \
     GUI/authorizationwindow.cpp \
@@ -25,6 +26,7 @@ HEADERS += \
     Client.h \
     ClientInterface.h \
     Common/Configuration.h \
+    Common/GUINodeItem.h \
     Common/Node.h \
     Common/RequestReader.h \
     Common/RequestWritter.h \

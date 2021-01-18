@@ -2,7 +2,12 @@
 #include <QDialog>
 #include <QMessageBox>
 #include <memory>
+#include <chrono>
+#include <sstream>
+#include <iomanip>
+#include <ctime>
 #include <arpa/inet.h>
+#include <string>
 
 //Class which constains default settingns and used utilites
 class Configuration final
@@ -21,5 +26,7 @@ public:
     static int getServerPort();
 
     static void showErrorDialog(std::string const &errorMessage);
+
+    static std::string getDeletingDate(long long lifeTimeInMins);
 };
 

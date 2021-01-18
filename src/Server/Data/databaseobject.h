@@ -16,9 +16,9 @@ public:
     bool insertQuery(std::string querystr);
     bool authorizationQuery(std::string const & email, std::string const & password, size_t &userID);
     bool createSessionQuery(std::uint32_t sessionToken, int socketID, int userID);
-    bool createNode(const std::uint32_t sessionToken, const long long LifeTimeMins, const std::uint32_t generatedID);
+    bool createNode(const std::uint32_t sessionToken, const std::string deletingDate, const std::uint32_t generatedID);
     void closeSession(int socketFD);
-    std::vector<std::string> nodesQuery(unsigned int userID);
+    std::vector<std::pair<std::string, std::string>> nodesQuery(unsigned int userID);
     std::pair<std::set<Node>, std::set<std::uint32_t> > allNodes();
     ~DataBaseObject();
 private:

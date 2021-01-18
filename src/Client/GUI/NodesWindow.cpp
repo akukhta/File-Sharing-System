@@ -8,19 +8,25 @@ NodesWindow::NodesWindow(std::shared_ptr<ClientInterface> const & clientInterfac
     ui->setupUi(this);
     ui->nodesTreeWidget->setColumnCount(2);
     ui->nodesTreeWidget->setHeaderLabels({"Node ID", "Life time"});
-    nodes = clientInterface->getNodes();
+    auto nodes = clientInterface->getNodes();
 
-    for (auto node : nodes)
-        addNode(node.nodeID);
+    for (auto const & node : nodes)
+    {
+        addNode(node);
+    }
 
 }
 
-void NodesWindow::addNode(std::string nodeID)
+void NodesWindow::addNode(Node const &node)
 {
-    QTreeWidgetItem *item = new QTreeWidgetItem(ui->nodesTreeWidget);
-    item->setText(0, QString::fromStdString(nodeID));
-    item->addChild(new QTreeWidgetItem());
+    guiItems.emplace_back(node);
+    auto item = (--guiItems.end())->getGUIItem(ui->nodesTreeWidget).release();
     ui->nodesTreeWidget->addTopLevelItem(item);
+
+//    QTreeWidgetItem *item = new QTreeWidgetItem(ui->nodesTreeWidget);
+//    item->setText(0, QString::fromStdString(nodeID));
+//    item->addChild(new QTreeWidgetItem());
+//    ui->nodesTreeWidget->addTopLevelItem(item);
 }
 
 NodesWindow::~NodesWindow()
@@ -40,8 +46,7 @@ void NodesWindow::on_createNodeBtn_clicked()
     long long lifeTimeInMins = createWindow->getLifeTimeInMins();
     try{
         auto node = clientInterface->createNode(lifeTimeInMins);
-        nodes.push_back(node);
-        addNode(node.nodeID);
+        addNode(node);
     }
     catch (std::runtime_error const & err)
     {

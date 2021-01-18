@@ -1,6 +1,5 @@
 #include "AccountManager.h"
 
-
 AccountManager::AccountManager(std::shared_ptr<DataBaseObject> const & db) : database(db)
 {
     srand(time(NULL));

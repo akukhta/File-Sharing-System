@@ -7,14 +7,14 @@ NodesManager::NodesManager(std::shared_ptr<DataBaseObject> const & db) : databas
     nodesIDs = allNodesResult.second;
 }
 
-std::vector<std::string> NodesManager::getNodesList(std::uint32_t sessionToken, bool &success) const
+std::vector<std::pair<std::string, std::string>> NodesManager::getNodesList(std::uint32_t sessionToken, bool &success) const
 {
     if (!database)
         throw std::runtime_error("Database wasn't initialized");
 
     success = true; // Just for test.
 
-    std::vector<std::string> result;
+    std::vector<std::pair<std::string,std::string>> result;
     try{
         result = database->nodesQuery(sessionToken);
     } catch (std::runtime_error const & err)
@@ -28,7 +28,7 @@ std::vector<std::string> NodesManager::getNodesList(std::uint32_t sessionToken, 
 std::uint32_t NodesManager::generateID()
 {
     if (nodesIDs.size() < 2)
-        return rand(); // If nodes' set contains too few elements
+        return rand() + 1; // If nodes' set contains too few elements
 
     else
     {
@@ -45,23 +45,25 @@ std::uint32_t NodesManager::generateID()
             nodesIDs.insert(rand() + *nodesIDs.end() + 1);
     }
 
-    return 0; //Couldn`t generate a new node`s ID
+    return NodesManager::InvalidNodeID; //Couldn`t generate a new node`s ID
 }
 
-std::uint32_t NodesManager::createNode(const std::uint32_t sessionToken, const long long lifeTimeInMins)
+std::uint32_t NodesManager::createNode(const std::uint32_t sessionToken, const std::string deletingDate)
 {
     if (!database)
         throw std::runtime_error("Database wasn't initialized");
     
     std::uint32_t generatedNodeID = generateID();
+
     if (!generatedNodeID)
-        return 0;
-    auto res = database->createNode(sessionToken, lifeTimeInMins, generatedNodeID);
+        return InvalidNodeID;
+
+    auto res = database->createNode(sessionToken, deletingDate, generatedNodeID);
 
     if (res)
     {
         nodesIDs.insert(generatedNodeID);
     }
 
-    return res ? generatedNodeID : 0;
+    return res ? generatedNodeID : NodesManager::InvalidNodeID;
 }

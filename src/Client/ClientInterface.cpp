@@ -51,7 +51,11 @@ std::vector<Node> ClientInterface::getNodes()
     {
         size_t nodesCount = reader.read<size_t>();
         for (size_t i = 0; i < nodesCount; i++)
-            nodes.emplace_back(reader.read<std::string>());
+        {
+            std::string const nodeID = reader.read<std::string>();
+            std::string const deletingDate = reader.read<std::string>();
+            nodes.emplace_back(nodeID, deletingDate);
+        }
     }
 
     return nodes;
@@ -67,7 +71,8 @@ Node ClientInterface::createNode(long long lifeTimeInMins)
     RequestWritter writer;
     writer.write<char>(4);
     writer.write<std::uint32_t>(sessionToken);
-    writer.write<long long>(lifeTimeInMins);
+    std::string const deletingDate = Configuration::getDeletingDate(lifeTimeInMins);
+    writer.write<std::string>(deletingDate);
     client->sendToServer(writer.getBuffer());
     auto answer = client->receiveFromServer();
     RequestReader reader(answer);
@@ -78,5 +83,5 @@ Node ClientInterface::createNode(long long lifeTimeInMins)
     }
 
     std::uint32_t nodeID = reader.read<std::uint32_t>();
-    return Node(std::to_string(nodeID));
+    return Node(std::to_string(nodeID), deletingDate);
 }

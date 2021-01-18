@@ -12,6 +12,7 @@ public:
     AccountManager(std::shared_ptr<DataBaseObject> const & db);
     std::uint32_t createAccount(std::string const & email, std::string const & password, int socketFD);
     std::uint32_t logIn(std::string const & email, std::string const & password, int socketFD);
+    static constexpr std::uint32_t InvalidToken = 0;
 private:
     //Pointer to database object
     std::shared_ptr<DataBaseObject> database;

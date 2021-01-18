@@ -61,7 +61,9 @@ bool DataBaseObject::authorizationQuery(std::string const & email,
 {
     const std::string query = "select * from Users where Email = \'"
             + email + "\' and Password = \'" + password + "\';";
+
     bool returnValue = false;
+
     sql::ResultSet *result = abstractSelectQuery(query);
     
     if (result != nullptr && result->rowsCount() == 1)
@@ -95,8 +97,7 @@ std::pair<std::set<Node>, std::set<std::uint32_t>> DataBaseObject::allNodes()
         while(resultSet->next())
         {
             int ID = resultSet->getInt("NodeID");
-            nodes.emplace(ID, resultSet->getString("CreationTime").asStdString(),
-                          resultSet->getInt("LifeTimeMins"));
+            nodes.emplace(ID, resultSet->getString("deletingDate").asStdString());
             ids.insert(ID);
         }
     }
@@ -112,7 +113,7 @@ void DataBaseObject::closeSession(int socketFD)
     insertQuery(query);
 }
 
-std::vector<std::string> DataBaseObject::nodesQuery(unsigned int sessionToken)
+std::vector<std::pair<std::string, std::string>> DataBaseObject::nodesQuery(unsigned int sessionToken)
 {
     const std::string query = "select * from Nodes where UserID = (select UserID from Sessions where sessionToken = " + std::to_string(sessionToken) + ");";
     sql::ResultSet *result = abstractSelectQuery(query);
@@ -120,22 +121,22 @@ std::vector<std::string> DataBaseObject::nodesQuery(unsigned int sessionToken)
     if (result == nullptr)
         throw std::runtime_error("Nodes query has been failed!");
     
-    std::vector<std::string> nodes;
+    std::vector<std::pair<std::string, std::string>> nodes;
 
     while (result->next())
     {
-        nodes.push_back(std::to_string(result->getInt("NodeID")));
+        nodes.push_back(std::make_pair(std::to_string(result->getInt("NodeID")), result->getString("deletingDate")));
     }
 
     return nodes;
 }
 
-bool DataBaseObject::createNode(const std::uint32_t sessionToken, const long long LifeTimeMins, const std::uint32_t generatedID)
+bool DataBaseObject::createNode(const std::uint32_t sessionToken, const std::string deletingDate, const std::uint32_t generatedID)
 {
-    const std::string query = "insert into Nodes(NodeID, UserID, CreationTime, LifeTimeMins) values("
+    const std::string query = "insert into Nodes(NodeID, UserID, deletingDate) values("
      + std::to_string(generatedID) + ", (select UserID from Sessions where sessionToken = "
-     + std::to_string(sessionToken) + ")," + "\'" + Configuration::getCurrentTimeAsStdString()
-     + "\'," + std::to_string(LifeTimeMins) + ");";
+     + std::to_string(sessionToken) + ")," + "\'" + deletingDate
+     + "\');";
      return insertQuery(query);
 }
 

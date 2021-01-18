@@ -23,3 +23,13 @@ void Configuration::showErrorDialog(std::string const &errorMessage)
     box.setText(QString::fromStdString(errorMessage));
     box.exec();
 }
+
+std::string Configuration::getDeletingDate(long long lifeTimeInMins)
+{
+    auto deletingDate = std::chrono::system_clock::now() + std::chrono::minutes(lifeTimeInMins);
+    auto t = std::chrono::system_clock::to_time_t(deletingDate);
+    auto tm = *std::localtime(&t);
+    std::ostringstream oss;
+    oss << std::put_time(&tm, "%Y-%m-%d %H:%M:%S");
+    return oss.str();
+}

@@ -18,12 +18,7 @@ int port,size_t POLLSIZE)
 
     pollSet = std::vector<pollfd>(POLLSIZE);
 
-    try{
-         handler = std::make_unique<RequestHandler>();
-    } catch (std::runtime_error const & err)
-    {
-            throw;
-    }
+    handler = std::make_unique<RequestHandler>();
 
     setSize = 1;
 }

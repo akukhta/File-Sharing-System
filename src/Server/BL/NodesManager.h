@@ -11,9 +11,9 @@ class NodesManager
 {
 public:
     NodesManager(std::shared_ptr<DataBaseObject> const & db);
-    std::vector<std::string> getNodesList(std::uint32_t sessionToken, bool &success) const;
-    std::uint32_t createNode(const std::uint32_t sessionToken, const long long lifeTimeInMins);
-
+    std::vector<std::pair<std::string, std::string>> getNodesList(std::uint32_t sessionToken, bool &success) const;
+    std::uint32_t createNode(const std::uint32_t sessionToken, const std::string deletingDate);
+    static constexpr std::uint32_t InvalidNodeID = 0;
 private:
     //Pointer to database object
     std::shared_ptr<DataBaseObject> database;

@@ -71,7 +71,7 @@ std::vector<char> RequestHandler::userAuthorization(std::vector<char> &buffer, i
         std::string const email = reader.read<std::string>();
         std::string const password = reader.read<std::string>();
         std::uint32_t sessionToken = accountManager->logIn(email, password, socketFD);
-        if (sessionToken != 0)
+        if (sessionToken != AccountManager::InvalidToken)
         {
             writer.write<ServerResult>(ServerResult::Success);
             writer.write<std::uint32_t>(sessionToken);
@@ -108,8 +108,11 @@ std::vector<char> RequestHandler::getListOfNodes(std::vector<char> &buffer)
         writer.write<ServerResult>(ServerResult::Success);
         writer.write<size_t>(nodesList.size());
 
-        for (auto node : nodesList)
-            writer.write<std::string>(node);
+        for (auto const & node : nodesList)
+        {
+            writer.write<std::string>(node.first); //First - A Node's ID
+            writer.write<std::string>(node.second); // Second - A Node's deleting's time
+        }
     }
 
     return writer.getBuffer();
@@ -120,11 +123,11 @@ std::vector<char> RequestHandler::createNewNode(std::vector<char> &buffer)
     RequestReader reader(buffer);
     RequestWritter writer;
     const std::uint32_t sessionToken = reader.read<std::uint32_t>();
-    const long long lifeTimeInMins = reader.read<long long>();
+    const std::string deletingDate = reader.read<std::string>();
     std::uint32_t nodeID;
 
     try{
-        nodeID = nodesManager->createNode(sessionToken, lifeTimeInMins);
+        nodeID = nodesManager->createNode(sessionToken, deletingDate);
         if (nodeID)
         {
             writer.write<ServerResult>(ServerResult::Success);

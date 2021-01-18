@@ -6,6 +6,7 @@
 #include "ClientInterface.h"
 #include "Common/Node.h"
 #include "GUI/NodeCreatingWindow.h"
+#include "Common/GUINodeItem.h"
 
 namespace Ui {
 class NodesWindow;
@@ -24,8 +25,8 @@ private slots:
 
 private:
     Ui::NodesWindow *ui;
-    std::vector<Node> nodes;
-    void addNode(std::string nodeID);
+    void addNode(Node const &node);
     std::shared_ptr<ClientInterface> clientInterface;
+    std::vector<GUINodeItem> guiItems;
 };
 

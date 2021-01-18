@@ -3,6 +3,7 @@
 #include <vector>
 #include <QFileDialog>
 #include <QListWidgetItem>
+#include <chrono>
 
 namespace Ui {
 class NodeCreatingWindow;

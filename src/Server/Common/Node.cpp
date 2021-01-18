@@ -1,12 +1,11 @@
 #include "Node.h"
 
-Node::Node(int NodeID, std::string const & creationTimeStr,
-           long long lifeTimeInMins)
-    : NodeID(NodeID), lifeTimeInMins(lifeTimeInMins)
+Node::Node(int NodeID, std::string const & deletingTimeStr)
+    : NodeID(NodeID)
 {
     std::tm tm = {};
-    strptime(creationTimeStr.c_str(), "%Y-%m-%d %H:%M:%S", &tm);
-    creationTime = std::chrono::system_clock::from_time_t(std::mktime(&tm));
+    strptime(deletingTimeStr.c_str(), "%Y-%m-%d %H:%M:%S", &tm);
+    deletingTime = std::chrono::system_clock::from_time_t(std::mktime(&tm));
 }
 
 bool Node::operator<(Node const &node) const
@@ -23,8 +22,8 @@ long long Node::minutesLeft() const
 {
     //auto timePointOfDeath = creationTime + std::chrono::minutes(lifeTimeInMins) - std::chrono::system_clock::now();
 
-    auto minutes = std::chrono::duration_cast<std::chrono::minutes>(creationTime +
-            std::chrono::minutes(lifeTimeInMins) - std::chrono::system_clock::now());
+    auto minutes = std::chrono::duration_cast<std::chrono::minutes>(deletingTime
+        - std::chrono::system_clock::now());
 
     return minutes.count();
 }
