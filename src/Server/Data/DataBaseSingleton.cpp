@@ -1,22 +1,30 @@
-#include "databaseobject.h"
+#include "DataBaseSingleton.h"
 
-
-DataBaseObject::DataBaseObject(std::string const &dbpath)
+DataBaseSingleton::DataBaseSingleton(std::string const & dbpath)
 {
     try{
         driver = get_driver_instance();
         conn = driver->connect(Configuration::getDefaultPathDB(),
-        Configuration::getDefaultUserDB(), Configuration::getDefaultPassDB());
+            Configuration::getDefaultUserDB(), Configuration::getDefaultPassDB());
         conn->setSchema("FileSharingSystem");
     }
+
     catch (sql::SQLException const &ex)
     {
         std::cout << ex.what() << std::endl;
     }
 }
 
+std::shared_ptr<DataBaseSingleton> DataBaseSingleton::getInstance(std::string const & dbpath)
+{
+    if (!dataBase)
+        dataBase = std::shared_ptr<DataBaseSingleton>(new DataBaseSingleton(dbpath));
+
+    return dataBase;
+}
+
 //Simple INSERT/DELETE query, without any returned values.
-bool DataBaseObject::insertQuery(std::string querystr)
+bool DataBaseSingleton::insertQuery(std::string querystr)
 {
     sql::Statement* statement = conn->createStatement();
 
@@ -35,12 +43,11 @@ bool DataBaseObject::insertQuery(std::string querystr)
 }
 
 //Basic select query
-
-sql::ResultSet* DataBaseObject::abstractSelectQuery(std::string const &query)
+sql::ResultSet* DataBaseSingleton::abstractSelectQuery(std::string const &query)
 {
     sql::Statement* statement = conn->createStatement();
     sql::ResultSet* result = nullptr;
-    
+
     try{
         result = statement->executeQuery(query);
     }
@@ -56,7 +63,7 @@ sql::ResultSet* DataBaseObject::abstractSelectQuery(std::string const &query)
 }
 
 //Authorization method
-bool DataBaseObject::authorizationQuery(std::string const & email,
+bool DataBaseSingleton::authorizationQuery(std::string const & email,
         std::string const & password, size_t &userID)
 {
     const std::string query = "select * from Users where Email = \'"
@@ -65,28 +72,28 @@ bool DataBaseObject::authorizationQuery(std::string const & email,
     bool returnValue = false;
 
     sql::ResultSet *result = abstractSelectQuery(query);
-    
+
     if (result != nullptr && result->rowsCount() == 1)
     {
         result->next();
         userID = result->getInt("UserID");
         returnValue = true;
     }
-    
+
     delete result;
-    
+
     return returnValue;
 }
 
 //Method for new sessiong creating
-bool DataBaseObject::createSessionQuery(std::uint32_t sessionToken, int socketID, int userID)
+bool DataBaseSingleton::createSessionQuery(std::uint32_t sessionToken, int socketID, int userID)
 {
     const std::string query = "insert into Sessions values (" + std::to_string(sessionToken)
             + "," + std::to_string(socketID) + "," + std::to_string(userID) + ");";
     return insertQuery(query);
 }
 
-std::pair<std::set<Node>, std::set<std::uint32_t>> DataBaseObject::allNodes()
+std::pair<std::set<Node>, std::set<std::uint32_t>> DataBaseSingleton::allNodes()
 {
     auto resultSet = abstractSelectQuery("select * from Nodes;");
     std::set<Node> nodes;
@@ -107,20 +114,20 @@ std::pair<std::set<Node>, std::set<std::uint32_t>> DataBaseObject::allNodes()
 
 
 //Method for sessiong deleting
-void DataBaseObject::closeSession(int socketFD)
+void DataBaseSingleton::closeSession(int socketFD)
 {
     std::string query = "delete from Sessions where socketID = " + std::to_string(socketFD) + ";";
     insertQuery(query);
 }
 
-std::vector<std::pair<std::string, std::string>> DataBaseObject::nodesQuery(unsigned int sessionToken)
+std::vector<std::pair<std::string, std::string>> DataBaseSingleton::nodesQuery(unsigned int sessionToken)
 {
     const std::string query = "select * from Nodes where UserID = (select UserID from Sessions where sessionToken = " + std::to_string(sessionToken) + ");";
     sql::ResultSet *result = abstractSelectQuery(query);
-    
+
     if (result == nullptr)
         throw std::runtime_error("Nodes query has been failed!");
-    
+
     std::vector<std::pair<std::string, std::string>> nodes;
 
     while (result->next())
@@ -131,7 +138,7 @@ std::vector<std::pair<std::string, std::string>> DataBaseObject::nodesQuery(unsi
     return nodes;
 }
 
-bool DataBaseObject::createNode(const std::uint32_t sessionToken, const std::string deletingDate, const std::uint32_t generatedID)
+bool DataBaseSingleton::createNode(const std::uint32_t sessionToken, const std::string deletingDate, const std::uint32_t generatedID)
 {
     const std::string query = "insert into Nodes(NodeID, UserID, deletingDate) values("
      + std::to_string(generatedID) + ", (select UserID from Sessions where sessionToken = "
@@ -140,9 +147,11 @@ bool DataBaseObject::createNode(const std::uint32_t sessionToken, const std::str
      return insertQuery(query);
 }
 
-DataBaseObject::~DataBaseObject()
+DataBaseSingleton::~DataBaseSingleton()
 {
     if (conn->isClosed())
         conn->close();
     delete conn;
 }
+
+

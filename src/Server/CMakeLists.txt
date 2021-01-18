@@ -18,6 +18,7 @@ add_executable(FileSharingSystemServer
     Common/Node.cpp
     Common/Node.h
     Data/AccountsRepository.cpp
+    Data/DataBaseSingleton.cpp
 )
 
 target_link_libraries(FileSharingSystemServer mysqlcppconn)
