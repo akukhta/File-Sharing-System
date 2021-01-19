@@ -16,7 +16,7 @@
 class Server
 {
 public:
-    explicit Server(std::string IP = Configuration::getDefaultIP(),
+    explicit Server(std::unique_ptr<RequestHandler> & handler, std::string IP = Configuration::getDefaultIP(),
                     int port = Configuration::getDafultPort(),size_t POLLSIZE = 32);
     /*
      * Because we don't need copy of this server.

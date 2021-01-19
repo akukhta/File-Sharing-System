@@ -1,12 +1,16 @@
 #include "RequestHandler.h"
 
-RequestHandler::RequestHandler()
+RequestHandler::RequestHandler(std::unique_ptr<AccountManager> & accountManager,
+        std::unique_ptr<NodesManager> & nodesManager) : accountManager(std::move(accountManager)),
+            nodesManager(std::move(nodesManager))
 {
     try
     {
-    this->dataBase = std::make_shared<DataBaseObject>();
-    this->accountManager = std::make_unique<AccountManager>(dataBase);
-    this->nodesManager = std::make_unique<NodesManager>(dataBase);
+        
+    //this->dataBase = std::make_shared<DataBaseObject>();
+    //this->accountManager = std::make_unique<AccountManager>(dataBase);
+    //this->nodesManager = std::make_unique<NodesManager>(dataBase);
+    
     } catch (std::runtime_error const &err)
     {
         throw;
@@ -150,12 +154,12 @@ std::vector<char> RequestHandler::createNewNode(std::vector<char> &buffer)
 //Method for session deleting, when client disconnects or pushes "log out" button.
 void RequestHandler::destroySession(int socketFD)
 {
-    if (!dataBase)
-    {
-        throw std::runtime_error("Database isn't initialized!");
-    }
-    else
-    {
-        dataBase->closeSession(socketFD);
-    }
+//    if (!dataBase)
+//    {
+//        throw std::runtime_error("Database isn't initialized!");
+//    }
+//    else
+//    {
+//        dataBase->closeSession(socketFD);
+//    }
 }

@@ -2,8 +2,8 @@
 
 //Inizialasing onstructor.
 //POLLSIZE - maximum users' connection
-Server::Server(std::string IP,
-int port,size_t POLLSIZE)
+Server::Server(std::unique_ptr<RequestHandler> & handler, std::string IP, int port,size_t POLLSIZE)
+    : handler(std::move(handler))
 {
     masterSocket = socket(AF_INET,SOCK_STREAM, 0);
     this->POLLSIZE = POLLSIZE;
@@ -18,7 +18,7 @@ int port,size_t POLLSIZE)
 
     pollSet = std::vector<pollfd>(POLLSIZE);
 
-    handler = std::make_unique<RequestHandler>();
+    //handler = std::make_unique<RequestHandler>();
 
     setSize = 1;
 }
