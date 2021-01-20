@@ -15,7 +15,7 @@ public:
     virtual std::uint32_t logIn(std::string const & email,
         std::string const & password, int socketFD) override final;
 
-    const static std::uint32_t InvalidToken = 0;
+    virtual void destroySession(int sockFD) override;
 
 private:
     std::shared_ptr<DataBaseObject> dataBase;

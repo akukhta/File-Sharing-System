@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include <thread>
+#include <future>
 #include <memory>
 #include "Data/databaseobject.h"
 #include "Data/EMailManager.h"
@@ -13,12 +13,11 @@ public:
     AccountManager(std::unique_ptr<AbstractAccountRepository> & accountRepository);
     std::uint32_t createAccount(std::string const & email, std::string const & password, int socketFD);
     std::uint32_t logIn(std::string const & email, std::string const & password, int socketFD);
-    static constexpr std::uint32_t InvalidToken = 0;
+    void closeSession(int socketFD);
+
 private:
-    //Pointer to database object
-    //std::shared_ptr<DataBaseObject> database;
     //Messages which send by email to client
-    const std::string registrationMessage = "You are registered!", subject = "File sharing system";
+    const std::string registrationMessage = "You have been registered in File Sharing System!", subject = "File Sharing System";
     std::unique_ptr<AbstractAccountRepository> accountRepository;
 
 };

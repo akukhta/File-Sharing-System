@@ -17,7 +17,7 @@ std::uint32_t AccountsRepository::createAccount(std::string const & email,
         return logIn(email, password, socketFD);
     }
     else
-        return AccountsRepository::InvalidToken;
+        return AbstractAccountRepository::InvalidSessionToken;
 }
 
 std::uint32_t AccountsRepository::logIn(const std::string &email, const std::string &password, int socketFD)
@@ -33,5 +33,17 @@ std::uint32_t AccountsRepository::logIn(const std::string &email, const std::str
         return sessionToken;
     }
     else
-        return InvalidToken;
+        return AbstractAccountRepository::InvalidSessionToken;
+}
+
+void AccountsRepository::destroySession(int sockFD)
+{
+        if (!dataBase)
+        {
+            throw std::runtime_error("Database isn't initialized!");
+        }
+        else
+        {
+            dataBase->closeSession(sockFD);
+        }
 }

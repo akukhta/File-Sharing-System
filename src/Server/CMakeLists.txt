@@ -22,9 +22,11 @@ add_executable(FileSharingSystemServer
     Common/di.hpp
     Common/AbstractAccountRepository.h
     Common/AbstractNodesRepository.h
+    Data/NodesRepository.cpp
+    Data/NodesRepository.h
 )
 
-target_link_libraries(FileSharingSystemServer mysqlcppconn)
+target_link_libraries(FileSharingSystemServer mysqlcppconn pthread)
 set (CMAKE_CXX_STANDARD 17)
 file(COPY Resources/email.sh
      DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

@@ -3,19 +3,7 @@
 RequestHandler::RequestHandler(std::unique_ptr<AccountManager> & accountManager,
         std::unique_ptr<NodesManager> & nodesManager) : accountManager(std::move(accountManager)),
             nodesManager(std::move(nodesManager))
-{
-    try
-    {
-        
-    //this->dataBase = std::make_shared<DataBaseObject>();
-    //this->accountManager = std::make_unique<AccountManager>(dataBase);
-    //this->nodesManager = std::make_unique<NodesManager>(dataBase);
-    
-    } catch (std::runtime_error const &err)
-    {
-        throw;
-    }
-}
+{ }
 
 std::vector<char> RequestHandler::handle(std::vector<char> &buffer, int socketFD)
 {
@@ -75,7 +63,7 @@ std::vector<char> RequestHandler::userAuthorization(std::vector<char> &buffer, i
         std::string const email = reader.read<std::string>();
         std::string const password = reader.read<std::string>();
         std::uint32_t sessionToken = accountManager->logIn(email, password, socketFD);
-        if (sessionToken != AccountManager::InvalidToken)
+        if (sessionToken != AbstractAccountRepository::InvalidSessionToken)
         {
             writer.write<ServerResult>(ServerResult::Success);
             writer.write<std::uint32_t>(sessionToken);
@@ -98,17 +86,10 @@ std::vector<char> RequestHandler::getListOfNodes(std::vector<char> &buffer)
     RequestReader reader(buffer);
     const std::uint32_t sessionToken = reader.read<std::uint32_t>();
     RequestWritter writer;
-    bool success = true;
-    auto nodesList = nodesManager->getNodesList(sessionToken, success);
 
-    if (success == false)
+    try
     {
-        writer.write<ServerResult>(ServerResult::Failure);
-        writer.write<std::string>("Cannot get a nodes' list!");
-    }
-
-    else
-    {
+        auto nodesList = nodesManager->getNodesList(sessionToken);
         writer.write<ServerResult>(ServerResult::Success);
         writer.write<size_t>(nodesList.size());
 
@@ -117,6 +98,14 @@ std::vector<char> RequestHandler::getListOfNodes(std::vector<char> &buffer)
             writer.write<std::string>(node.first); //First - A Node's ID
             writer.write<std::string>(node.second); // Second - A Node's deleting's time
         }
+
+    }
+
+    catch (std::runtime_error const & err)
+    {
+        writer.write<ServerResult>(ServerResult::Failure);
+        writer.write<std::string>("Cannot get a nodes' list!");
+        return writer.getBuffer();
     }
 
     return writer.getBuffer();
@@ -154,12 +143,5 @@ std::vector<char> RequestHandler::createNewNode(std::vector<char> &buffer)
 //Method for session deleting, when client disconnects or pushes "log out" button.
 void RequestHandler::destroySession(int socketFD)
 {
-//    if (!dataBase)
-//    {
-//        throw std::runtime_error("Database isn't initialized!");
-//    }
-//    else
-//    {
-//        dataBase->closeSession(socketFD);
-//    }
+    accountManager->closeSession(socketFD);
 }
