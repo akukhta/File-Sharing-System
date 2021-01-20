@@ -4,7 +4,7 @@ DataBaseSingleton::DataBaseSingleton(std::string const & dbpath)
 {
     try{
         driver = get_driver_instance();
-        conn = driver->connect(Configuration::getDefaultPathDB(),
+        conn = driver->connect(dbpath,
             Configuration::getDefaultUserDB(), Configuration::getDefaultPassDB());
         conn->setSchema("FileSharingSystem");
     }

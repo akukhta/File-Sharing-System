@@ -4,6 +4,9 @@ NodesRepository::NodesRepository(std::shared_ptr<DataBaseObject> const & dataBas
     : dataBase(dataBase)
 {
     auto allNodes = dataBase->allNodes();
+
+    std::scoped_lock lock(nodesMutex, idsMutex);
+
     nodesSet = allNodes.first;
     nodesIDs = allNodes.second;
 }
@@ -16,9 +19,14 @@ std::vector<std::pair<std::string,std::string>> NodesRepository::getNodesList(st
     success = true; // Just for test.
 
     std::vector<std::pair<std::string,std::string>> result;
+
     try{
+
         result = dataBase->nodesQuery(sessionToken);
-    } catch (std::runtime_error const & err)
+
+    }
+
+    catch (std::runtime_error const & err)
     {
         success = false;
     }
@@ -38,14 +46,23 @@ std::uint32_t NodesRepository::createNode(const std::uint32_t sessionToken, cons
     if (!generatedNodeID)
         return  AbstractNodesRepository::InvalidNodeID;
 
-    auto res = dataBase->createNode(sessionToken, deletingDate, generatedNodeID);
+    try{
 
-    if (res)
-    {
+        auto res = dataBase->createNode(sessionToken, deletingDate, generatedNodeID);
+
+        std::scoped_lock(nodesMutex, idsMutex);
+
         nodesIDs.insert(generatedNodeID);
+        nodesSet.insert(res);
+
     }
 
-    return res ? generatedNodeID : AbstractNodesRepository::InvalidNodeID;
+    catch (std::runtime_error const & err)
+    {
+        return AbstractNodesRepository::InvalidNodeID;
+    }
+
+    return generatedNodeID;
 }
 
 std::uint32_t  NodesRepository::generateID()
@@ -69,5 +86,20 @@ std::uint32_t  NodesRepository::generateID()
     }
 
     return AbstractNodesRepository::InvalidNodeID; //Couldn`t generate a new node`s ID
+}
+
+void NodesRepository::deleteOverdueNodes()
+{
+    nodesMutex.lock();
+    auto nodeIterator = nodesSet.begin();
+    nodesMutex.unlock();
+
+    while (!nodeIterator->isAlive()) {
+        std::lock_guard<std::mutex> lock(nodesMutex);
+        dataBase->deleteNode(nodeIterator->NodeID);
+        nodesSet.erase(nodeIterator);
+        nodesIDs.erase(nodeIterator->NodeID);
+        nodeIterator = nodesSet.begin();
+    }
 }
 

@@ -3,7 +3,7 @@
 NodesManager::NodesManager(std::unique_ptr<AbstractNodesRepository> & nodesRepository)
     : nodesRepository(std::move(nodesRepository))
 {
-
+    startOverdueNodesDeleting();
 }
 
 std::vector<std::pair<std::string, std::string>> NodesManager::getNodesList(std::uint32_t sessionToken) const
@@ -20,4 +20,24 @@ std::vector<std::pair<std::string, std::string>> NodesManager::getNodesList(std:
 std::uint32_t NodesManager::createNode(const std::uint32_t sessionToken, const std::string deletingDate)
 {
     return nodesRepository->createNode(sessionToken, deletingDate);
+}
+
+void NodesManager::startOverdueNodesDeleting()
+{
+    std::thread([this](){overdueNodesDeleting();}).detach();
+}
+
+void NodesManager::overdueNodesDeleting()
+{
+    while(true)
+    {
+        objectStateMutex.lock();
+        if (!objIsAlive)
+            return;
+        objectStateMutex.unlock();
+
+        nodesRepository->deleteOverdueNodes();
+
+        std::this_thread::sleep_for(nodesCheckingFrequency);
+    }
 }

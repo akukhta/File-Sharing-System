@@ -2,6 +2,7 @@
 #include <vector>
 #include <set>
 #include <string>
+#include <mutex>
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
 #include <cppconn/driver.h>
@@ -16,10 +17,11 @@ public:
     bool insertQuery(std::string querystr);
     bool authorizationQuery(std::string const & email, std::string const & password, size_t &userID);
     bool createSessionQuery(std::uint32_t sessionToken, int socketID, int userID);
-    bool createNode(const std::uint32_t sessionToken, const std::string deletingDate, const std::uint32_t generatedID);
+    Node createNode(const std::uint32_t sessionToken, const std::string deletingDate, const std::uint32_t generatedID);
     void closeSession(int socketFD);
     std::vector<std::pair<std::string, std::string>> nodesQuery(unsigned int userID);
-    std::pair<std::set<Node>, std::set<std::uint32_t> > allNodes();
+    std::pair<std::multiset<Node>, std::set<std::uint32_t> > allNodes();
+    void deleteNode(std::uint32_t nodeID);
     ~DataBaseObject();
 private:
     //Connection pointer to mysql database
@@ -28,4 +30,5 @@ private:
     //Only for test
     int returnVal;
     sql::ResultSet* abstractSelectQuery(std::string const &query);
+    std::mutex dataBaseMutex;
 };

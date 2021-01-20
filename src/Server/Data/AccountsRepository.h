@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "Common/AbstractAccountRepository.h"
+#include "Data/AbstractAccountRepository.h"
 #include "Data/databaseobject.h"
 
 class AccountsRepository : public AbstractAccountRepository

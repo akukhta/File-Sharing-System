@@ -14,10 +14,12 @@ std::uint32_t AccountManager::createAccount(std::string const & email, std::stri
       if (sessionToken != AbstractAccountRepository::InvalidSessionToken)
       {
           //Seding a message as an async task
-          std::async(std::launch::async, [](auto const & email, auto const & subject, auto const & message){
+          auto asyncTask = std::async(std::launch::async, [](auto const & email, auto const & subject, auto const & message){
               EMailManager::Send(email, subject, message);
           }, email, subject, registrationMessage);
       }
+
+      return sessionToken;
 }
 
 

@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 
 project(FileSharingSystemServer)
 
+set (CMAKE_CXX_STANDARD 17)
+
 include_directories(.)
 
 add_executable(FileSharingSystemServer 
@@ -20,13 +22,14 @@ add_executable(FileSharingSystemServer
     Data/AccountsRepository.cpp
     Data/DataBaseSingleton.cpp
     Common/di.hpp
-    Common/AbstractAccountRepository.h
-    Common/AbstractNodesRepository.h
+    Data/AbstractAccountRepository.h
+    Data/AbstractNodesRepository.h
     Data/NodesRepository.cpp
     Data/NodesRepository.h
 )
 
 target_link_libraries(FileSharingSystemServer mysqlcppconn pthread)
-set (CMAKE_CXX_STANDARD 17)
+target_compile_options(FileSharingSystemServer PRIVATE -Werror -Wall -Wextra)
+
 file(COPY Resources/email.sh
      DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

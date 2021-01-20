@@ -12,9 +12,8 @@ public:
     bool operator>(Node const &node) const;
     bool isAlive() const;
 
-private:
-
     const int NodeID;
+private:
     std::chrono::time_point<std::chrono::system_clock> deletingTime;
     long long minutesLeft() const;
 

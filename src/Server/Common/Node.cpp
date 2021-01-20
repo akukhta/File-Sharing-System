@@ -30,7 +30,7 @@ long long Node::minutesLeft() const
 
 bool Node::isAlive() const
 {
-    return minutesLeft() > 0;
+    return minutesLeft() >= 0;
 }
 
 

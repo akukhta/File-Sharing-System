@@ -5,7 +5,7 @@
 #include "Data/databaseobject.h"
 #include "Data/EMailManager.h"
 #include "Common/ClientException.h"
-#include "Common/AbstractAccountRepository.h"
+#include "Data/AbstractAccountRepository.h"
 
 class AccountManager
 {

@@ -76,7 +76,7 @@ void Server::socketsPollHandler()
                    size_t size = answer.size(); // Size of answer to client
                    sendToClient(sock.fd, reinterpret_cast<char*>(&size), sizeof(size_t)); //Send size to client
                    sendToClient(sock.fd, answer.data(), size); //Send answer to client
-                }  catch (std::runtime_error err) {
+                }  catch (std::runtime_error const &err) {
                     //Close connection if we have problems
                     std::cout << err.what() << std::endl;
                     if (errno != EAGAIN)
@@ -121,7 +121,7 @@ void Server::closeConnection(int sockfd)
 std::vector<char> Server::reciveFromClient(int sockfd, size_t size)
 {
     std::vector<char> buffer(size);
-    if (recv(sockfd, buffer.data(),size,MSG_NOSIGNAL) != size)
+    if (recv(sockfd, buffer.data(),size,MSG_NOSIGNAL) != static_cast<ssize_t>(size))
         throw std::runtime_error("Receiving error");
     else
         return buffer;
@@ -130,7 +130,7 @@ std::vector<char> Server::reciveFromClient(int sockfd, size_t size)
 //Send data to client
 void Server::sendToClient(int sockfd, char* const buffer, size_t bufferSize)
 {
-    if (send(sockfd, buffer,bufferSize,0) != bufferSize)
+    if (send(sockfd, buffer,bufferSize,0) != static_cast<ssize_t>(bufferSize))
         throw std::runtime_error("Sending error");
     else
         return;
