@@ -1,3 +1,0 @@
-/home/alex/File-Sharing-System/src/Server/CMakeFiles/edit_cache.dir
-/home/alex/File-Sharing-System/src/Server/CMakeFiles/rebuild_cache.dir
-/home/alex/File-Sharing-System/src/Server/CMakeFiles/FileSharingSystemServer.dir
