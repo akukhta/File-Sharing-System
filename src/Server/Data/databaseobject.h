@@ -7,7 +7,7 @@
 #include <cppconn/statement.h>
 #include <cppconn/driver.h>
 #include <cppconn/connection.h>
-#include <Common/Configuration.h>
+#include "Common/Configuration.h"
 #include "Common/Node.h"
 
 class DataBaseObject

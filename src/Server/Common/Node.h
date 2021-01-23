@@ -13,6 +13,7 @@ public:
     bool isAlive() const;
 
     const int NodeID;
+
 private:
     std::chrono::time_point<std::chrono::system_clock> deletingTime;
     long long minutesLeft() const;

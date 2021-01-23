@@ -8,23 +8,28 @@
 #include <unistd.h>
 #include <iostream>
 #include <memory>
-#include "Data/databaseobject.h"
+#include "Common/Configuration.h"
+#include "Common/Logger.h"
 #include "BL/AccountManager.h"
 #include "API/RequestHandler.h"
-#include "Common/Configuration.h"
 
 class Server
 {
 public:
-    explicit Server(std::unique_ptr<RequestHandler> & handler, std::string IP = Configuration::getDefaultIP(),
+    explicit Server(std::unique_ptr<RequestHandler> handler, std::string IP = Configuration::getDefaultIP(),
                     int port = Configuration::getDafultPort(),size_t POLLSIZE = 32);
     /*
      * Because we don't need copy of this server.
      * If we can have copy we get some problems with server's port.
      * TODO: Maybe need to make this class as singleton
     */
-    Server(Server const &) = delete;
+    //Server(Server const &) = delete;
     void run();
+
+    ~Server()
+    {
+        Logger::log()->debugMessage("Server has been deleted!");
+    }
 
 private:
     /*

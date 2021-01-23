@@ -1,26 +1,26 @@
 #include "RequestHandler.h"
 
-RequestHandler::RequestHandler(std::unique_ptr<AccountManager> & accountManager,
-        std::unique_ptr<NodesManager> & nodesManager) : accountManager(std::move(accountManager)),
+RequestHandler::RequestHandler(std::unique_ptr<IAccountManager>  accountManager,
+        std::unique_ptr<INodesManager>  nodesManager) : accountManager(std::move(accountManager)),
             nodesManager(std::move(nodesManager))
 { }
 
 std::vector<char> RequestHandler::handle(std::vector<char> &buffer, int socketFD)
 {
     std::vector<char> answer;
-    char action = buffer[0];
+    ServerOperation action = static_cast<ServerOperation>(buffer[0]);
     buffer.erase(buffer.begin());
     switch (action) {
-    case 0:
+    case ServerOperation::UserRegistration:
         answer = userRegistration(buffer, socketFD);
         break;
-    case 1:
+    case ServerOperation::Authorization:
         answer = userAuthorization(buffer, socketFD);
         break;
-    case 3:
+    case ServerOperation::GetNodesList:
         answer = getListOfNodes(buffer);
         break;
-    case 4:
+    case ServerOperation::CreateNewNode:
         answer = createNewNode(buffer);
         break;
     default:
@@ -32,6 +32,7 @@ std::vector<char> RequestHandler::handle(std::vector<char> &buffer, int socketFD
 //Only for test. In future it will be rewritted.
 std::vector<char> RequestHandler::userRegistration(std::vector<char> &buffer, int socketFD)
 {
+    Logger::log()->infoMessage("An user registration handling");
     RequestReader reader(buffer);
     RequestWritter writer;
     try{
@@ -56,6 +57,7 @@ std::vector<char> RequestHandler::userRegistration(std::vector<char> &buffer, in
 //Method for user authorizating. Returns sessiong token.
 std::vector<char> RequestHandler::userAuthorization(std::vector<char> &buffer, int socketFD)
 {
+    Logger::log()->infoMessage("An authorization handling");
     RequestReader reader(buffer);
     RequestWritter writer;
     try
@@ -70,6 +72,7 @@ std::vector<char> RequestHandler::userAuthorization(std::vector<char> &buffer, i
         }
         else
         {
+            Logger::log()->errorMessage("Authorization has been failed");
             writer.write<ServerResult>(ServerResult::Failure);
         }
     } catch (std::runtime_error const & err)
@@ -83,6 +86,7 @@ std::vector<char> RequestHandler::userAuthorization(std::vector<char> &buffer, i
 
 std::vector<char> RequestHandler::getListOfNodes(std::vector<char> &buffer)
 {
+    Logger::log()->infoMessage("Get nodes request handling");
     RequestReader reader(buffer);
     const std::uint32_t sessionToken = reader.read<std::uint32_t>();
     RequestWritter writer;
@@ -103,6 +107,7 @@ std::vector<char> RequestHandler::getListOfNodes(std::vector<char> &buffer)
 
     catch (std::runtime_error const & err)
     {
+        Logger::log()->errorMessage("Cannot get a nodes` list!");
         writer.write<ServerResult>(ServerResult::Failure);
         writer.write<std::string>("Cannot get a nodes' list!");
         return writer.getBuffer();
@@ -113,6 +118,7 @@ std::vector<char> RequestHandler::getListOfNodes(std::vector<char> &buffer)
 
 std::vector<char> RequestHandler::createNewNode(std::vector<char> &buffer)
 {
+    Logger::log()->infoMessage("New nodes creating handling");
     RequestReader reader(buffer);
     RequestWritter writer;
     const std::uint32_t sessionToken = reader.read<std::uint32_t>();
@@ -128,6 +134,7 @@ std::vector<char> RequestHandler::createNewNode(std::vector<char> &buffer)
         }
         else
         {
+            Logger::log()->errorMessage("Cannot create a new node!");
             writer.write<ServerResult>(ServerResult::Failure);
             writer.write<std::string>("Couldn`t create a new node!");
         }

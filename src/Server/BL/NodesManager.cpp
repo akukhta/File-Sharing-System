@@ -1,6 +1,6 @@
 #include "NodesManager.h"
 
-NodesManager::NodesManager(std::unique_ptr<AbstractNodesRepository> & nodesRepository)
+NodesManager::NodesManager(std::unique_ptr<AbstractNodesRepository> nodesRepository)
     : nodesRepository(std::move(nodesRepository))
 {
     startOverdueNodesDeleting();
@@ -31,13 +31,12 @@ void NodesManager::overdueNodesDeleting()
 {
     while(true)
     {
-        objectStateMutex.lock();
         if (!objIsAlive)
             return;
-        objectStateMutex.unlock();
 
         nodesRepository->deleteOverdueNodes();
 
         std::this_thread::sleep_for(nodesCheckingFrequency);
     }
+
 }

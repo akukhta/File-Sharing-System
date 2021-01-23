@@ -1,18 +1,36 @@
 #include <iostream>
+#include "Data/AccountsRepository.h"
+#include "Data/NodesRepository.h"
+#include "BL/IAccountManager.h"
 #include "Common/di.hpp"
 #include "API/Server.h"
-#include "Data/AccountsRepository.h"
-#include <Data/NodesRepository.h>
 
 using namespace std;
 
 int main()
 {
 
-    //This code doesn`t work, but if i replace all smart pointers to references, it'll be ok
-    auto injector = boost::di::make_injector(
-                boost::di::bind<AbstractAccountRepository>.to<AccountsRepository>(),
-                boost::di::bind<AbstractNodesRepository>.to<NodesRepository>());
-    injector.create<Server>().run();
+    namespace di = boost::di;
+
+    auto Injector = di::make_injector(
+                di::bind<DataBaseObject>().in(di::singleton).to<DataBaseObject>(),
+                di::bind<AbstractAccountRepository>().in(di::unique).to<AccountsRepository>(),
+                di::bind<AbstractNodesRepository>().in(di::unique).to<NodesRepository>(),
+                di::bind<IAccountManager>().in(di::unique).to<AccountManager>(),
+                di::bind<INodesManager>().in(di::unique).to<NodesManager>(),
+                di::bind<int>.to(5441),
+                di::bind<size_t>.to(static_cast<size_t>(32)),
+                di::bind<std::string>.to(std::string(Configuration::getDefaultIP()))
+                );
+
+    try
+    {
+        Injector.create<std::unique_ptr<Server>>()->run();
+    }
+    catch (std::runtime_error const & err)
+    {
+        Logger::log()->fatalError(err.what());
+    }
+
     return 0;
 }

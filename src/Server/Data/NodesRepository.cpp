@@ -1,6 +1,6 @@
 #include "NodesRepository.h"
 
-NodesRepository::NodesRepository(std::shared_ptr<DataBaseObject> const & dataBase)
+NodesRepository::NodesRepository(std::shared_ptr<DataBaseObject> dataBase)
     : dataBase(dataBase)
 {
     auto allNodes = dataBase->allNodes();
@@ -50,10 +50,12 @@ std::uint32_t NodesRepository::createNode(const std::uint32_t sessionToken, cons
 
         auto res = dataBase->createNode(sessionToken, deletingDate, generatedNodeID);
 
-        std::scoped_lock(nodesMutex, idsMutex);
-
+        nodesMutex.lock();
+        idsMutex.lock();
         nodesIDs.insert(generatedNodeID);
         nodesSet.insert(res);
+        nodesMutex.unlock();
+        idsMutex.unlock();
 
     }
 
@@ -91,14 +93,20 @@ std::uint32_t  NodesRepository::generateID()
 void NodesRepository::deleteOverdueNodes()
 {
     nodesMutex.lock();
+    if (nodesSet.size() == 0)
+        return;
     auto nodeIterator = nodesSet.begin();
     nodesMutex.unlock();
 
     while (!nodeIterator->isAlive()) {
         std::lock_guard<std::mutex> lock(nodesMutex);
         dataBase->deleteNode(nodeIterator->NodeID);
-        nodesSet.erase(nodeIterator);
         nodesIDs.erase(nodeIterator->NodeID);
+        nodesSet.erase(nodeIterator);
+
+        if (nodesSet.size() == 0)
+            break;
+
         nodeIterator = nodesSet.begin();
     }
 }

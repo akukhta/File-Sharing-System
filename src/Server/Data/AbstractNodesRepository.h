@@ -12,7 +12,7 @@ public:
     virtual void deleteOverdueNodes() = 0;
     virtual ~AbstractNodesRepository()
     {
-        ;
+        std::cout << "ANR has been deleted!" << std::endl;
     }
 
     static const std::uint32_t InvalidNodeID = 0;

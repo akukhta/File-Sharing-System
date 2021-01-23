@@ -2,7 +2,7 @@
 
 //Inizialasing onstructor.
 //POLLSIZE - maximum users' connection
-Server::Server(std::unique_ptr<RequestHandler> & handler, std::string IP, int port,size_t POLLSIZE)
+Server::Server(std::unique_ptr<RequestHandler> handler, std::string IP, int port,size_t POLLSIZE)
     : handler(std::move(handler))
 {
     masterSocket = socket(AF_INET,SOCK_STREAM, 0);
@@ -21,6 +21,8 @@ Server::Server(std::unique_ptr<RequestHandler> & handler, std::string IP, int po
     //handler = std::make_unique<RequestHandler>();
 
     setSize = 1;
+
+    Logger::log()->debugMessage("Server has been created!");
 }
 
 //Main method for start server
@@ -91,7 +93,7 @@ void Server::socketsPollHandler()
                 //Master socket has null index in pollSet
                 int connectedSocket = accept(masterSocket,0,0);
                 connectedSockets.insert(connectedSocket);
-                std::cout << "New socket connected!" << std::endl;
+                Logger::log()->debugMessage("New client has been connected!");
                 updatePollSet();
             }
         }
@@ -99,7 +101,7 @@ void Server::socketsPollHandler()
         //If have errors with socket
         else if (sock.revents & (POLLERR|POLLHUP|POLLNVAL))
         {
-            std::cout << "Socket's error!Closing connection!" << std::endl;
+            Logger::log()->errorMessage("Socket`s error!");
             connectedSockets.erase(sock.fd);
             updatePollSet();
         }
@@ -109,7 +111,7 @@ void Server::socketsPollHandler()
 //Closes client's connection
 void Server::closeConnection(int sockfd)
 {
-        std::cout << "Client disconnected!" << std::endl;
+        Logger::log()->debugMessage("A client has been disconnected!");
         handler->destroySession(sockfd);
         shutdown(sockfd, SHUT_RDWR);
         close(sockfd);

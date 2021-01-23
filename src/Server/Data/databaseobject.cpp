@@ -3,6 +3,7 @@
 
 DataBaseObject::DataBaseObject(std::string const &dbpath)
 {
+    std::cout << "DB" << std::endl;
     try{
         driver = get_driver_instance();
         conn = driver->connect(dbpath,
@@ -59,15 +60,15 @@ sql::ResultSet* DataBaseObject::abstractSelectQuery(std::string const &query)
 bool DataBaseObject::authorizationQuery(std::string const & email,
         std::string const & password, size_t &userID)
 {
-    std::lock_guard<std::mutex> lock(dataBaseMutex);
-
     const std::string query = "select * from Users where Email = \'"
             + email + "\' and Password = \'" + password + "\';";
 
     bool returnValue = false;
 
+    dataBaseMutex.lock();
     sql::ResultSet *result = abstractSelectQuery(query);
-    
+    dataBaseMutex.unlock();
+
     if (result != nullptr && result->rowsCount() == 1)
     {
         result->next();
@@ -83,18 +84,20 @@ bool DataBaseObject::authorizationQuery(std::string const & email,
 //Method for new sessiong creating
 bool DataBaseObject::createSessionQuery(std::uint32_t sessionToken, int socketID, int userID)
 {
-    std::lock_guard<std::mutex> lock(dataBaseMutex);
-
     const std::string query = "insert into Sessions values (" + std::to_string(sessionToken)
             + "," + std::to_string(socketID) + "," + std::to_string(userID) + ");";
-    return insertQuery(query);
+
+    dataBaseMutex.lock();
+    auto result = insertQuery(query);
+    dataBaseMutex.unlock();
+    return result;
 }
 
 std::pair<std::multiset<Node>, std::set<std::uint32_t>> DataBaseObject::allNodes()
 {
-    std::lock_guard<std::mutex> lock(dataBaseMutex);
-
+    dataBaseMutex.lock();
     auto resultSet = abstractSelectQuery("select * from Nodes;");
+    dataBaseMutex.unlock();
     std::multiset<Node> nodes;
     std::set<std::uint32_t> ids;
 
@@ -115,18 +118,19 @@ std::pair<std::multiset<Node>, std::set<std::uint32_t>> DataBaseObject::allNodes
 //Method for sessiong deleting
 void DataBaseObject::closeSession(int socketFD)
 {
-    std::lock_guard<std::mutex> lock(dataBaseMutex);
     std::string query = "delete from Sessions where socketID = " + std::to_string(socketFD) + ";";
+    dataBaseMutex.lock();
     insertQuery(query);
+    dataBaseMutex.unlock();
 }
 
 std::vector<std::pair<std::string, std::string>> DataBaseObject::nodesQuery(unsigned int sessionToken)
 {
-    std::lock_guard<std::mutex> lock(dataBaseMutex);
-
     const std::string query = "select * from Nodes where UserID = (select UserID from Sessions where sessionToken = " + std::to_string(sessionToken) + ");";
+    dataBaseMutex.lock();
     sql::ResultSet *result = abstractSelectQuery(query);
-    
+    dataBaseMutex.unlock();
+
     if (result == nullptr)
         throw std::runtime_error("Nodes query has been failed!");
     
@@ -142,31 +146,36 @@ std::vector<std::pair<std::string, std::string>> DataBaseObject::nodesQuery(unsi
 
 Node DataBaseObject::createNode(const std::uint32_t sessionToken, const std::string deletingDate, const std::uint32_t generatedID)
 {
-
-     std::lock_guard<std::mutex> lock(dataBaseMutex);
-
      const std::string query = "insert into Nodes(NodeID, UserID, deletingDate) values("
      + std::to_string(generatedID) + ", (select UserID from Sessions where sessionToken = "
      + std::to_string(sessionToken) + ")," + "\'" + deletingDate
      + "\');";
 
+     dataBaseMutex.lock();
      if (!insertQuery(query))
      {
+        dataBaseMutex.unlock();
         throw std::runtime_error("Couldn`t create a new node!");
      }
+
+     dataBaseMutex.unlock();
+     std::cout << std::to_string(generatedID) << " has been created" << std::endl;
      return Node(generatedID, deletingDate);
 }
 
 void DataBaseObject::deleteNode(std::uint32_t nodeID)
 {
-    std::lock_guard<std::mutex> lock(dataBaseMutex);
     const std::string query = "delete from Nodes where NodeID = " + std::to_string(nodeID) + ";";
-    insertQuery(query);
+    dataBaseMutex.lock();
+    std::cout << std::to_string(nodeID) << (insertQuery(query) == true ? " has been deleted from DB!"
+                                            :   " hasn`t been deleted") << std::endl;;
+    dataBaseMutex.unlock();
 }
 
 DataBaseObject::~DataBaseObject()
 {
     if (conn->isClosed())
         conn->close();
+    std::cout << "Data base has been deleted!" << std::endl;
     delete conn;
 }

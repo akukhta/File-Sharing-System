@@ -11,21 +11,25 @@ add_executable(FileSharingSystemServer
     API/RequestHandler.cpp
     API/Server.cpp
     BL/AccountManager.cpp
+    BL/NodesManager.cpp
+    BL/IAccountManager.h
+    BL/INodesManager.h
     Data/databaseobject.cpp
     Data/EMailManager.cpp
-    Common/Configuration.cpp
-    Common/ServerResults.h
-    Common/ClientException.h
-    BL/NodesManager.cpp
-    Common/Node.cpp
-    Common/Node.h
     Data/AccountsRepository.cpp
     Data/DataBaseSingleton.cpp
-    Common/di.hpp
     Data/AbstractAccountRepository.h
     Data/AbstractNodesRepository.h
     Data/NodesRepository.cpp
     Data/NodesRepository.h
+    Common/Configuration.cpp
+    Common/ServerResults.h
+    Common/ClientException.h
+    Common/Node.cpp
+    Common/Node.h
+    Common/di.hpp
+    Common/Logger.cpp
+    Common/Logger.h
 )
 
 target_link_libraries(FileSharingSystemServer mysqlcppconn pthread)
