@@ -16,7 +16,7 @@
 class Server
 {
 public:
-    explicit Server(std::unique_ptr<RequestHandler> handler, std::string IP = Configuration::getDefaultIP(),
+    explicit Server(std::unique_ptr<IRequestHandler> handler, std::string IP = Configuration::getDefaultIP(),
                     int port = Configuration::getDafultPort(),size_t POLLSIZE = 32);
     /*
      * Because we don't need copy of this server.
@@ -48,7 +48,7 @@ private:
     void updatePollSet();
     void socketsPollHandler();
     //Pointer to server request handler
-    std::unique_ptr<RequestHandler> handler;
+    std::unique_ptr<IRequestHandler> handler;
     void closeConnection(int sockfd);
     std::vector<char> reciveFromClient(int sockfd, size_t size);
     void sendToClient(int sockfd, char* const buffer, size_t bufferSize);

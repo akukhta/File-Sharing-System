@@ -2,7 +2,7 @@
 #include <memory>
 #include <mutex>
 #include "Data/AbstractNodesRepository.h"
-#include "Data/databaseobject.h"
+#include "Data/IDataBase.h"
 #include "Common/Node.h"
 #include "Common/Logger.h"
 
@@ -11,7 +11,7 @@ class NodesRepository : public AbstractNodesRepository
 
 public:
 
-    NodesRepository(std::shared_ptr<DataBaseObject> dataBase);
+    NodesRepository(std::shared_ptr<IDataBase> dataBase);
 
     virtual std::vector<std::pair<std::string,std::string>> getNodesList(std::uint32_t sessionToken, bool &success) const override final;
     virtual std::uint32_t createNode(const std::uint32_t sessionToken, const std::string deletingDate) override final;
@@ -24,7 +24,7 @@ public:
 
 private:
 
-    std::shared_ptr<DataBaseObject> dataBase;
+    std::shared_ptr<IDataBase> dataBase;
     std::multiset<Node> nodesSet;
     std::set<std::uint32_t> nodesIDs;
     std::mutex nodesMutex, idsMutex;

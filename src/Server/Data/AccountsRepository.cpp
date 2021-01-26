@@ -1,6 +1,6 @@
 #include "AccountsRepository.h"
 
-AccountsRepository::AccountsRepository(std::shared_ptr<DataBaseObject> dataBase) : dataBase(dataBase)
+AccountsRepository::AccountsRepository(std::shared_ptr<IDataBase> dataBase) : dataBase(dataBase)
 {
     ;
 }

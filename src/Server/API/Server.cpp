@@ -2,7 +2,7 @@
 
 //Inizialasing onstructor.
 //POLLSIZE - maximum users' connection
-Server::Server(std::unique_ptr<RequestHandler> handler, std::string IP, int port,size_t POLLSIZE)
+Server::Server(std::unique_ptr<IRequestHandler> handler, std::string IP, int port,size_t POLLSIZE)
     : handler(std::move(handler))
 {
     masterSocket = socket(AF_INET,SOCK_STREAM, 0);

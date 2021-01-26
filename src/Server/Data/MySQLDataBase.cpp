@@ -1,7 +1,7 @@
-#include "databaseobject.h"
+#include "MySQLDataBase.h"
 
 
-DataBaseObject::DataBaseObject(std::string const &dbpath)
+MySQLDatabase::MySQLDatabase(std::string const &dbpath)
 {
     std::cout << "DB" << std::endl;
     try{
@@ -17,7 +17,7 @@ DataBaseObject::DataBaseObject(std::string const &dbpath)
 }
 
 //Simple INSERT/DELETE query, without any returned values.
-bool DataBaseObject::insertQuery(std::string querystr)
+bool MySQLDatabase::insertQuery(std::string querystr)
 {   
     sql::Statement* statement = conn->createStatement();
 
@@ -37,7 +37,7 @@ bool DataBaseObject::insertQuery(std::string querystr)
 
 //Basic select query
 
-sql::ResultSet* DataBaseObject::abstractSelectQuery(std::string const &query)
+sql::ResultSet* MySQLDatabase::abstractSelectQuery(std::string const &query)
 {
     sql::Statement* statement = conn->createStatement();
     sql::ResultSet* result = nullptr;
@@ -57,7 +57,7 @@ sql::ResultSet* DataBaseObject::abstractSelectQuery(std::string const &query)
 }
 
 //Authorization method
-bool DataBaseObject::authorizationQuery(std::string const & email,
+bool MySQLDatabase::authorizationQuery(std::string const & email,
         std::string const & password, size_t &userID)
 {
     const std::string query = "select * from Users where Email = \'"
@@ -82,7 +82,7 @@ bool DataBaseObject::authorizationQuery(std::string const & email,
 }
 
 //Method for new sessiong creating
-bool DataBaseObject::createSessionQuery(std::uint32_t sessionToken, int socketID, int userID)
+bool MySQLDatabase::createSessionQuery(std::uint32_t sessionToken, int socketID, int userID)
 {
     const std::string query = "insert into Sessions values (" + std::to_string(sessionToken)
             + "," + std::to_string(socketID) + "," + std::to_string(userID) + ");";
@@ -93,7 +93,7 @@ bool DataBaseObject::createSessionQuery(std::uint32_t sessionToken, int socketID
     return result;
 }
 
-std::pair<std::multiset<Node>, std::set<std::uint32_t>> DataBaseObject::allNodes()
+std::pair<std::multiset<Node>, std::set<std::uint32_t>> MySQLDatabase::allNodes()
 {
     dataBaseMutex.lock();
     auto resultSet = abstractSelectQuery("select * from Nodes;");
@@ -116,7 +116,7 @@ std::pair<std::multiset<Node>, std::set<std::uint32_t>> DataBaseObject::allNodes
 
 
 //Method for sessiong deleting
-void DataBaseObject::closeSession(int socketFD)
+void MySQLDatabase::closeSession(int socketFD)
 {
     std::string query = "delete from Sessions where socketID = " + std::to_string(socketFD) + ";";
     dataBaseMutex.lock();
@@ -124,7 +124,7 @@ void DataBaseObject::closeSession(int socketFD)
     dataBaseMutex.unlock();
 }
 
-std::vector<std::pair<std::string, std::string>> DataBaseObject::nodesQuery(unsigned int sessionToken)
+std::vector<std::pair<std::string, std::string>> MySQLDatabase::nodesQuery(unsigned int sessionToken)
 {
     const std::string query = "select * from Nodes where UserID = (select UserID from Sessions where sessionToken = " + std::to_string(sessionToken) + ");";
     dataBaseMutex.lock();
@@ -144,7 +144,7 @@ std::vector<std::pair<std::string, std::string>> DataBaseObject::nodesQuery(unsi
     return nodes;
 }
 
-Node DataBaseObject::createNode(const std::uint32_t sessionToken, const std::string deletingDate, const std::uint32_t generatedID)
+Node MySQLDatabase::createNode(const std::uint32_t sessionToken, const std::string deletingDate, const std::uint32_t generatedID)
 {
      const std::string query = "insert into Nodes(NodeID, UserID, deletingDate) values("
      + std::to_string(generatedID) + ", (select UserID from Sessions where sessionToken = "
@@ -163,7 +163,7 @@ Node DataBaseObject::createNode(const std::uint32_t sessionToken, const std::str
      return Node(generatedID, deletingDate);
 }
 
-void DataBaseObject::deleteNode(std::uint32_t nodeID)
+void MySQLDatabase::deleteNode(std::uint32_t nodeID)
 {
     const std::string query = "delete from Nodes where NodeID = " + std::to_string(nodeID) + ";";
     dataBaseMutex.lock();
@@ -172,7 +172,7 @@ void DataBaseObject::deleteNode(std::uint32_t nodeID)
     dataBaseMutex.unlock();
 }
 
-DataBaseObject::~DataBaseObject()
+MySQLDatabase::~MySQLDatabase()
 {
     if (conn->isClosed())
         conn->close();

@@ -4,6 +4,8 @@
 #include "BL/IAccountManager.h"
 #include "Common/di.hpp"
 #include "API/Server.h"
+#include "Data/IDataBase.h"
+#include "Data/MySQLDataBase.h"
 
 using namespace std;
 
@@ -13,11 +15,12 @@ int main()
     namespace di = boost::di;
 
     auto Injector = di::make_injector(
-                di::bind<DataBaseObject>().in(di::singleton).to<DataBaseObject>(),
+                di::bind<IDataBase>().in(di::singleton).to<MySQLDatabase>(),
                 di::bind<AbstractAccountRepository>().in(di::unique).to<AccountsRepository>(),
                 di::bind<AbstractNodesRepository>().in(di::unique).to<NodesRepository>(),
                 di::bind<IAccountManager>().in(di::unique).to<AccountManager>(),
                 di::bind<INodesManager>().in(di::unique).to<NodesManager>(),
+                di::bind<IRequestHandler>().in(di::unique).to<RequestHandler>(),
                 di::bind<int>.to(5441),
                 di::bind<size_t>.to(static_cast<size_t>(32)),
                 di::bind<std::string>.to(std::string(Configuration::getDefaultIP()))

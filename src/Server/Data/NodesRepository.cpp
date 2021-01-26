@@ -1,6 +1,6 @@
 #include "NodesRepository.h"
 
-NodesRepository::NodesRepository(std::shared_ptr<DataBaseObject> dataBase)
+NodesRepository::NodesRepository(std::shared_ptr<IDataBase> dataBase)
     : dataBase(dataBase)
 {
     auto allNodes = dataBase->allNodes();
@@ -94,7 +94,11 @@ void NodesRepository::deleteOverdueNodes()
 {
     nodesMutex.lock();
     if (nodesSet.size() == 0)
+    {
+        nodesMutex.unlock();
         return;
+    }
+
     auto nodeIterator = nodesSet.begin();
     nodesMutex.unlock();
 

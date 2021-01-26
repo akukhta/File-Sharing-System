@@ -8,13 +8,14 @@ include_directories(.)
 
 add_executable(FileSharingSystemServer 
     main.cpp
+    API/IRequestHandler.h
     API/RequestHandler.cpp
     API/Server.cpp
     BL/AccountManager.cpp
     BL/NodesManager.cpp
     BL/IAccountManager.h
     BL/INodesManager.h
-    Data/databaseobject.cpp
+    Data/MySQLDataBase.cpp
     Data/EMailManager.cpp
     Data/AccountsRepository.cpp
     Data/DataBaseSingleton.cpp
@@ -22,6 +23,9 @@ add_executable(FileSharingSystemServer
     Data/AbstractNodesRepository.h
     Data/NodesRepository.cpp
     Data/NodesRepository.h
+    Data/IDataBase.h
+    Data/FileRepresentation.cpp
+    Data/FileRepresentation.h
     Common/Configuration.cpp
     Common/ServerResults.h
     Common/ClientException.h

@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <memory>
+#include "API/IRequestHandler.h"
 #include "BL/NodesManager.h"
 #include "BL/AccountManager.h"
 #include "Common/RequestReader.h"
@@ -11,14 +12,14 @@
 
 
 //Class for user's requests treatment
-class RequestHandler
+class RequestHandler : public IRequestHandler
 {
 public:
     RequestHandler(std::unique_ptr<IAccountManager> accountManager,
                    std::unique_ptr<INodesManager> nodesManager);
 
-    std::vector<char> handle(std::vector<char> &buffer, int socketFD);
-    void destroySession(int socketFD);
+    virtual std::vector<char> handle(std::vector<char> &buffer, int socketFD) override final;
+    virtual void destroySession(int socketFD) override final;
 
     ~RequestHandler()
     {

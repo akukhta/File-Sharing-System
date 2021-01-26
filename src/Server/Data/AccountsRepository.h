@@ -1,13 +1,13 @@
 #pragma once
 #include <memory>
 #include "Data/AbstractAccountRepository.h"
-#include "Data/databaseobject.h"
+#include "Data/IDataBase.h"
 
 class AccountsRepository : public AbstractAccountRepository
 {
 public:
 
-    AccountsRepository(std::shared_ptr<DataBaseObject> dataBase);
+    AccountsRepository(std::shared_ptr<IDataBase> dataBase);
 
     virtual std::uint32_t createAccount(std::string const & email,
         std::string const & password, int socketFD) override final;
@@ -23,5 +23,5 @@ public:
     }
 
 private:
-    std::shared_ptr<DataBaseObject> dataBase;
+    std::shared_ptr<IDataBase> dataBase;
 };
