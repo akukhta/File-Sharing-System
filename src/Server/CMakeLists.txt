@@ -15,6 +15,9 @@ add_executable(FileSharingSystemServer
     BL/NodesManager.cpp
     BL/IAccountManager.h
     BL/INodesManager.h
+    BL/IFilesManager.h
+    BL/FilesManager.h
+    BL/FilesManager.cpp
     Data/MySQLDataBase.cpp
     Data/EMailManager.cpp
     Data/AccountsRepository.cpp
@@ -26,6 +29,9 @@ add_executable(FileSharingSystemServer
     Data/IDataBase.h
     Data/FileRepresentation.cpp
     Data/FileRepresentation.h
+    Data/AbstractFilesRepository.h
+    Data/FilesRepository.h
+    Data/FilesRepository.cpp
     Common/Configuration.cpp
     Common/ServerResults.h
     Common/ClientException.h

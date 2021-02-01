@@ -47,6 +47,7 @@ void NodesWindow::on_createNodeBtn_clicked()
     try{
         auto node = clientInterface->createNode(lifeTimeInMins);
         addNode(node);
+
     }
     catch (std::runtime_error const & err)
     {

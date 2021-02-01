@@ -52,21 +52,27 @@ long long NodeCreatingWindow::getLifeTimeInMins()
 
     switch (ui->lifeTimesBox->currentIndex()) {
     case 0:
-        lifeTime = 30;
+        lifeTime = 1;
         break;
     case 1:
-        lifeTime = 60;
+        lifeTime = 5;
         break;
     case 2:
-        lifeTime = 180;
+        lifeTime = 30;
         break;
     case 3:
-        lifeTime = 360;
+        lifeTime = 60;
         break;
     case 4:
-        lifeTime = 720;
+        lifeTime = 180;
         break;
     case 5:
+        lifeTime = 360;
+        break;
+    case 6:
+        lifeTime = 720;
+        break;
+    case 7:
         lifeTime = 1440;
         break;
     }
@@ -78,7 +84,7 @@ void NodeCreatingWindow::on_filesList_itemClicked(QListWidgetItem *item)
 {
     if (item->checkState() == Qt::Checked)
     {
-        fileNames.push_back(directoryPath + item->text());
+        fileNames.push_back(directoryPath + std::filesystem::path::preferred_separator +  item->text());
     }
     else
     {

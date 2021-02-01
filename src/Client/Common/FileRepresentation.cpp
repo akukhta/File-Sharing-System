@@ -26,7 +26,6 @@ FileRepresentation::FileRepresentation(std::string const &fileName, size_t nodeI
     if (!file.is_open())
         throw std::runtime_error("Couldn`t open a file!");
 
-    lastUsed = std::chrono::system_clock::now();
 }
 
 const std::vector<unsigned char> FileRepresentation::read()
@@ -44,7 +43,6 @@ const std::vector<unsigned char> FileRepresentation::read()
 
     currentPosition += currentChunkSize;
 
-    lastUsed = std::chrono::system_clock::now();
 
     return chunk;
 }
@@ -61,7 +59,6 @@ void FileRepresentation::write(const std::vector<unsigned char> &chunk)
 
     currentPosition += chunk.size();
 
-    lastUsed = std::chrono::system_clock::now();
 
 }
 

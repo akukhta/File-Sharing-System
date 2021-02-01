@@ -85,3 +85,5 @@ Node ClientInterface::createNode(long long lifeTimeInMins)
     std::uint32_t nodeID = reader.read<std::uint32_t>();
     return Node(std::to_string(nodeID), deletingDate);
 }
+
+void sendFile(std::string const & fileName)

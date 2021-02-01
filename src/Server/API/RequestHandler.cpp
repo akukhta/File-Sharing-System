@@ -1,8 +1,8 @@
 #include "RequestHandler.h"
 
 RequestHandler::RequestHandler(std::unique_ptr<IAccountManager>  accountManager,
-        std::unique_ptr<INodesManager>  nodesManager) : accountManager(std::move(accountManager)),
-            nodesManager(std::move(nodesManager))
+        std::unique_ptr<INodesManager>  nodesManager, std::unique_ptr<IFilesManager>  filesManager) : accountManager(std::move(accountManager)),
+            nodesManager(std::move(nodesManager)), filesManager(std::move(filesManager))
 { }
 
 std::vector<char> RequestHandler::handle(std::vector<char> &buffer, int socketFD)
@@ -22,6 +22,18 @@ std::vector<char> RequestHandler::handle(std::vector<char> &buffer, int socketFD
         break;
     case ServerOperation::CreateNewNode:
         answer = createNewNode(buffer);
+        break;
+    case ServerOperation::StartReading:
+        answer = startReadingFromFile(buffer);
+        break;
+    case ServerOperation::StartWritting:
+        answer = startWrittingToFile(buffer);
+        break;
+    case ServerOperation::ReadPartOfFile:
+        answer = readPartOfFile(buffer);
+        break;
+    case ServerOperation::WritePartOfFile:
+        answer = writePartOfFile(buffer);
         break;
     default:
         break;
@@ -139,6 +151,95 @@ std::vector<char> RequestHandler::createNewNode(std::vector<char> &buffer)
             writer.write<std::string>("Couldn`t create a new node!");
         }
     } catch (std::runtime_error const & err)
+    {
+        writer.write<ServerResult>(ServerResult::Failure);
+        writer.write<std::string>(Configuration::getServerErrorMessage());
+    }
+
+    return writer.getBuffer();
+}
+
+std::vector<char> RequestHandler::startReadingFromFile(std::vector<char> &buffer)
+{
+    RequestReader reader(buffer);
+    RequestWritter writer;
+    const std::uint32_t sessionToken = reader.read<std::uint32_t>();
+    const size_t nodeID = reader.read<size_t>();
+    const std::string fileName = reader.read<std::string>();
+
+    try{
+
+        std::uint64_t size = filesManager->startReading(nodeID, sessionToken, fileName);
+        writer.write<ServerResult>(ServerResult::Success);
+        writer.write<std::uint64_t>(size);
+
+    } catch (std::runtime_error const & err)
+    {
+        writer.write<ServerResult>(ServerResult::Failure);
+        writer.write<std::string>(Configuration::getServerErrorMessage());
+    }
+
+    return writer.getBuffer();
+}
+
+std::vector<char> RequestHandler::startWrittingToFile(std::vector<char> &buffer)
+{
+    RequestReader reader(buffer);
+    RequestWritter writer;
+    const std::uint32_t sessionToken = reader.read<std::uint32_t>();
+    const size_t nodeID = reader.read<size_t>();
+    const std::string fileName = reader.read<std::string>();
+    const std::uint64_t fileSize = reader.read<std::uint64_t>();
+
+    try{
+
+        filesManager->startWritting(nodeID, sessionToken, fileName, fileSize);
+        writer.write<ServerResult>(ServerResult::Success);
+
+    } catch (std::runtime_error const &)
+    {
+        writer.write<ServerResult>(ServerResult::Failure);
+    }
+
+    return writer.getBuffer();
+}
+
+
+std::vector<char> RequestHandler::readPartOfFile(std::vector<char> & buffer)
+{
+    RequestReader reader(buffer);
+    RequestWritter writer;
+    const std::uint32_t sessionToken = reader.read<std::uint32_t>();
+
+    try{
+
+        auto partOfFile = filesManager->readPartOfFile(sessionToken);
+        writer.write<ServerResult>(ServerResult::Success);
+        writer.write<std::vector<unsigned char>>(partOfFile);
+
+    } catch (std::runtime_error const &)
+    {
+        writer.write<ServerResult>(ServerResult::Failure);
+        writer.write<std::string>(Configuration::getServerErrorMessage());
+    }
+
+    return writer.getBuffer();
+}
+
+std::vector<char> RequestHandler::writePartOfFile(std::vector<char> & buffer)
+{
+    RequestReader reader(buffer);
+    RequestWritter writer;
+    const std::uint32_t sessionToken = reader.read<std::uint32_t>();
+    const std::vector<unsigned char> chunk = reader.read<std::vector<unsigned char>>();
+
+    try
+    {
+
+        filesManager->writePartOfFile(chunk, sessionToken);
+        writer.write<ServerResult>(ServerResult::Success);
+
+    } catch (std::runtime_error const &)
     {
         writer.write<ServerResult>(ServerResult::Failure);
         writer.write<std::string>(Configuration::getServerErrorMessage());

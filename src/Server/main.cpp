@@ -6,6 +6,7 @@
 #include "API/Server.h"
 #include "Data/IDataBase.h"
 #include "Data/MySQLDataBase.h"
+#include "Data/FilesRepository.h"
 
 using namespace std;
 
@@ -18,8 +19,10 @@ int main()
                 di::bind<IDataBase>().in(di::singleton).to<MySQLDatabase>(),
                 di::bind<AbstractAccountRepository>().in(di::unique).to<AccountsRepository>(),
                 di::bind<AbstractNodesRepository>().in(di::unique).to<NodesRepository>(),
+                di::bind<AbstractFilesRepository>().in(di::unique).to<FilesRepository>(),
                 di::bind<IAccountManager>().in(di::unique).to<AccountManager>(),
                 di::bind<INodesManager>().in(di::unique).to<NodesManager>(),
+                di::bind<IFilesManager>().in(di::unique).to<FilesManager>(),
                 di::bind<IRequestHandler>().in(di::unique).to<RequestHandler>(),
                 di::bind<int>.to(5441),
                 di::bind<size_t>.to(static_cast<size_t>(32)),

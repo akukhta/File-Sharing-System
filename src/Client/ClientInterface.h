@@ -8,6 +8,7 @@
 #include "Common/RequestReader.h"
 #include "Common/RequestWritter.h"
 #include "Common/Node.h"
+#include "Common/FileRepresentation.h"
 
 class ClientInterface
 {
@@ -18,11 +19,13 @@ public:
     bool authorize(std::string email, std::string password, bool isRegister = true);
     bool authorized();
     std::vector<Node> getNodes();
+    void sendFile(std::string const & fileName);
     Node createNode(long long lifeTimeInMins);
 
 private:
     std::unique_ptr<Client> client;
     std::uint32_t sessionToken;
+    void startFileSending(std::string const & fileName);
     bool isAuthorized = false;
 };
 

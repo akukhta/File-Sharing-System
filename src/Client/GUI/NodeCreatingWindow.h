@@ -4,6 +4,7 @@
 #include <QFileDialog>
 #include <QListWidgetItem>
 #include <chrono>
+#include <filesystem>
 
 namespace Ui {
 class NodeCreatingWindow;
@@ -31,6 +32,6 @@ private:
     QString directoryPath;
     std::vector<QString> fileNames;
     void updateList();
-    const QStringList lifeTimes = {"30 minutes", "1 hour", "3 hours", "6 hours", "12 hours", "24 hours"};
+    const QStringList lifeTimes = {"1 minute", "5 minutes" ,"30 minutes", "1 hour", "3 hours", "6 hours", "12 hours", "24 hours"};
 };
 
