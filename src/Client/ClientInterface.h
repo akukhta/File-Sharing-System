@@ -19,13 +19,13 @@ public:
     bool authorize(std::string email, std::string password, bool isRegister = true);
     bool authorized();
     std::vector<Node> getNodes();
-    void sendFile(std::string const & fileName);
+    void sendFile(std::string const & fileName, size_t const nodeID);
     Node createNode(long long lifeTimeInMins);
 
 private:
     std::unique_ptr<Client> client;
     std::uint32_t sessionToken;
-    void startFileSending(std::string const & fileName);
+    void startFileSending(std::string const & fileName, size_t const nodeID);
     bool isAuthorized = false;
 };
 

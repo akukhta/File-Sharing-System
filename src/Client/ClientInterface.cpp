@@ -86,4 +86,40 @@ Node ClientInterface::createNode(long long lifeTimeInMins)
     return Node(std::to_string(nodeID), deletingDate);
 }
 
-void sendFile(std::string const & fileName)
+void ClientInterface::sendFile(std::string const & fileName, size_t const nodeID)
+{
+    startFileSending(fileName, nodeID);
+    FileRepresentation file(fileName, Permissions::ReadOnly);
+
+    while(!file.isDone)
+    {
+        RequestWritter writer;
+        writer.write<char>(8);
+        writer.write<std::uint32_t>(sessionToken);
+        auto chunk = file.read();
+        writer.write<std::vector<unsigned char>>(chunk);
+        client->sendToServer(writer.getBuffer());
+        auto answer = client->receiveFromServer();
+        RequestReader reader(answer);
+        if (reader.read<ServerResult>() == ServerResult::Failure)
+            throw std::runtime_error(reader.read<std::string>());
+    }
+
+}
+
+void ClientInterface::startFileSending(std::string const & fileName, size_t const nodeID)
+{
+    std::string nameWithoutPath = fileName.substr(fileName.find_last_of(std::filesystem::path::preferred_separator) + 1);
+    RequestWritter writer;
+    writer.write<char>(5);
+    writer.write<std::uint32_t>(sessionToken);
+    writer.write<size_t>(nodeID);
+    writer.write<std::string>(nameWithoutPath);
+    std::uint64_t fileSize = std::filesystem::file_size(fileName);
+    writer.write<std::uint64_t>(fileSize);
+    client->sendToServer(writer.getBuffer());
+    auto answer = client->receiveFromServer();
+    RequestReader reader(answer);
+    if (reader.read<ServerResult>() == ServerResult::Failure)
+        throw std::runtime_error("Couldn`t send file to server!");
+}

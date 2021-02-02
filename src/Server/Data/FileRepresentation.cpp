@@ -13,20 +13,22 @@ FileRepresentation::FileRepresentation(std::string const &fileName, size_t nodeI
             std::filesystem::create_directory(directoryPath);
         }
         pathToFile = directoryPath / fileName;
-        file.open(pathToFile, file.binary | file.in);
+        file.open(pathToFile, file.binary | file.out);
     }
 
     else
     {
         this->fileSize = static_cast<std::uint64_t>(std::filesystem::file_size(directoryPath / fileName));
         pathToFile = directoryPath / fileName;
-        file.open(pathToFile, file.binary | file.out);
+        file.open(pathToFile, file.binary | file.in);
     }
 
     if (!file.is_open())
         throw std::runtime_error("Couldn`t open a file!");
 
     lastUsed = std::chrono::system_clock::now();
+    currentPosition = 0;
+
 }
 
 const std::vector<unsigned char> FileRepresentation::read()
@@ -44,6 +46,9 @@ const std::vector<unsigned char> FileRepresentation::read()
 
     currentPosition += currentChunkSize;
 
+    if (currentPosition == fileSize)
+        file.close();
+
     lastUsed = std::chrono::system_clock::now();
 
     return chunk;
@@ -60,6 +65,9 @@ void FileRepresentation::write(const std::vector<unsigned char> &chunk)
     std::copy(chunk.begin(), chunk.end(), std::ostream_iterator<unsigned char>(file));
 
     currentPosition += chunk.size();
+
+    if (currentPosition == fileSize)
+        file.close();
 
     lastUsed = std::chrono::system_clock::now();
 

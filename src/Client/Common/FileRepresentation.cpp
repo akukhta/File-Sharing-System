@@ -1,30 +1,25 @@
 #include "FileRepresentation.h"
 
-FileRepresentation::FileRepresentation(std::string const &fileName, size_t nodeID, Permissions const permission, std::uint64_t const fileSize) : fileName(fileName), fileSize(fileSize), permission(permission)
+FileRepresentation::FileRepresentation(std::string const &fullFilePath, Permissions const permission, size_t nodeID, std::uint64_t fileSize) : fullFilePath(fullFilePath), fileSize(fileSize), permission(permission)
 {
-    std::filesystem::path directoryPath(std::to_string(nodeID));
+    pathToFile = fullFilePath;
     //If we need a file for writing
+
     if (permission == Permissions::WriteOnly)
     {
-        //Checking if a directory with the name same as node id exists
-        if (!std::filesystem::exists(directoryPath))
-        {
-            //create if the directory doesn`t exist
-            std::filesystem::create_directory(directoryPath);
-        }
-        pathToFile = directoryPath / fileName;
-        file.open(pathToFile, file.binary | file.in);
+        file.open(pathToFile, file.binary | file.out);
     }
 
     else
     {
-        this->fileSize = static_cast<std::uint64_t>(std::filesystem::file_size(directoryPath / fileName));
-        pathToFile = directoryPath / fileName;
-        file.open(pathToFile, file.binary | file.out);
+        this->fileSize = static_cast<std::uint64_t>(std::filesystem::file_size(fullFilePath));
+        file.open(pathToFile, file.binary | file.in);
     }
 
     if (!file.is_open())
         throw std::runtime_error("Couldn`t open a file!");
+
+    currentPosition = 0;
 
 }
 
@@ -43,6 +38,8 @@ const std::vector<unsigned char> FileRepresentation::read()
 
     currentPosition += currentChunkSize;
 
+    if (currentPosition == fileSize)
+        isDone = true;
 
     return chunk;
 }
@@ -59,7 +56,8 @@ void FileRepresentation::write(const std::vector<unsigned char> &chunk)
 
     currentPosition += chunk.size();
 
-
+    if (currentPosition == fileSize)
+        isDone = true;
 }
 
 std::uint64_t FileRepresentation::getFileSize()
@@ -70,6 +68,11 @@ std::uint64_t FileRepresentation::getFileSize()
 void FileRepresentation::deleteFile()
 {
     std::remove(pathToFile.c_str());
+}
+
+void FileRepresentation::closeFile()
+{
+    file.close();
 }
 
 

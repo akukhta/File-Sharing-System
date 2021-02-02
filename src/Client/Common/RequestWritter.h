@@ -41,6 +41,13 @@ public:
          std::copy(arg.begin(), arg.end(), std::back_inserter(buffer));
      }
 
+     template<class T, typename std::enable_if_t<std::is_same<std::vector<unsigned char>,T>::value>* = nullptr>
+     void write(std::vector<unsigned char> const &arg)
+     {
+         write<size_t>(arg.size());
+         std::copy(arg.begin(), arg.end(), std::back_inserter(buffer));
+     }
+
      template<class T, typename std::enable_if_t<std::is_same<std::string,T>::value>* = nullptr>
      void write(std::string const& arg)
      {

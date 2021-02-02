@@ -44,10 +44,23 @@ void NodesWindow::on_createNodeBtn_clicked()
         return;
 
     long long lifeTimeInMins = createWindow->getLifeTimeInMins();
+    auto files = createWindow->getFileNames();
+
     try{
+
         auto node = clientInterface->createNode(lifeTimeInMins);
         addNode(node);
-
+        auto nodeID = static_cast<std::uint32_t>(std::stoi(node.nodeID));
+        for (auto & x : files)
+        {
+            try
+            {
+                clientInterface->sendFile(x.toStdString(), nodeID);
+            } catch (std::runtime_error const & err)
+            {
+                Configuration::showErrorDialog(err.what());
+            }
+        }
     }
     catch (std::runtime_error const & err)
     {
