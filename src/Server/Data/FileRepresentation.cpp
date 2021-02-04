@@ -1,6 +1,6 @@
 #include "FileRepresentation.h"
 
-FileRepresentation::FileRepresentation(std::string const &fileName, size_t nodeID, Permissions const permission, std::uint64_t const fileSize) : fileName(fileName), fileSize(fileSize), permission(permission)
+FileRepresentation::FileRepresentation(std::string const &fileName, std::uint32_t nodeID, Permissions const permission, std::uint64_t const fileSize) : fileName(fileName), fileSize(fileSize), permission(permission)
 {
     std::filesystem::path directoryPath(std::to_string(nodeID));
     //If we need a file for writing

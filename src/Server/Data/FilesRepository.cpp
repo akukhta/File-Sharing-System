@@ -3,12 +3,13 @@
 FilesRepository::FilesRepository(std::shared_ptr<IDataBase> dataBase) : dataBase(dataBase)
 { ; }
 
-void FilesRepository::startWritting(size_t nodeID, std::uint32_t sessionToken, const std::string &fileName, std::uint64_t fileSize)
+void FilesRepository::startWritting(std::uint32_t nodeID, std::uint32_t sessionToken, const std::string &fileName, std::uint64_t fileSize)
 {
+    dataBase->addFile(nodeID, fileName);
     usingFiles.insert(std::make_pair(sessionToken, FileRepresentation(fileName, nodeID, Permissions::WriteOnly, fileSize)));
 }
 
-std::uint64_t FilesRepository::startReading(size_t nodeID, std::uint32_t sessionToken, const std::string &fileName)
+std::uint64_t FilesRepository::startReading(std::uint32_t nodeID, std::uint32_t sessionToken, const std::string &fileName)
 {
     usingFiles.insert(std::make_pair(sessionToken, FileRepresentation(fileName, nodeID, Permissions::ReadOnly)));
     return usingFiles[sessionToken].getFileSize();
@@ -50,4 +51,9 @@ void FilesRepository::deleteFile(std::uint32_t sessionToken)
 {
     usingFiles[sessionToken].deleteFile();
     usingFiles.erase(sessionToken);
+}
+
+std::vector<std::string> FilesRepository::getFilesList(std::uint32_t nodeID)
+{
+    return dataBase->get
 }

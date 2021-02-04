@@ -164,7 +164,7 @@ std::vector<char> RequestHandler::startReadingFromFile(std::vector<char> &buffer
     RequestReader reader(buffer);
     RequestWritter writer;
     const std::uint32_t sessionToken = reader.read<std::uint32_t>();
-    const size_t nodeID = reader.read<size_t>();
+    const std::uint32_t nodeID = reader.read<std::uint32_t>();
     const std::string fileName = reader.read<std::string>();
 
     try{
@@ -187,7 +187,7 @@ std::vector<char> RequestHandler::startWrittingToFile(std::vector<char> &buffer)
     RequestReader reader(buffer);
     RequestWritter writer;
     const std::uint32_t sessionToken = reader.read<std::uint32_t>();
-    const size_t nodeID = reader.read<size_t>();
+    const std::uint32_t nodeID = reader.read<std::uint32_t>();
     const std::string fileName = reader.read<std::string>();
     const std::uint64_t fileSize = reader.read<std::uint64_t>();
 
@@ -246,6 +246,20 @@ std::vector<char> RequestHandler::writePartOfFile(std::vector<char> & buffer)
     }
 
     return writer.getBuffer();
+}
+
+std::vector<char> RequestHandler::getFilesOfNode(std::vector<char> &buffer)
+{
+    RequestReader reader(buffer);
+    RequestWritter writer;
+    const std::uint32_t nodeID = reader.read<std::uint32_t>();
+
+    try
+    {
+        auto files = filesManager->getFilesList(nodeID);
+
+    }
+
 }
 
 //Method for session deleting, when client disconnects or pushes "log out" button.

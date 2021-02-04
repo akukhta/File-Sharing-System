@@ -12,7 +12,7 @@ enum class Permissions : bool { ReadOnly = false, WriteOnly = true};
 class FileRepresentation
 {
 public:
-    FileRepresentation(std::string const &fileName, size_t nodeID, Permissions const permission, std::uint64_t const fileSize = 0);
+    FileRepresentation(std::string const &fileName, std::uint32_t nodeID, Permissions const permission, std::uint64_t const fileSize = 0);
     FileRepresentation() = default;
     std::vector<char> read();
     void write(std::vector<char> const & chunk);

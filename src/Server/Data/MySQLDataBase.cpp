@@ -22,6 +22,7 @@ bool MySQLDatabase::insertQuery(std::string querystr)
     sql::Statement* statement = conn->createStatement();
 
     try{
+        std::lock_guard<std::mutex> lock(dataBaseMutex);
         statement->execute(querystr);
     }
     catch (sql::SQLException const &ex)
@@ -43,6 +44,7 @@ sql::ResultSet* MySQLDatabase::abstractSelectQuery(std::string const &query)
     sql::ResultSet* result = nullptr;
     
     try{
+        std::lock_guard<std::mutex> lock(dataBaseMutex);
         result = statement->executeQuery(query);
     }
 
@@ -65,9 +67,7 @@ bool MySQLDatabase::authorizationQuery(std::string const & email,
 
     bool returnValue = false;
 
-    dataBaseMutex.lock();
     sql::ResultSet *result = abstractSelectQuery(query);
-    dataBaseMutex.unlock();
 
     if (result != nullptr && result->rowsCount() == 1)
     {
@@ -87,17 +87,13 @@ bool MySQLDatabase::createSessionQuery(std::uint32_t sessionToken, int socketID,
     const std::string query = "insert into Sessions values (" + std::to_string(sessionToken)
             + "," + std::to_string(socketID) + "," + std::to_string(userID) + ");";
 
-    dataBaseMutex.lock();
     auto result = insertQuery(query);
-    dataBaseMutex.unlock();
     return result;
 }
 
 std::pair<std::multiset<Node>, std::set<std::uint32_t>> MySQLDatabase::allNodes()
 {
-    dataBaseMutex.lock();
     auto resultSet = abstractSelectQuery("select * from Nodes;");
-    dataBaseMutex.unlock();
     std::multiset<Node> nodes;
     std::set<std::uint32_t> ids;
 
@@ -119,17 +115,13 @@ std::pair<std::multiset<Node>, std::set<std::uint32_t>> MySQLDatabase::allNodes(
 void MySQLDatabase::closeSession(int socketFD)
 {
     std::string query = "delete from Sessions where socketID = " + std::to_string(socketFD) + ";";
-    dataBaseMutex.lock();
     insertQuery(query);
-    dataBaseMutex.unlock();
 }
 
 std::vector<std::pair<std::string, std::string>> MySQLDatabase::nodesQuery(unsigned int sessionToken)
 {
     const std::string query = "select * from Nodes where UserID = (select UserID from Sessions where sessionToken = " + std::to_string(sessionToken) + ");";
-    dataBaseMutex.lock();
     sql::ResultSet *result = abstractSelectQuery(query);
-    dataBaseMutex.unlock();
 
     if (result == nullptr)
         throw std::runtime_error("Nodes query has been failed!");
@@ -151,14 +143,11 @@ Node MySQLDatabase::createNode(const std::uint32_t sessionToken, const std::stri
      + std::to_string(sessionToken) + ")," + "\'" + deletingDate
      + "\');";
 
-     dataBaseMutex.lock();
      if (!insertQuery(query))
      {
-        dataBaseMutex.unlock();
         throw std::runtime_error("Couldn`t create a new node!");
      }
 
-     dataBaseMutex.unlock();
      std::cout << std::to_string(generatedID) << " has been created" << std::endl;
      return Node(generatedID, deletingDate);
 }
@@ -166,10 +155,60 @@ Node MySQLDatabase::createNode(const std::uint32_t sessionToken, const std::stri
 void MySQLDatabase::deleteNode(std::uint32_t nodeID)
 {
     const std::string query = "delete from Nodes where NodeID = " + std::to_string(nodeID) + ";";
-    dataBaseMutex.lock();
     std::cout << std::to_string(nodeID) << (insertQuery(query) == true ? " has been deleted from DB!"
                                             :   " hasn`t been deleted") << std::endl;;
-    dataBaseMutex.unlock();
+}
+
+void MySQLDatabase::addFile(size_t nodeID, std::string const & fileName)
+{
+    std::string const query = "insert into Files(NodeID, FileName) values ("
+            + std::to_string(nodeID) + ", \'" + fileName + "\');";
+
+    if(!insertQuery(query))
+    {
+        throw std::runtime_error("Failed to insert file into the Data Base");
+    }
+
+}
+
+void MySQLDatabase::deleteFilesFromNode(size_t nodeID)
+{
+    std::string const query = "delete from Files where NodeID = " + std::to_string(nodeID) + ";";
+
+    if (!insertQuery(query))
+    {
+        throw std::runtime_error("Failed to delete files from a node");
+    }
+}
+
+void MySQLDatabase::deleteFile(size_t nodeID, std::string const & fileName)
+{
+    std::string const query = "delete from Files where NodeID = " + std::to_string(nodeID)
+            + " and FileName = \'" + fileName + "\';";
+
+    if (!insertQuery(query))
+    {
+        throw std::runtime_error("Failed to delete a file from the Data Base");
+    }
+}
+
+std::vector<std::string> MySQLDatabase::getFilesList(std::uint32_t nodeID)
+{
+    std::string const query = "select FileName from Files where NodeID = " + std::to_string(nodeID) + ";";
+
+    auto result = abstractSelectQuery(query);
+
+    if (result == nullptr)
+        return std::vector<std::string>();
+
+    std::vector<std::string> fileNames;
+
+    while(result->next())
+    {
+        fileNames.push_back(result->getString("FileName"));
+    }
+
+    return fileNames;
 }
 
 MySQLDatabase::~MySQLDatabase()
@@ -179,3 +218,4 @@ MySQLDatabase::~MySQLDatabase()
     std::cout << "Data base has been deleted!" << std::endl;
     delete conn;
 }
+

@@ -4,12 +4,12 @@ FilesManager::FilesManager(std::unique_ptr<AbstractFilesRepository> filesRep) :
     filesRep(std::move(filesRep))
 {;}
 
-void FilesManager::startWritting(size_t nodeID, std::uint32_t sessionToken, const std::string &fileName, std::uint64_t fileSize)
+void FilesManager::startWritting(std::uint32_t nodeID, std::uint32_t sessionToken, const std::string &fileName, std::uint64_t fileSize)
 {
     filesRep->startWritting(nodeID, sessionToken, fileName, fileSize);
 }
 
-std::uint64_t FilesManager::startReading(size_t nodeID, std::uint32_t sessionToken, std::string const & fileName)
+std::uint64_t FilesManager::startReading(std::uint32_t nodeID, std::uint32_t sessionToken, std::string const & fileName)
 {
     return filesRep->startReading(nodeID, sessionToken, fileName);
 }
@@ -27,4 +27,9 @@ void FilesManager::writePartOfFile(const std::vector<char> &buffer, std::uint32_
 void FilesManager::deleteFile(std::uint32_t sessionToken)
 {
     filesRep->deleteFile(sessionToken);
+}
+
+std::vector<std::string> FilesManager::getFilesList(std::uint32_t nodeID)
+{
+    return filesRep->getFilesList(nodeID);
 }

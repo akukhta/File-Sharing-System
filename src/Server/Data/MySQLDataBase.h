@@ -23,6 +23,10 @@ public:
     virtual std::vector<std::pair<std::string, std::string>> nodesQuery(unsigned int userID) override final;
     virtual std::pair<std::multiset<Node>, std::set<std::uint32_t> > allNodes() override final;
     virtual void deleteNode(std::uint32_t nodeID) override final;
+    virtual void addFile(size_t nodeID, std::string const & fileName) override final;
+    virtual void deleteFilesFromNode(size_t nodeID) override final;
+    virtual void deleteFile(size_t nodeID, std::string const & fileName) override final;
+    virtual std::vector<std::string> getFilesList(std::uint32_t nodeID) override final;
     ~MySQLDatabase();
 private:
     //Connection pointer to mysql database
