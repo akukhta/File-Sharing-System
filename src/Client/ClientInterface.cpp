@@ -97,7 +97,7 @@ void ClientInterface::sendFile(std::string const & fileName, size_t const nodeID
         writer.write<char>(8);
         writer.write<std::uint32_t>(sessionToken);
         auto chunk = file.read();
-        writer.write<std::vector<unsigned char>>(chunk);
+        writer.write<std::vector<char>>(chunk);
         client->sendToServer(writer.getBuffer());
         auto answer = client->receiveFromServer();
         RequestReader reader(answer);

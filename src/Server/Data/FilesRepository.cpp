@@ -14,14 +14,36 @@ std::uint64_t FilesRepository::startReading(size_t nodeID, std::uint32_t session
     return usingFiles[sessionToken].getFileSize();
 }
 
-std::vector<unsigned char> FilesRepository::readPartOfFile(std::uint32_t sessionToken)
+std::vector<char> FilesRepository::readPartOfFile(std::uint32_t sessionToken)
 {
-    return usingFiles[sessionToken].read();
+    auto file = usingFiles.find(sessionToken);
+
+    if (file == usingFiles.end())
+        throw std::runtime_error("A file doesn`t exist");
+
+    auto part = file->second.read();
+
+    if (file->second.isEnded)
+    {
+        usingFiles.erase(file);
+    }
+
+    return part;
 }
 
-void FilesRepository::writePartOfFile(const std::vector<unsigned char> &buffer, std::uint32_t sessionToken)
+void FilesRepository::writePartOfFile(const std::vector<char> &buffer, std::uint32_t sessionToken)
 {
-    usingFiles[sessionToken].write(buffer);
+    auto file = usingFiles.find(sessionToken);
+
+    if (file == usingFiles.end())
+        throw std::runtime_error("A file doesn`t exist");
+
+    file->second.write(buffer);
+
+    if (file->second.isEnded)
+    {
+        usingFiles.erase(file);
+    }
 }
 
 void FilesRepository::deleteFile(std::uint32_t sessionToken)

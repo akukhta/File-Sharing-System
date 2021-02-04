@@ -14,12 +14,12 @@ std::uint64_t FilesManager::startReading(size_t nodeID, std::uint32_t sessionTok
     return filesRep->startReading(nodeID, sessionToken, fileName);
 }
 
-std::vector<unsigned char> FilesManager::readPartOfFile(std::uint32_t sessionToken)
+std::vector<char> FilesManager::readPartOfFile(std::uint32_t sessionToken)
 {
     return filesRep->readPartOfFile(sessionToken);
 }
 
-void FilesManager::writePartOfFile(const std::vector<unsigned char> &buffer, std::uint32_t sessionToken)
+void FilesManager::writePartOfFile(const std::vector<char> &buffer, std::uint32_t sessionToken)
 {
     filesRep->writePartOfFile(buffer, sessionToken);
 }

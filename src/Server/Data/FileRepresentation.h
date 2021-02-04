@@ -14,11 +14,11 @@ class FileRepresentation
 public:
     FileRepresentation(std::string const &fileName, size_t nodeID, Permissions const permission, std::uint64_t const fileSize = 0);
     FileRepresentation() = default;
-    const std::vector<unsigned char> read();
-    void write(std::vector<unsigned char> const & chunk);
+    std::vector<char> read();
+    void write(std::vector<char> const & chunk);
     std::uint64_t getFileSize();
     void deleteFile();
-
+    bool isEnded = false;
 private:
     std::string fileName;
     std::filesystem::path pathToFile;

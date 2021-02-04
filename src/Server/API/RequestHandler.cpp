@@ -215,7 +215,7 @@ std::vector<char> RequestHandler::readPartOfFile(std::vector<char> & buffer)
 
         auto partOfFile = filesManager->readPartOfFile(sessionToken);
         writer.write<ServerResult>(ServerResult::Success);
-        writer.write<std::vector<unsigned char>>(partOfFile);
+        writer.write<std::vector<char>>(partOfFile);
 
     } catch (std::runtime_error const &)
     {
@@ -231,7 +231,7 @@ std::vector<char> RequestHandler::writePartOfFile(std::vector<char> & buffer)
     RequestReader reader(buffer);
     RequestWritter writer;
     const std::uint32_t sessionToken = reader.read<std::uint32_t>();
-    const std::vector<unsigned char> chunk = reader.read<std::vector<unsigned char>>();
+    const std::vector<char> chunk = reader.read<std::vector<char>>();
 
     try
     {

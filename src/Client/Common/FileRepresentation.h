@@ -14,8 +14,8 @@ class FileRepresentation
 public:
     FileRepresentation(std::string const &fullFilePath, Permissions const permission, size_t nodeID = 0,std::uint64_t fileSize = 0);
     FileRepresentation() = default;
-    const std::vector<unsigned char> read();
-    void write(std::vector<unsigned char> const & chunk);
+    std::vector<char> read();
+    void write(std::vector<char> const & chunk);
     std::uint64_t getFileSize();
     void deleteFile();
     bool isDone = false;

@@ -31,7 +31,7 @@ FileRepresentation::FileRepresentation(std::string const &fileName, size_t nodeI
 
 }
 
-const std::vector<unsigned char> FileRepresentation::read()
+std::vector<char> FileRepresentation::read()
 {
     if (permission == Permissions::WriteOnly)
         throw std::runtime_error("A file has a read only attribute!");
@@ -41,20 +41,24 @@ const std::vector<unsigned char> FileRepresentation::read()
     std::uint64_t diff = fileSize - currentPosition;
     size_t currentChunkSize = diff >= chunkSize ? chunkSize : diff;
 
-    std::vector<unsigned char> chunk;
-    std::copy_n(std::istream_iterator<unsigned char>(file), currentChunkSize, std::back_inserter(chunk));
+    std::vector<char> chunk(currentChunkSize);
+
+    file.read(chunk.data(), currentChunkSize);
 
     currentPosition += currentChunkSize;
 
     if (currentPosition == fileSize)
+    {
+        isEnded = true;
         file.close();
+    }
 
     lastUsed = std::chrono::system_clock::now();
 
     return chunk;
 }
 
-void FileRepresentation::write(const std::vector<unsigned char> &chunk)
+void FileRepresentation::write(const std::vector<char> &chunk)
 {
     if (permission == Permissions::ReadOnly)
         throw std::runtime_error("A file has a ReadOnly permission");
@@ -62,12 +66,15 @@ void FileRepresentation::write(const std::vector<unsigned char> &chunk)
     if (currentPosition >= fileSize)
         throw std::runtime_error("A file has been ended");
 
-    std::copy(chunk.begin(), chunk.end(), std::ostream_iterator<unsigned char>(file));
-
+    //std::copy(chunk.begin(), chunk.end(), std::ostreambuf_iterator<char>(file));
+    file.write(chunk.data(), chunk.size());
     currentPosition += chunk.size();
 
     if (currentPosition == fileSize)
+    {
+        isEnded = true;
         file.close();
+    }
 
     lastUsed = std::chrono::system_clock::now();
 
