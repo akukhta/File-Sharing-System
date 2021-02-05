@@ -21,6 +21,7 @@ public:
     std::vector<Node> getNodes();
     void sendFile(std::string const & fileName, size_t const nodeID);
     Node createNode(long long lifeTimeInMins);
+    std::vector<std::string> getFiles(std::uint32_t nodeID);
 
 private:
     std::unique_ptr<Client> client;

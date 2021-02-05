@@ -10,8 +10,11 @@ NodesWindow::NodesWindow(std::shared_ptr<ClientInterface> const & clientInterfac
     ui->nodesTreeWidget->setHeaderLabels({"Node ID", "Life time"});
     auto nodes = clientInterface->getNodes();
 
-    for (auto const & node : nodes)
+    for (auto & node : nodes)
     {
+        auto files = clientInterface->getFiles(std::stoi(node.nodeID));
+        node.fileNames = files;
+        node.itemsIsLoaded = true;
         addNode(node);
     }
 
@@ -49,6 +52,17 @@ void NodesWindow::on_createNodeBtn_clicked()
     try{
 
         auto node = clientInterface->createNode(lifeTimeInMins);
+        std::vector<std::string> filesStr;
+
+        std::for_each(files.begin(), files.end(), [&filesStr](QString const & x)
+        {
+            auto name = x.toStdString();
+            name = name.substr(name.find_last_of(std::filesystem::path::preferred_separator) + 1);
+            filesStr.push_back(name);}
+        );
+
+        node.fileNames = filesStr;
+        node.itemsIsLoaded = true;
         addNode(node);
         auto nodeID = static_cast<std::uint32_t>(std::stoi(node.nodeID));
         for (auto & x : files)

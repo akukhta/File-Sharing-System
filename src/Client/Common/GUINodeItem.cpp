@@ -31,5 +31,15 @@ std::unique_ptr<QTreeWidgetItem> GUINodeItem::getGUIItem(QTreeWidget *widget)
         rootItem->addChild(new QTreeWidgetItem());
     }
 
+    else
+    {
+        for (auto file : fileNames)
+        {
+            auto item = new QTreeWidgetItem(rootItem.get());
+            item->setText(0,QString::fromStdString(file));
+            item->setText(1,QString::fromStdString(deletingDate));
+        }
+    }
+
     return std::move(rootItem);
 }

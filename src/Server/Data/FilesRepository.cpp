@@ -55,5 +55,5 @@ void FilesRepository::deleteFile(std::uint32_t sessionToken)
 
 std::vector<std::string> FilesRepository::getFilesList(std::uint32_t nodeID)
 {
-    return dataBase->get
+    return dataBase->getFilesList(nodeID);
 }

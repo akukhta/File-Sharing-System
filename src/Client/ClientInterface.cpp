@@ -113,7 +113,7 @@ void ClientInterface::startFileSending(std::string const & fileName, size_t cons
     RequestWritter writer;
     writer.write<char>(5);
     writer.write<std::uint32_t>(sessionToken);
-    writer.write<size_t>(nodeID);
+    writer.write<std::uint32_t>(nodeID);
     writer.write<std::string>(nameWithoutPath);
     std::uint64_t fileSize = std::filesystem::file_size(fileName);
     writer.write<std::uint64_t>(fileSize);
@@ -122,4 +122,27 @@ void ClientInterface::startFileSending(std::string const & fileName, size_t cons
     RequestReader reader(answer);
     if (reader.read<ServerResult>() == ServerResult::Failure)
         throw std::runtime_error("Couldn`t send file to server!");
+}
+
+std::vector<std::string> ClientInterface::getFiles(std::uint32_t nodeID)
+{
+    RequestWritter writer;
+    writer.write<char>(9);
+    writer.write<std::uint32_t>(nodeID);
+    client->sendToServer(writer.getBuffer());
+    auto answer = client->receiveFromServer();
+    RequestReader reader(answer);
+
+    if (reader.read<ServerResult>() == ServerResult::Failure)
+        throw std::runtime_error("Cannot get a files list!");
+
+    std::vector<std::string> files;
+    size_t filesSize = reader.read<size_t>();
+
+    for (size_t i = 0; i < filesSize; i++)
+    {
+        files.push_back(reader.read<std::string>());
+    }
+
+    return files;
 }
