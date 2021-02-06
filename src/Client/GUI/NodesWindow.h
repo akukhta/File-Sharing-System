@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QDialog>
+#include <QMenu>
 #include <memory>
 #include <vector>
 #include "ClientInterface.h"
@@ -22,6 +23,8 @@ public:
 
 private slots:
     void on_createNodeBtn_clicked();
+
+    void on_nodesTreeWidget_customContextMenuRequested(const QPoint &pos);
 
 private:
     Ui::NodesWindow *ui;

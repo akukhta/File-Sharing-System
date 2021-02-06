@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>496</width>
-    <height>322</height>
+    <width>709</width>
+    <height>396</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,6 +36,9 @@
    </item>
    <item row="0" column="0" rowspan="2">
     <widget class="QTreeWidget" name="nodesTreeWidget">
+     <property name="contextMenuPolicy">
+      <enum>Qt::CustomContextMenu</enum>
+     </property>
      <column>
       <property name="text">
        <string notr="true">1</string>
@@ -44,6 +47,16 @@
     </widget>
    </item>
   </layout>
+  <action name="actionDownload">
+   <property name="text">
+    <string>Download</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="text">
+    <string>Delete</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

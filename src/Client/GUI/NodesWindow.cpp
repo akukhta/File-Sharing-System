@@ -8,6 +8,8 @@ NodesWindow::NodesWindow(std::shared_ptr<ClientInterface> const & clientInterfac
     ui->setupUi(this);
     ui->nodesTreeWidget->setColumnCount(2);
     ui->nodesTreeWidget->setHeaderLabels({"Node ID", "Life time"});
+    ui->nodesTreeWidget->resizeColumnToContents(1);
+    ui->nodesTreeWidget->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
     auto nodes = clientInterface->getNodes();
 
     for (auto & node : nodes)
@@ -25,7 +27,8 @@ void NodesWindow::addNode(Node const &node)
     guiItems.emplace_back(node);
     auto item = (--guiItems.end())->getGUIItem(ui->nodesTreeWidget).release();
     ui->nodesTreeWidget->addTopLevelItem(item);
-
+    ui->nodesTreeWidget->resizeColumnToContents(1);
+    ui->nodesTreeWidget->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
 //    QTreeWidgetItem *item = new QTreeWidgetItem(ui->nodesTreeWidget);
 //    item->setText(0, QString::fromStdString(nodeID));
 //    item->addChild(new QTreeWidgetItem());
@@ -80,4 +83,11 @@ void NodesWindow::on_createNodeBtn_clicked()
     {
         Configuration::showErrorDialog(err.what());
     }
+}
+
+void NodesWindow::on_nodesTreeWidget_customContextMenuRequested(const QPoint &pos)
+{
+    QMenu menu(this);
+    menu.addAction("Download");
+    menu.addAction("Delete");
 }

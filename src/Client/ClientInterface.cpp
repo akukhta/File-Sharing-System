@@ -7,7 +7,7 @@ ClientInterface::ClientInterface(std::unique_ptr<Client> client) : client(std::m
 
 bool ClientInterface::connectToServer(std::string serverIP, int serverPort)
 {
-    client->connectToServer(serverIP, serverPort);
+    return client->connectToServer(serverIP, serverPort);
 }
 
 bool ClientInterface::authorize(std::string email, std::string password, bool isRegister)
