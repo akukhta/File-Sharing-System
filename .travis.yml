@@ -1,7 +1,7 @@
 dist: trusty
-
+sudo: require
 language: cpp
-
+compiler: gcc
 before_install:
 	- sudo apt-get install gcc-10
 	- sudo apt-get install qt5-default
