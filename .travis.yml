@@ -17,8 +17,8 @@ addons:
       - qt510svg
       - qt510imageformats
       - qt510tools
-      - libmysqlcppconn-dev
-      - libmysqlcppconn7v5 
+      - mysqlcppconn-dev
+      - mysqlcppconn7v5 
 
 script:
   - export CC=gcc-9 
