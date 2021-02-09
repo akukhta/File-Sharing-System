@@ -18,7 +18,7 @@ class RequestHandler : public IRequestHandler
 public:
     RequestHandler(std::unique_ptr<IAccountManager> accountManager,
                    std::unique_ptr<INodesManager> nodesManager,
-                   std::unique_ptr<IFilesManager> filesManager);
+                   std::shared_ptr<IFilesManager> filesManager);
 
     virtual std::vector<char> handle(std::vector<char> &buffer, int socketFD) override final;
     virtual void destroySession(int socketFD) override final;
@@ -34,7 +34,7 @@ private:
     //Pointer to a nodes manager(create, get list of nodes, etc).
     std::unique_ptr<INodesManager> nodesManager;
     //Pointer to a files manager. This class used for any operaions with filesystem.
-    std::unique_ptr<IFilesManager> filesManager;
+    std::shared_ptr<IFilesManager> filesManager;
     //Only for test
     //std::shared_ptr<DataBaseObject> dataBase;
     //Server's bussines logic

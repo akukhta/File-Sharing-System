@@ -24,9 +24,9 @@ void FilesManager::writePartOfFile(const std::vector<char> &buffer, std::uint32_
     filesRep->writePartOfFile(buffer, sessionToken);
 }
 
-void FilesManager::deleteFile(std::uint32_t sessionToken)
+void FilesManager::deleteDirectory(const std::string &dirName)
 {
-    filesRep->deleteFile(sessionToken);
+    filesRep->deleteDirectory(dirName);
 }
 
 std::vector<std::string> FilesManager::getFilesList(std::uint32_t nodeID)

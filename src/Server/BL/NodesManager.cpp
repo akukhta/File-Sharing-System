@@ -1,7 +1,8 @@
 #include "NodesManager.h"
 
-NodesManager::NodesManager(std::unique_ptr<AbstractNodesRepository> nodesRepository)
-    : nodesRepository(std::move(nodesRepository))
+NodesManager::NodesManager(std::unique_ptr<AbstractNodesRepository> nodesRepository,
+        std::weak_ptr<IFilesManager> filesManager)
+    : nodesRepository(std::move(nodesRepository)), filesManager(std::move(filesManager))
 {
     startOverdueNodesDeleting();
 }

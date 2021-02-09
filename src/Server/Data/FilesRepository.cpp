@@ -47,10 +47,9 @@ void FilesRepository::writePartOfFile(const std::vector<char> &buffer, std::uint
     }
 }
 
-void FilesRepository::deleteFile(std::uint32_t sessionToken)
+void FilesRepository::deleteDirectory(const std::string &dirName)
 {
-    usingFiles[sessionToken].deleteFile();
-    usingFiles.erase(sessionToken);
+    std::filesystem::remove_all(dirName);
 }
 
 std::vector<std::string> FilesRepository::getFilesList(std::uint32_t nodeID)

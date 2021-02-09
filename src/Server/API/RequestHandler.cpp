@@ -1,7 +1,7 @@
 #include "RequestHandler.h"
 
 RequestHandler::RequestHandler(std::unique_ptr<IAccountManager>  accountManager,
-        std::unique_ptr<INodesManager>  nodesManager, std::unique_ptr<IFilesManager>  filesManager) : accountManager(std::move(accountManager)),
+        std::unique_ptr<INodesManager>  nodesManager, std::shared_ptr<IFilesManager>  filesManager) : accountManager(std::move(accountManager)),
             nodesManager(std::move(nodesManager)), filesManager(std::move(filesManager))
 { }
 
