@@ -34,4 +34,3 @@ script:
     fi
   - cmake --version
   - qmake --version
-  - ...
