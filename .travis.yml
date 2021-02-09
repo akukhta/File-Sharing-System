@@ -17,9 +17,7 @@ addons:
       - qt510svg
       - qt510imageformats
       - qt510tools
-      - mysqlcppconn-dev
-      - mysqlcppconn7v5 
-
+   
 script:
   - export CC=gcc-9 
   - export CXX=g++-9 
@@ -29,12 +27,3 @@ script:
   - cd build
   - cmake ..
   - make 
-  - cd ../../Server/
-  - mkdir build 
-  - cd build 
-  - cmake ..
-  - make
-  - cmake --version
-  - qmake --version
-
-
