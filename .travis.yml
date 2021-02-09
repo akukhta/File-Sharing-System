@@ -6,8 +6,7 @@ compiler: gcc
 addons:
 	apt:
 	packages:
-	 -gcc-10
-	 -cmake
+		- gcc-10
 
 script:
     - sudo ln -s /usr/bin/gcc-10 /usr/local/bin/gcc
