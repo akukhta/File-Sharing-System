@@ -1,26 +1,16 @@
-os:
-  - linux
-  - osx
-
-language: cpp
-
 dist: trusty
 
-addons:
-  apt:
-    packages:
-      - gcc-7
-      - g++-7
-      - libqt-dev
+language: cpp
+compiler: gcc
 
-before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      brew update ;
-      brew install qt5 cmake ;
-      brew link --force qt ;
-    fi
+addons:
+	apt:
+	packages:
+	 -gcc-10
+	 -cmake
 
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      export CC=gcc-7 ;
-      export CXX=g++-7 ;
+    - sudo ln -s /usr/bin/gcc-10 /usr/local/bin/gcc
+    - sudo ln -s /usr/bin/g++-10 /usr/local/bin/g++
+    - export CC=/usr/bin/gcc-10
+    - export CXX=/usr/bin/g++-10
