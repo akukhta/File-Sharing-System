@@ -68,8 +68,6 @@ else()
       Application.cpp
       Client.h
       Client.cpp
-      ClientInterface.h
-      ClientInterface.cpp
       Common/Configuration.cpp
       Common/Configuration.h
       Common/FileRepresentation.h
