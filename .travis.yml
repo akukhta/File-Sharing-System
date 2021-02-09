@@ -30,7 +30,3 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       export CC=gcc-7 ;
       export CXX=g++-7 ;
-      source /opt/qt510/bin/qt510-env.sh ;
-    fi
-  - cmake --version
-  - qmake --version
