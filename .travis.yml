@@ -11,8 +11,8 @@ addons:
       - ubuntu-toolchain-r-test
       - sourceline: "ppa:beineri/opt-qt-5.10.1-trusty"
     packages:
-      - gcc-7
-      - g++-7
+      - gcc-10
+      - g++-10
       - qt510-meta-minimal
       - qt510svg
       - qt510imageformats
