@@ -8,15 +8,10 @@ dist: trusty
 
 addons:
   apt:
-    sources:
-      - sourceline: "ppa:beineri/opt-qt-5.10.1-trusty"
     packages:
       - gcc-7
       - g++-7
-      - qt510-meta-minimal
-      - qt510svg
-      - qt510imageformats
-      - qt510tools
+      - libqt-dev
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
