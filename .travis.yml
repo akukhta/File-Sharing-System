@@ -20,8 +20,8 @@ addons:
 
 
 script:
-  - export CC=gcc-7 
-  - export CXX=g++-7 
+  - export CC=gcc-9 
+  - export CXX=g++-9 
   - source /opt/qt510/bin/qt510-env.sh
   - cd src/Client/
   - mkdir build
