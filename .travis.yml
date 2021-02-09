@@ -1,13 +1,8 @@
+dist: trusty
 
 language: cpp
 
-dist: trusty
-
-addons:
-  apt:
-    packages:
-      - gcc-10
-
-script:
-    - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
-    - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
+before_install:
+	- sudo apt-get install gcc-10
+	- sudo apt-get install qt5-default
+	- sudo apt-get install libstdc++5
