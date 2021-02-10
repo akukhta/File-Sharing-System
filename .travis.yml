@@ -19,6 +19,10 @@ addons:
       - qt510tools
       - libmysqlcppconn7v5
       - libmysqlcppconn-dev   
+
+before_install:
+  - sudo apt-get -y install libmysqlcppconn7v5
+  - sudo apt-get -y install libmysqlcppconn-dev
 script:
   - export CC=gcc-9 
   - export CXX=g++-9 
