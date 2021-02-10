@@ -20,9 +20,10 @@ addons:
       - qt510tools   
 
 before_install:
-  - sudo apt-get update
-  - sudo apt-get -y install libmysqlcppconn7v5
-  - sudo apt-get -y install libmysqlcppconn-dev
+  - git clone https://github.com/mysql/mysql-connector-cpp
+  - cd mysql-connector-cpp 
+  - cmake --build . --target install  
+
 script:
   - export CC=gcc-9 
   - export CXX=g++-9 
