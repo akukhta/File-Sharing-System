@@ -21,8 +21,8 @@ addons:
 
 before_install:
   - git clone https://github.com/mysql/mysql-connector-cpp
-  - cd mysql-connector-cpp 
-  - cmake --build . --target install  
+  - cmake mysql-connector-cpp 
+ # - cmake --build . --target install  
 
 script:
   - export CC=gcc-9 
