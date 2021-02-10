@@ -4,6 +4,7 @@ os:
 language: cpp
 
 dist: trusty
+sudo: require
 
 addons:
   apt:
