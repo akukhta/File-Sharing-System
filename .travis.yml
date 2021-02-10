@@ -16,9 +16,7 @@ addons:
       - qt510-meta-minimal
       - qt510svg
       - qt510imageformats
-      - qt510tools
-      - libmysqlcppconn7v5
-      - libmysqlcppconn-dev   
+      - qt510tools   
 
 before_install:
   - sudo apt-get -y install libmysqlcppconn7v5
