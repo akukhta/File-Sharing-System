@@ -20,7 +20,7 @@ addons:
       - qt510tools   
 
 before_install:
-  - git clone https://github.com/mysql/mysql-connector-cpp
+  - cd src/Server/Libraries
   - cmake mysql-connector-cpp 
   - export LD_LIBRARY_PATH=.    
 
