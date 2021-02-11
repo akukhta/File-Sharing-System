@@ -28,7 +28,7 @@ script:
   - export CC=gcc-9 
   - export CXX=g++-9 
   - source /opt/qt510/bin/qt510-env.sh
-  - cd src/Client/
+  - cd ../../Client/
   - mkdir build
   - cd build
   - cmake ..
