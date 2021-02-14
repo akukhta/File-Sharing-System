@@ -42,7 +42,7 @@ add_executable(FileSharingSystemServer
     Common/Logger.h
 )
 
-target_link_libraries(FileSharingSystemServer pthread)
+target_link_libraries(FileSharingSystemServer pthread mariadbclient)
 #target_compile_options(FileSharingSystemServer PRIVATE -Werror -Wall -Wextra)
 
 file(COPY Resources/email.sh
