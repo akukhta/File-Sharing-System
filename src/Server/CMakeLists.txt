@@ -42,7 +42,9 @@ add_executable(FileSharingSystemServer
     Common/Logger.h
 )
 
-target_link_libraries(FileSharingSystemServer mysqlcppconn pthread)
+add_library(mysqlcppconn STATIC IMPORTED)
+set_property(TARGET  mysqlcppconn PROPERTY IMPORTED_LOCATION /src/Server/Libraries/mysql-connector-cpp) 
+target_link_libraries(FileSharingSystemServer pthread)
 target_compile_options(FileSharingSystemServer PRIVATE -Werror -Wall -Wextra)
 
 file(COPY Resources/email.sh

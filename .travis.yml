@@ -4,7 +4,6 @@ os:
 language: cpp
 
 dist: trusty
-sudo: require
 
 addons:
   apt:
@@ -17,24 +16,15 @@ addons:
       - qt510-meta-minimal
       - qt510svg
       - qt510imageformats
-      - qt510tools   
-
-before_install:
-  - cd src/Server/Libraries
-  - cmake mysql-connector-cpp 
-  - export LD_LIBRARY_PATH=.    
-
+      - qt510tools
+   
 script:
   - export CC=gcc-9 
   - export CXX=g++-9 
   - source /opt/qt510/bin/qt510-env.sh
-  - cd ../../Client/
+  - cd src/Client/
   - mkdir build
   - cd build
   - cmake ..
   - make 
-  - cd ../../Server
-  - mkdir build
-  - cd build 
-  - cmake ..
-  - make 
+
