@@ -18,7 +18,8 @@ addons:
 #      - qt510-meta-minimal
 #      - qt510svg
 #      - qt510imageformats
-#      - qt510tools   
+#      - qt510tools
+      - qt5-default   
       - libmysql++-dev
       - libmysqlcppconn-dev
 
