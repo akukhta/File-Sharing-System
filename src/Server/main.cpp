@@ -17,6 +17,10 @@ int main()
 
     auto Injector = di::make_injector(
                 di::bind<IDataBase>().in(di::singleton).to<MySQLDatabase>(),
+                di::bind<std::string>.named(serverName).to(Configuration::getDefaultDBServer()),
+                di::bind<std::string>.named(userName).to(Configuration::getDefaultDBUser()),
+                di::bind<std::string>.named(password).to(Configuration::getDefaultDBPassword()),
+                di::bind<std::string>.named(databaseName).to(Configuration::getDefaultDB()),
                 di::bind<AbstractAccountRepository>().in(di::unique).to<AccountsRepository>(),
                 di::bind<AbstractFilesRepository>().in(di::unique).to<FilesRepository>(),
                 di::bind<AbstractNodesRepository>().in(di::unique).to<NodesRepository>(),

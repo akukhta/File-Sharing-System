@@ -21,7 +21,7 @@ add_executable(FileSharingSystemServer
     Data/MySQLDataBase.cpp
     Data/EMailManager.cpp
     Data/AccountsRepository.cpp
-    Data/DataBaseSingleton.cpp
+    #Data/DataBaseSingleton.cpp
     Data/AbstractAccountRepository.h
     Data/AbstractNodesRepository.h
     Data/NodesRepository.cpp
@@ -43,7 +43,7 @@ add_executable(FileSharingSystemServer
 )
 
 target_link_libraries(FileSharingSystemServer pthread mariadbclient)
-#target_compile_options(FileSharingSystemServer PRIVATE -Werror -Wall -Wextra)
+target_compile_options(FileSharingSystemServer PRIVATE -Werror -Wall -Wextra)
 
 file(COPY Resources/email.sh
      DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

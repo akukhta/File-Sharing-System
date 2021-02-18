@@ -38,3 +38,23 @@ std::string Configuration::getServerErrorMessage()
 {
     return "Internal server error occurred";
 }
+
+std::string Configuration::getDefaultDBServer()
+{
+    return "localhost";
+}
+
+std::string Configuration::getDefaultDBUser()
+{
+    return "root";
+}
+
+std::string Configuration::getDefaultDBPassword()
+{
+    return "root";
+}
+
+std::string Configuration::getDefaultDB()
+{
+    return "FileSharingSystem";
+}

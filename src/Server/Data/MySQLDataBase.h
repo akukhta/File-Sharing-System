@@ -11,11 +11,21 @@
 #include "Data/IDataBase.h"
 #include "Common/Configuration.h"
 #include "Common/Node.h"
+#include "Common/di.hpp"
+
+auto serverName = []{};
+auto userName = []{};
+auto password = []{};
+auto databaseName = []{};
 
 class MySQLDatabase : public IDataBase
 {
 public:
-    MySQLDatabase(std::string const & dbpath = Configuration::getDefaultPathDB());
+    BOOST_DI_INJECT(MySQLDatabase, (named = serverName) std::string const & server,
+        (named = userName) std::string const & user,
+        (named = password) std::string const & password,
+        (named = databaseName) std::string const & database);
+
     virtual bool insertQuery(std::string querystr) override final;
     virtual bool authorizationQuery(std::string const & email, std::string const & password, size_t &userID) override final;
     virtual bool createSessionQuery(std::uint32_t sessionToken, int socketID, int userID) override final;
@@ -30,11 +40,12 @@ public:
     virtual std::vector<std::string> getFilesList(std::uint32_t nodeID) override final;
     ~MySQLDatabase();
 private:
-    //Connection pointer to mysql database
-    sql::Driver *driver;
-    sql::Connection *conn;
+    //Strings to configure mysql connection
+    const std::string server = "localhost", user = "root",
+        password = "root", database = "FileSharingSystem";
     //Only for test
     int returnVal;
-    sql::ResultSet* abstractSelectQuery(std::string const &query);
+    MYSQL* conn;
+    MYSQL_RES* abstractSelectQuery(std::string const &query);
     std::mutex dataBaseMutex;
 };

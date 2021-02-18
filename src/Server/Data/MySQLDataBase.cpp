@@ -1,61 +1,37 @@
 #include "MySQLDataBase.h"
 
 
-MySQLDatabase::MySQLDatabase(std::string const &dbpath)
+MySQLDatabase::MySQLDatabase(std::string const & server, std::string const & user,
+    std::string const & password, std::string const & database)
 {
     std::cout << "DB" << std::endl;
-    try{
-        driver = get_driver_instance();
-        conn = driver->connect(dbpath,
-        Configuration::getDefaultUserDB(), Configuration::getDefaultPassDB());
-        conn->setSchema("FileSharingSystem");
-    }
-    catch (sql::SQLException const &ex)
+
+    conn = mysql_init(nullptr);
+
+    if (!mysql_real_connect(conn, server.c_str(), user.c_str(), password.c_str(),
+        database.c_str(),0, nullptr, 0))
     {
-        std::cout << ex.what() << std::endl;
+        throw std::runtime_error("Connection to the database failed");
     }
+
 }
 
 //Simple INSERT/DELETE query, without any returned values.
 bool MySQLDatabase::insertQuery(std::string querystr)
 {   
-    sql::Statement* statement = conn->createStatement();
-
-    try{
         std::lock_guard<std::mutex> lock(dataBaseMutex);
-        statement->execute(querystr);
-    }
-    catch (sql::SQLException const &ex)
-    {
-        std::cout << ex.what() << std::endl;
-        delete statement;
-        return false;
-    }
-
-    delete statement;
-    return true;
+        return !mysql_query(conn, querystr.c_str());
 }
 
 //Basic select query
 
-sql::ResultSet* MySQLDatabase::abstractSelectQuery(std::string const &query)
+MYSQL_RES* MySQLDatabase::abstractSelectQuery(std::string const &query)
 {
-    sql::Statement* statement = conn->createStatement();
-    sql::ResultSet* result = nullptr;
-    
-    try{
-        std::lock_guard<std::mutex> lock(dataBaseMutex);
-        result = statement->executeQuery(query);
-    }
-
-    catch (sql::SQLException const &ex)
-    {
-        std::cout << ex.what() << std::endl;
-        delete statement;
+    std::lock_guard<std::mutex> lock(dataBaseMutex);
+    if (mysql_query(conn, query.c_str()))
         return nullptr;
-    }
-    delete statement;
-    return result;
+    else
+        return mysql_store_result(conn);
 }
 
 //Authorization method
@@ -67,16 +43,15 @@ bool MySQLDatabase::authorizationQuery(std::string const & email,
 
     bool returnValue = false;
 
-    sql::ResultSet *result = abstractSelectQuery(query);
+    auto result = abstractSelectQuery(query);
 
-    if (result != nullptr && result->rowsCount() == 1)
+    if (result && mysql_num_rows(result) == 1)
     {
-        result->next();
-        userID = result->getInt("UserID");
+        auto row = mysql_fetch_row(result);
+        userID = std::stoi(row[0]);
         returnValue = true;
+        mysql_free_result(result);
     }
-    
-    delete result;
     
     return returnValue;
 }
@@ -96,15 +71,18 @@ std::pair<std::multiset<Node>, std::set<std::uint32_t>> MySQLDatabase::allNodes(
     auto resultSet = abstractSelectQuery("select * from Nodes;");
     std::multiset<Node> nodes;
     std::set<std::uint32_t> ids;
+    MYSQL_ROW row;
 
     if (resultSet != nullptr)
     {
-        while(resultSet->next())
+        while((row = mysql_fetch_row(resultSet)) != nullptr)
         {
-            int ID = resultSet->getInt("NodeID");
-            nodes.emplace(ID, resultSet->getString("deletingDate").asStdString());
+            int ID = std::stoi(row[0]);
+            nodes.emplace(ID, std::string(row[2]));
             ids.insert(ID);
         }
+
+        mysql_free_result(resultSet);
     }
 
     return std::make_pair(nodes, ids);
@@ -121,18 +99,21 @@ void MySQLDatabase::closeSession(int socketFD)
 std::vector<std::pair<std::string, std::string>> MySQLDatabase::nodesQuery(unsigned int sessionToken)
 {
     const std::string query = "select * from Nodes where UserID = (select UserID from Sessions where sessionToken = " + std::to_string(sessionToken) + ");";
-    sql::ResultSet *result = abstractSelectQuery(query);
+    auto result = abstractSelectQuery(query);
 
     if (result == nullptr)
         throw std::runtime_error("Nodes query has been failed!");
     
     std::vector<std::pair<std::string, std::string>> nodes;
 
-    while (result->next())
+    MYSQL_ROW row;
+
+    while ((row = mysql_fetch_row(result)) != nullptr)
     {
-        nodes.push_back(std::make_pair(std::to_string(result->getInt("NodeID")), result->getString("deletingDate")));
+        nodes.push_back(std::make_pair(std::string(row[0]), std::string(row[2])));
     }
 
+    mysql_free_result(result);
     return nodes;
 }
 
@@ -203,19 +184,20 @@ std::vector<std::string> MySQLDatabase::getFilesList(std::uint32_t nodeID)
 
     std::vector<std::string> fileNames;
 
-    while(result->next())
+    MYSQL_ROW row;
+
+    while((row = mysql_fetch_row(result)) != nullptr)
     {
-        fileNames.push_back(result->getString("FileName"));
+        fileNames.push_back(std::string(row[0]));
     }
 
+    mysql_free_result(result);
     return fileNames;
 }
 
 MySQLDatabase::~MySQLDatabase()
 {
-    if (conn->isClosed())
-        conn->close();
+    mysql_close(conn);
     std::cout << "Data base has been deleted!" << std::endl;
-    delete conn;
 }
 

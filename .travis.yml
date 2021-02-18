@@ -20,9 +20,7 @@ addons:
 #      - qt510imageformats
 #      - qt510tools
       - qt5-default   
-      - libmysql++-dev
-      - libmysqlcppconn-dev
-
+      - libmariadbclient-dev
 #before_install:
 #  - cd src/Server/Libraries
 #  - cmake mysql-connector-cpp 
