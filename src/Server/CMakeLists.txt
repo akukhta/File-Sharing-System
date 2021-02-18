@@ -43,7 +43,7 @@ add_executable(FileSharingSystemServer
 )
 
 target_link_libraries(FileSharingSystemServer pthread mariadbclient)
-target_compile_options(FileSharingSystemServer PRIVATE -Werror -Wall -Wextra)
+target_compile_options(FileSharingSystemServer -L/usr/include/mariadb/mysql PRIVATE -Werror -Wall -Wextra)
 
 file(COPY Resources/email.sh
      DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

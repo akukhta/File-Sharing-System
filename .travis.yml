@@ -20,6 +20,7 @@ addons:
 #      - qt510imageformats
 #      - qt510tools
       - qt5-default   
+      - libmariadb-dev
       - libmariadbclient-dev
 #before_install:
 #  - cd src/Server/Libraries
