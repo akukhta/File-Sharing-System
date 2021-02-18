@@ -31,12 +31,12 @@ script:
   - export CC=gcc-9 
   - export CXX=g++-9 
   - source /opt/qt510/bin/qt510-env.sh
-  - cd src/Client
-  - mkdir build
-  - cd build
-  - cmake ..
-  - make 
-  - cd ../../Server
+  #- cd src/Client
+  #- mkdir build
+  #- cd build
+  #- cmake ..
+  #- make 
+  - cd src/Server
   - mkdir build
   - cd build 
   - cmake ..
