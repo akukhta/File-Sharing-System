@@ -11,32 +11,23 @@ addons:
     update: true 
     sources:
       - ubuntu-toolchain-r-test
-      #- sourceline: "ppa:beineri/opt-qt-5.10.1-trusty"
     packages:
       - gcc-9
-      - g++-9
-#      - qt510-meta-minimal
-#      - qt510svg
-#      - qt510imageformats
-#      - qt510tools
+      - g++
       - qt5-default   
       - libmariadb-dev
       - libmariadbclient-dev
-#before_install:
-#  - cd src/Server/Libraries
-#  - cmake mysql-connector-cpp 
-#  - export LD_LIBRARY_PATH=.    
 
 script:
   - export CC=gcc-9 
   - export CXX=g++-9 
   - source /opt/qt510/bin/qt510-env.sh
-  #- cd src/Client
-  #- mkdir build
-  #- cd build
-  #- cmake ..
-  #- make 
-  - cd src/Server
+  - cd src/Client
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make 
+  - cd ../../Server
   - mkdir build
   - cd build 
   - cmake ..

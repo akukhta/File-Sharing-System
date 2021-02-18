@@ -21,7 +21,6 @@ add_executable(FileSharingSystemServer
     Data/MySQLDataBase.cpp
     Data/EMailManager.cpp
     Data/AccountsRepository.cpp
-    #Data/DataBaseSingleton.cpp
     Data/AbstractAccountRepository.h
     Data/AbstractNodesRepository.h
     Data/NodesRepository.cpp
