@@ -81,8 +81,7 @@ void Server::socketsPollHandler()
                 }  catch (std::runtime_error const &err) {
                     //Close connection if we have problems
                     std::cout << err.what() << std::endl;
-                    if (errno != EAGAIN)
-                        closeConnection(sock.fd); //Close connection, if socket is unaviable
+                    closeConnection(sock.fd); //Close connection, if socket is unaviable
                     updatePollSet(); //Update pollset
                     break;
                 }
