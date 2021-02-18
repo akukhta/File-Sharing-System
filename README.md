@@ -1,4 +1,4 @@
-# File Sharing System
+# File Sharing System [![Build Status](https://travis-ci.com/akukhta/File-Sharing-System.svg?branch=main)](https://travis-ci.com/akukhta/File-Sharing-System)
 <h2>Features list:</h2><br>
 <h3>1. Fast And easy account registration</h3><br>
 <h3>2. Upload your own files to storage </h3> <br>
