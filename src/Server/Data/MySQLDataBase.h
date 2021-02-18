@@ -3,10 +3,6 @@
 #include <set>
 #include <string>
 #include <mutex>
-#include <cppconn/resultset.h>
-#include <cppconn/statement.h>
-#include <cppconn/driver.h>
-#include <cppconn/connection.h>
 #include <mariadb/mysql.h>
 #include "Data/IDataBase.h"
 #include "Common/Configuration.h"
