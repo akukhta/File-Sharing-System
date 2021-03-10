@@ -25,6 +25,7 @@ std::unique_ptr<QTreeWidgetItem> GUINodeItem::getGUIItem(QTreeWidget *widget)
     std::unique_ptr<QTreeWidgetItem> rootItem = std::make_unique<QTreeWidgetItem>(widget);
     rootItem->setText(0, QString::fromStdString(nodeID));
     rootItem->setText(1, QString::fromStdString(deletingDate));
+    rootItem->setCheckState(0, Qt::Unchecked);
 
     if (!itemsIsLoaded)
     {
@@ -36,8 +37,9 @@ std::unique_ptr<QTreeWidgetItem> GUINodeItem::getGUIItem(QTreeWidget *widget)
         for (auto file : fileNames)
         {
             auto item = new QTreeWidgetItem(rootItem.get());
-            item->setText(0,QString::fromStdString(file));
-            item->setText(1,QString::fromStdString(deletingDate));
+            item->setText(1,QString::fromStdString(file));
+            item->setText(2,QString::fromStdString(deletingDate));
+            item->setCheckState(0, Qt::Unchecked);
         }
     }
 

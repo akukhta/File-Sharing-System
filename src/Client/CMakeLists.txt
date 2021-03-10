@@ -49,12 +49,16 @@ if(ANDROID)
     Common/RequestReader.h
     Common/RequestWritter.h
     Common/ServerResults.h
+    GUI/authorizationwindow.ui
     GUI/authorizationwindow.h
     GUI/authorizationwindow.cpp
+    GUI/NodeCreatingWindow.ui
     GUI/NodeCreatingWindow.h
     GUI/NodeCreatingWindow.cpp
+    GUI/NodesWindow.ui
     GUI/NodesWindow.h
     GUI/NodesWindow.cpp
+    GUI/startingwindow.ui
     GUI/startingwindow.h
     GUI/startingwindow.cpp
   )
@@ -80,12 +84,16 @@ else()
       Common/RequestReader.h
       Common/RequestWritter.h
       Common/ServerResults.h
+      GUI/authorizationwindow.ui
       GUI/authorizationwindow.h
       GUI/authorizationwindow.cpp
+      GUI/nodecreatingwindow.ui
       GUI/NodeCreatingWindow.h
       GUI/NodeCreatingWindow.cpp
+      GUI/nodeswindow.ui
       GUI/NodesWindow.h
       GUI/NodesWindow.cpp
+      GUI/startingwindow.ui
       GUI/startingwindow.h
       GUI/startingwindow.cpp
   )

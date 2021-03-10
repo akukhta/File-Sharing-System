@@ -107,6 +107,29 @@ void ClientInterface::sendFile(std::string const & fileName, size_t const nodeID
 
 }
 
+void ClientInterface::receiveFile(std::string const & fileName, size_t const nodeID)
+{
+    auto fileSize = startFileReceiving(fileName, nodeID);
+    FileRepresentation file (fileName, Permissions::WriteOnly, nodeID, fileSize);
+
+    while (!file.isDone)
+    {
+        RequestWritter writer;
+        writer.write<char>(7);
+        writer.write<std::uint32_t>(sessionToken);
+        client->sendToServer(writer.getBuffer());
+        auto answer = client->receiveFromServer();
+
+        RequestReader reader(answer);
+
+        if (reader.read<ServerResult>() == ServerResult::Failure)
+            throw std::runtime_error(reader.read<std::string>());
+
+        auto chunk = reader.read<std::vector<char>>();
+        file.write(chunk);
+    }
+}
+
 void ClientInterface::startFileSending(std::string const & fileName, size_t const nodeID)
 {
     std::string nameWithoutPath = fileName.substr(fileName.find_last_of(std::filesystem::path::preferred_separator) + 1);
@@ -123,6 +146,26 @@ void ClientInterface::startFileSending(std::string const & fileName, size_t cons
     if (reader.read<ServerResult>() == ServerResult::Failure)
         throw std::runtime_error("Couldn`t send file to server!");
 }
+
+std::uint64_t ClientInterface::startFileReceiving(std::string const & fileName, size_t const nodeID)
+{
+    RequestWritter writer;
+    writer.write<char>(6);
+    writer.write<std::uint32_t>(sessionToken);
+    writer.write<std::uint32_t>(nodeID);
+    writer.write<std::string>(fileName);
+    client->sendToServer(writer.getBuffer());
+    auto answer = client->receiveFromServer();
+    RequestReader reader(answer);
+
+    if (reader.read<ServerResult>() == ServerResult::Failure)
+        throw std::runtime_error("Cannot download a file!");
+
+    std::uint64_t size = reader.read<std::uint64_t>();
+    return size;
+}
+
+
 
 std::vector<std::string> ClientInterface::getFiles(std::uint32_t nodeID)
 {

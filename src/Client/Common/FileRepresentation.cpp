@@ -7,6 +7,15 @@ FileRepresentation::FileRepresentation(std::string const &fullFilePath, Permissi
 
     if (permission == Permissions::WriteOnly)
     {
+        if (!std::filesystem::exists("nodes"))
+            std::filesystem::create_directory("nodes");
+
+        if (!std::filesystem::exists(std::to_string(nodeID)))
+            std::filesystem::create_directory(std::to_string(nodeID));
+
+        pathToFile = "nodes" + std::filesystem::path::preferred_separator +
+    std::to_string(nodeID) + std::filesystem::path::preferred_separator + fullFilePath;
+
         file.open(pathToFile, file.binary | file.out);
     }
 
