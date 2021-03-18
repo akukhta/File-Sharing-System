@@ -107,10 +107,11 @@ void ClientInterface::sendFile(std::string const & fileName, size_t const nodeID
 
 }
 
-void ClientInterface::receiveFile(std::string const & fileName, size_t const nodeID)
+void ClientInterface::receiveFile(std::string const & fileName,
+    std::string const & destFolderName, std::uint32_t const nodeID)
 {
     auto fileSize = startFileReceiving(fileName, nodeID);
-    FileRepresentation file (fileName, Permissions::WriteOnly, nodeID, fileSize);
+    FileRepresentation file (fileName, Permissions::WriteOnly, nodeID, fileSize, destFolderName);
 
     while (!file.isDone)
     {
@@ -147,7 +148,7 @@ void ClientInterface::startFileSending(std::string const & fileName, size_t cons
         throw std::runtime_error("Couldn`t send file to server!");
 }
 
-std::uint64_t ClientInterface::startFileReceiving(std::string const & fileName, size_t const nodeID)
+std::uint64_t ClientInterface::startFileReceiving(std::string const & fileName, std::uint32_t const nodeID)
 {
     RequestWritter writer;
     writer.write<char>(6);

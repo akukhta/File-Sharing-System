@@ -4,6 +4,7 @@
 #include <QMenu>
 #include <memory>
 #include <vector>
+#include <map>
 #include "ClientInterface.h"
 #include "Common/Node.h"
 #include "GUI/NodeCreatingWindow.h"
@@ -33,5 +34,7 @@ private:
     void addNode(Node const &node);
     std::shared_ptr<ClientInterface> clientInterface;
     std::vector<GUINodeItem> guiItems;
+    std::map<std::string, int> selectedItemCounter;
+    bool calledFromChild;
 };
 

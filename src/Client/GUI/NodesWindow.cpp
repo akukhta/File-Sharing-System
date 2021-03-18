@@ -20,6 +20,7 @@ NodesWindow::NodesWindow(std::shared_ptr<ClientInterface> const & clientInterfac
         node.fileNames = files;
         node.itemsIsLoaded = true;
         addNode(node);
+        selectedItemCounter[node.nodeID] = 0;
     }
 
 }
@@ -69,6 +70,7 @@ void NodesWindow::on_createNodeBtn_clicked()
         node.fileNames = filesStr;
         node.itemsIsLoaded = true;
         addNode(node);
+        selectedItemCounter[node.nodeID] = 0;
         auto nodeID = static_cast<std::uint32_t>(std::stoi(node.nodeID));
         for (auto & x : files)
         {
@@ -95,15 +97,43 @@ void NodesWindow::on_nodesTreeWidget_itemChanged(QTreeWidgetItem *item, int colu
 
     if (!item->parent())
     {
+        if (calledFromChild)
+            return;
+
         auto  checkState = item->checkState(0) ? Qt::Checked : Qt::Unchecked;
 
         for (size_t i = 0; i < item->childCount(); i++)
             item->child(i)->setCheckState(0, checkState);
+
+        if (checkState == Qt::Checked)
+        {
+            selectedItemCounter[item->text(0).toStdString()] = item->childCount();
+        }
+        else
+        {
+            selectedItemCounter[item->text(0).toStdString()] = 0;
+        }
+    }
+    else
+    {
+        int modifier = item->checkState(0) == Qt::Checked ? 1 : -1;
+        selectedItemCounter[item->parent()->text(0).toStdString()] += modifier;
+        auto state = selectedItemCounter.at(item->parent()->text(0).toStdString()) > 0 ? Qt::Checked : Qt::Unchecked;
+
+        if (item->parent() != nullptr)
+        {
+            calledFromChild = true;
+            item->parent()->setCheckState(0, state);
+            calledFromChild = false;
+        }
     }
 }
 
 void NodesWindow::on_pushButton_clicked()
 {
+    bool folderIsSelected = false;
+    std::string downloadingFolder;
+
     std::function<QTreeWidgetItem*(size_t)> nodes = [this](size_t index) {return ui->nodesTreeWidget->topLevelItem(index);};
     std::function<QTreeWidgetItem*(size_t, size_t)> files = [this](size_t nodesIndex, size_t filesIndex) {return ui->nodesTreeWidget->topLevelItem(nodesIndex)->child(filesIndex);};
 
@@ -121,7 +151,14 @@ void NodesWindow::on_pushButton_clicked()
                     continue;
                 else
                 {
-                    clientInterface->receiveFile(fileItem->text(1).toStdString(), static_cast<std::uint32_t>(nodeItem->text(1).toUInt()));
+                    if (!folderIsSelected)
+                    {
+                        downloadingFolder =  QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+                            QDir::currentPath(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks).toStdString();
+                        folderIsSelected = true;
+                    }
+
+                    clientInterface->receiveFile(fileItem->text(1).toStdString(), downloadingFolder, static_cast<std::uint32_t>(nodeItem->text(0).toUInt()));
                 }
             }
         }
