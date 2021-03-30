@@ -12,5 +12,6 @@ public:
     virtual std::vector<char> readPartOfFile(std::uint32_t sessionToken) = 0;
     virtual void writePartOfFile(std::vector<char> const & buffer, std::uint32_t sessionToken) = 0;
     virtual void deleteDirectory(std::string const & dirName) = 0;
+    virtual void deleteFile(std::uint32_t nodeID, std::string const & fileName) = 0;
     virtual ~IFilesManager() = default;
 };

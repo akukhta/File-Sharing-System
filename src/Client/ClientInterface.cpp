@@ -86,7 +86,7 @@ Node ClientInterface::createNode(long long lifeTimeInMins)
     return Node(std::to_string(nodeID), deletingDate);
 }
 
-void ClientInterface::sendFile(std::string const & fileName, size_t const nodeID)
+void ClientInterface::sendFile(std::string const & fileName, std::uint32_t const nodeID)
 {
     startFileSending(fileName, nodeID);
     FileRepresentation file(fileName, Permissions::ReadOnly);
@@ -131,7 +131,7 @@ void ClientInterface::receiveFile(std::string const & fileName,
     }
 }
 
-void ClientInterface::startFileSending(std::string const & fileName, size_t const nodeID)
+void ClientInterface::startFileSending(std::string const & fileName, std::uint32_t const nodeID)
 {
     std::string nameWithoutPath = fileName.substr(fileName.find_last_of(std::filesystem::path::preferred_separator) + 1);
     RequestWritter writer;
@@ -178,7 +178,9 @@ std::vector<std::string> ClientInterface::getFiles(std::uint32_t nodeID)
     RequestReader reader(answer);
 
     if (reader.read<ServerResult>() == ServerResult::Failure)
+    {
         throw std::runtime_error("Cannot get a files list!");
+    }
 
     std::vector<std::string> files;
     size_t filesSize = reader.read<size_t>();
@@ -189,4 +191,20 @@ std::vector<std::string> ClientInterface::getFiles(std::uint32_t nodeID)
     }
 
     return files;
+}
+
+void ClientInterface::deleteFile(std::uint32_t nodeID, const std::string &fileName)
+{
+    RequestWritter writer;
+    writer.write<char>(10);
+    writer.write<std::uint32_t>(nodeID);
+    writer.write<std::string>(fileName);
+    client->sendToServer(writer.getBuffer());
+    auto answer = client->receiveFromServer();
+    RequestReader reader(answer);
+
+    if (reader.read<ServerResult>() == ServerResult::Failure)
+    {
+        throw std::runtime_error(reader.read<std::string>());
+    }
 }

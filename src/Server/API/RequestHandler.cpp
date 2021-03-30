@@ -38,6 +38,9 @@ std::vector<char> RequestHandler::handle(std::vector<char> &buffer, int socketFD
     case ServerOperation::GetFilesOfNode:
         answer = getFilesOfNode(buffer);
         break;
+    case ServerOperation::deleteFile:
+        answer = deleteFile(buffer);
+        break;
     default:
         break;
     }
@@ -276,6 +279,27 @@ std::vector<char> RequestHandler::getFilesOfNode(std::vector<char> &buffer)
 
     return writer.getBuffer();
 }
+
+std::vector<char> RequestHandler::deleteFile(std::vector<char> &buffer)
+{
+    RequestReader reader(buffer);
+    RequestWritter writer;
+    const std::uint32_t nodeID = reader.read<std::uint32_t>();
+    const std::string fileName = reader.read<std::string>();
+
+    try{
+        filesManager->deleteFile(nodeID, fileName);
+        writer.write<ServerResult>(ServerResult::Success);
+    }
+    catch (std::runtime_error const & err)
+    {
+        writer.write<ServerResult>(ServerResult::Failure);
+        writer.write<std::string>(err.what());
+    }
+
+    return writer.getBuffer();
+}
+
 
 //Method for session deleting, when client disconnects or pushes "log out" button.
 void RequestHandler::destroySession(int socketFD)

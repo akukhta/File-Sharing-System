@@ -52,6 +52,19 @@ void FilesRepository::deleteDirectory(const std::string &dirName)
     std::filesystem::remove_all(dirName);
 }
 
+void FilesRepository::deleteFile(std::uint32_t nodeID, const std::string &fileName)
+{
+    if(std::filesystem::remove(std::to_string(nodeID) +
+        std::filesystem::path::preferred_separator + fileName))
+    {
+        dataBase->deleteFile(nodeID, fileName);
+    }
+    else
+    {
+        throw std::runtime_error(fileName + " has not deleted!");
+    }
+}
+
 std::vector<std::string> FilesRepository::getFilesList(std::uint32_t nodeID)
 {
     return dataBase->getFilesList(nodeID);

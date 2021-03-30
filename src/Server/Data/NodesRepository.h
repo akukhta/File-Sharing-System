@@ -3,6 +3,7 @@
 #include <mutex>
 #include "Data/AbstractNodesRepository.h"
 #include "Data/IDataBase.h"
+#include "BL/IFilesManager.h"
 #include "Common/Node.h"
 #include "Common/Logger.h"
 
@@ -11,7 +12,7 @@ class NodesRepository : public AbstractNodesRepository
 
 public:
 
-    NodesRepository(std::shared_ptr<IDataBase> dataBase);
+    NodesRepository(std::shared_ptr<IDataBase> dataBase, std::weak_ptr<IFilesManager> filesManager);
 
     virtual std::vector<std::pair<std::string,std::string>> getNodesList(std::uint32_t sessionToken, bool &success) const override final;
     virtual std::uint32_t createNode(const std::uint32_t sessionToken, const std::string deletingDate) override final;
@@ -28,6 +29,7 @@ private:
     std::multiset<Node> nodesSet;
     std::set<std::uint32_t> nodesIDs;
     std::mutex nodesMutex, idsMutex;
+    std::weak_ptr<IFilesManager> filesManager;
 
     //This can make Nodes' IDs generating fuction faster.
     //Basic algorithm:

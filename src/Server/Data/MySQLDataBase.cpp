@@ -135,9 +135,12 @@ Node MySQLDatabase::createNode(const std::uint32_t sessionToken, const std::stri
 
 void MySQLDatabase::deleteNode(std::uint32_t nodeID)
 {
-    const std::string query = "delete from Nodes where NodeID = " + std::to_string(nodeID) + ";";
+    auto nodeIDStr = std::to_string(nodeID);
+    const std::string query = "delete from Nodes where NodeID = " + nodeIDStr + ";";
     std::cout << std::to_string(nodeID) << (insertQuery(query) == true ? " has been deleted from DB!"
                                             :   " hasn`t been deleted") << std::endl;;
+    const std::string deleteFilesQuery = "delete from Files where NodeID = " + nodeIDStr + ";";
+    insertQuery(deleteFilesQuery);
 }
 
 void MySQLDatabase::addFile(size_t nodeID, std::string const & fileName)
@@ -167,10 +170,7 @@ void MySQLDatabase::deleteFile(size_t nodeID, std::string const & fileName)
     std::string const query = "delete from Files where NodeID = " + std::to_string(nodeID)
             + " and FileName = \'" + fileName + "\';";
 
-    if (!insertQuery(query))
-    {
-        throw std::runtime_error("Failed to delete a file from the Data Base");
-    }
+    insertQuery(query);
 }
 
 std::vector<std::string> MySQLDatabase::getFilesList(std::uint32_t nodeID)

@@ -1,7 +1,7 @@
 #include "NodesRepository.h"
 
-NodesRepository::NodesRepository(std::shared_ptr<IDataBase> dataBase)
-    : dataBase(dataBase)
+NodesRepository::NodesRepository(std::shared_ptr<IDataBase> dataBase, std::weak_ptr<IFilesManager> filesManager)
+    : dataBase(dataBase), filesManager(std::move(filesManager))
 {
     auto allNodes = dataBase->allNodes();
 
@@ -104,6 +104,13 @@ void NodesRepository::deleteOverdueNodes()
 
     while (!nodeIterator->isAlive()) {
         std::lock_guard<std::mutex> lock(nodesMutex);
+
+        if (!filesManager.expired())
+        {
+            auto filesManagerPtr = filesManager.lock();
+            filesManagerPtr->deleteDirectory(std::to_string(nodeIterator->NodeID));
+        }
+
         dataBase->deleteNode(nodeIterator->NodeID);
         nodesIDs.erase(nodeIterator->NodeID);
         nodesSet.erase(nodeIterator);

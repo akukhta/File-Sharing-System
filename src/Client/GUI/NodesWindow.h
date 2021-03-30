@@ -29,6 +29,10 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_updateBtn_clicked();
+
+    void on_pushButton_2_clicked();
+
 private:
     Ui::NodesWindow *ui;
     void addNode(Node const &node);
@@ -36,5 +40,6 @@ private:
     std::vector<GUINodeItem> guiItems;
     std::map<std::string, int> selectedItemCounter;
     bool calledFromChild;
+    void fillTreeView();
 };
 

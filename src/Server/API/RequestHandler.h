@@ -47,6 +47,7 @@ private:
     std::vector<char> readPartOfFile(std::vector<char> &buffer);
     std::vector<char> writePartOfFile(std::vector<char> &buffer);
     std::vector<char> getFilesOfNode(std::vector<char> &buffer);
+    std::vector<char> deleteFile(std::vector<char> &buffer);
     //Server's operations enum class
     enum class ServerOperation : char {
         UserRegistration = 0,
@@ -58,5 +59,6 @@ private:
         ReadPartOfFile = 7,
         WritePartOfFile = 8,
         GetFilesOfNode = 9,
+        deleteFile,
     };
 };

@@ -12,17 +12,7 @@ NodesWindow::NodesWindow(std::shared_ptr<ClientInterface> const & clientInterfac
     ui->nodesTreeWidget->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
     ui->nodesTreeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
 
-    auto nodes = clientInterface->getNodes();
-
-    for (auto & node : nodes)
-    {
-        auto files = clientInterface->getFiles(std::stoi(node.nodeID));
-        node.fileNames = files;
-        node.itemsIsLoaded = true;
-        addNode(node);
-        selectedItemCounter[node.nodeID] = 0;
-    }
-
+    fillTreeView();
 }
 
 void NodesWindow::addNode(Node const &node)
@@ -35,7 +25,23 @@ void NodesWindow::addNode(Node const &node)
 //    QTreeWidgetItem *item = new QTreeWidgetItem(ui->nodesTreeWidget);
 //    item->setText(0, QString::fromStdString(nodeID));
 //    item->addChild(new QTreeWidgetItem());
-//    ui->nodesTreeWidget->addTopLevelItem(item);
+    //    ui->nodesTreeWidget->addTopLevelItem(item);
+}
+
+void NodesWindow::fillTreeView()
+{
+    ui->nodesTreeWidget->clear();
+
+    auto nodes = clientInterface->getNodes();
+
+    for (auto & node : nodes)
+    {
+        auto files = clientInterface->getFiles(std::stoi(node.nodeID));
+        node.fileNames = files;
+        node.itemsIsLoaded = true;
+        addNode(node);
+        selectedItemCounter[node.nodeID] = 0;
+    }
 }
 
 NodesWindow::~NodesWindow()
@@ -159,6 +165,43 @@ void NodesWindow::on_pushButton_clicked()
                     }
 
                     clientInterface->receiveFile(fileItem->text(1).toStdString(), downloadingFolder, static_cast<std::uint32_t>(nodeItem->text(0).toUInt()));
+                }
+            }
+        }
+    }
+}
+
+void NodesWindow::on_updateBtn_clicked()
+{
+    fillTreeView();
+}
+
+void NodesWindow::on_pushButton_2_clicked()
+{
+#define TOP_LEVEL_ITEM(INDEX) ui->nodesTreeWidget->topLevelItem(INDEX)
+#define FILE(NODES_INDEX, FILES_INDEX) ui->nodesTreeWidget->topLevelItem(NODES_INDEX)->child(FILES_INDEX)
+
+    for (size_t i = 0; i < ui->nodesTreeWidget->topLevelItemCount(); i++)
+    {
+        auto wholeNode = TOP_LEVEL_ITEM(i);
+
+        if (wholeNode->checkState(0) == Qt::Checked)
+        {
+            for (size_t j = 0; j < wholeNode->childCount(); j++)
+            {
+                auto file = FILE(i,j);
+
+                if (file->checkState(0) == Qt::Checked)
+                {
+                    try{
+                        clientInterface->deleteFile(static_cast<std::uint64_t>(wholeNode->text(0).toUInt()), file->text(1).toStdString());
+                        wholeNode->removeChild(file);
+                        j--;
+                    }
+                    catch (std::runtime_error const &err)
+                    {
+                        Configuration::showErrorDialog(err.what());
+                    }
                 }
             }
         }

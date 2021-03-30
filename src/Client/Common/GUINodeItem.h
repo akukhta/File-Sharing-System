@@ -3,6 +3,8 @@
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
 #include <memory>
+#include <sstream>
+#include <iomanip>
 #include "Common/Node.h"
 
 class GUINodeItem : protected Node

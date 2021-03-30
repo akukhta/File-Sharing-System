@@ -29,6 +29,11 @@ void FilesManager::deleteDirectory(const std::string &dirName)
     filesRep->deleteDirectory(dirName);
 }
 
+void FilesManager::deleteFile(std::uint32_t nodeID, const std::string &fileName)
+{
+         filesRep->deleteFile(nodeID, fileName);
+}
+
 std::vector<std::string> FilesManager::getFilesList(std::uint32_t nodeID)
 {
     return filesRep->getFilesList(nodeID);

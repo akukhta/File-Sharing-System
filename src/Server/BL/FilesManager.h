@@ -13,6 +13,7 @@ public:
     virtual std::vector<char> readPartOfFile(std::uint32_t sessionToken) override final;
     virtual void writePartOfFile(std::vector<char> const & buffer, std::uint32_t sessionToken) override final;
     virtual void deleteDirectory(std::string const & dirName) override final;
+    virtual void deleteFile(std::uint32_t nodeID, std::string const & fileName) override final;
 private:
     std::unique_ptr<AbstractFilesRepository> filesRep;
 };

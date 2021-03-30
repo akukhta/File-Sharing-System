@@ -61,6 +61,9 @@ if(ANDROID)
     GUI/startingwindow.ui
     GUI/startingwindow.h
     GUI/startingwindow.cpp
+    GUI/nodedownloadingwindow.ui
+    GUI/nodedownloadingwindow.h
+    GUI/nodedownloadingwindow.cpp
   )
 else()
   add_executable(FSSClient
@@ -96,6 +99,9 @@ else()
       GUI/startingwindow.ui
       GUI/startingwindow.h
       GUI/startingwindow.cpp
+      GUI/nodedownloadingwindow.ui
+      GUI/nodedownloadingwindow.h
+      GUI/nodedownloadingwindow.cpp
   )
 endif()
 
