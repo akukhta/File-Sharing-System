@@ -1,47 +1,42 @@
 #include "GUINodeItem.h"
 
-GUINodeItem::GUINodeItem(Node const & node) : Node(node)
-{ };
-
-void GUINodeItem::addFiles(std::vector<std::string> const & files)
-{
-//    if (!itemsIsLoaded)
-//        items.erase(items.begin());
-
-//    for (auto const & file : files)
-//        fileNames.push_back(file);
-
-//    for (auto const & file : fileNames)
-//    {
-//        items.push_back(new QTreeWidgetItem);
-//        (*items.end())->setText(0,QString::fromStdString(file));
-//        (*items.end())->setText(1,QString::fromStdString(deletingDate));
-//        rootItem->addChild((*items.end()));
-//    }
-}
-
-std::unique_ptr<QTreeWidgetItem> GUINodeItem::getGUIItem(QTreeWidget *widget)
+std::unique_ptr<QTreeWidgetItem> GUINodeItem::getGUIItem(QTreeWidget *widget, std::string const &name, std::string const &deletingDate, GUINodeItemType type)
 {
     std::unique_ptr<QTreeWidgetItem> rootItem = std::make_unique<QTreeWidgetItem>(widget);
-    rootItem->setText(0, QString::fromStdString(nodeID));
-    rootItem->setText(1, QString::fromStdString(deletingDate));
-    rootItem->setCheckState(0, Qt::Unchecked);
+    rootItem->setText(2, QString::fromStdString(name));
+    rootItem->setText(3, QString::fromStdString(deletingDate));
 
-    if (!itemsIsLoaded)
+    if (type == GUINodeItemType::Node)
     {
-        rootItem->addChild(new QTreeWidgetItem());
+        rootItem->setIcon(1, iconsArr[Node]);
     }
-
     else
     {
-        for (auto file : fileNames)
-        {
-            auto item = new QTreeWidgetItem(rootItem.get());
-            item->setText(1,QString::fromStdString(file));
-            item->setText(2,QString::fromStdString(deletingDate));
-            item->setCheckState(0, Qt::Unchecked);
-        }
+        rootItem->setIcon(1, )
     }
+    //rootItem->setForeground(2,QBrush(QPixmap("Resourses/Test.jpeg")));
+    rootItem->setCheckState(0, Qt::Unchecked);
+
+//    if (!itemsIsLoaded)
+//    {
+//        rootItem->addChild(new QTreeWidgetItem());
+//    }
+
+//    else
+//    {
+//        for (auto file : fileNames)
+//        {
+//            auto item = new QTreeWidgetItem(rootItem.get());
+//            item->setText(1,QString::fromStdString(file));
+//            item->setText(2,QString::fromStdString(deletingDate));
+//            item->setCheckState(0, Qt::Unchecked);
+//        }
+//    }
 
     return std::move(rootItem);
+}
+
+const QIcon &GUINodeItem::filter(const std::string &name)
+{
+    std::string ext = name.substr(name.find_last_of(".") + 1);
 }

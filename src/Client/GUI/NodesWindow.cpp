@@ -6,8 +6,8 @@ NodesWindow::NodesWindow(std::shared_ptr<ClientInterface> const & clientInterfac
     ui(new Ui::NodesWindow)
 {
     ui->setupUi(this);
-    ui->nodesTreeWidget->setColumnCount(2);
-    ui->nodesTreeWidget->setHeaderLabels({"Node ID", "Life time"});
+    ui->nodesTreeWidget->setColumnCount(5);
+    ui->nodesTreeWidget->setHeaderLabels({"","","Name", "Life time", "size"});
     ui->nodesTreeWidget->resizeColumnToContents(1);
     ui->nodesTreeWidget->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
     ui->nodesTreeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
