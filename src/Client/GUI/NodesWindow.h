@@ -4,6 +4,7 @@
 #include <QMenu>
 #include <memory>
 #include <vector>
+#include <unordered_map>
 #include <map>
 #include "ClientInterface.h"
 #include "Common/Node.h"
@@ -33,13 +34,19 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+    void on_nodesTreeWidget_itemClicked(QTreeWidgetItem *item, int column);
+
 private:
     Ui::NodesWindow *ui;
     void addNode(Node const &node);
     std::shared_ptr<ClientInterface> clientInterface;
-    std::vector<GUINodeItem> guiItems;
+    std::unordered_map<QTreeWidgetItem*, Node> guiNodes, Files;
     std::map<std::string, int> selectedItemCounter;
     bool calledFromChild;
-    void fillTreeView();
+    void loadNodes();
+
+    void loadFilesInNode(std::string const nodeID, std::string const deletingDate);
+    bool currFocusInDir = false;
+
 };
 

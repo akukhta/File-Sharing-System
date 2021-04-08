@@ -6,29 +6,36 @@ NodesWindow::NodesWindow(std::shared_ptr<ClientInterface> const & clientInterfac
     ui(new Ui::NodesWindow)
 {
     ui->setupUi(this);
+
     ui->nodesTreeWidget->setColumnCount(5);
     ui->nodesTreeWidget->setHeaderLabels({"","","Name", "Life time", "size"});
     ui->nodesTreeWidget->resizeColumnToContents(1);
     ui->nodesTreeWidget->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
     ui->nodesTreeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
 
-    fillTreeView();
+    loadNodes();
 }
 
 void NodesWindow::addNode(Node const &node)
 {
-    guiItems.emplace_back(node);
-    auto item = (--guiItems.end())->getGUIItem(ui->nodesTreeWidget).release();
-    ui->nodesTreeWidget->addTopLevelItem(item);
-    ui->nodesTreeWidget->resizeColumnToContents(1);
-    ui->nodesTreeWidget->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
+    GUINodeItem GUIItem(ui->nodesTreeWidget, node.nodeID,
+                            node.deletingDate, GUINodeItem::GUINodeItemType::Node);
+
+    guiNodes.insert(std::make_pair(GUIItem.getGUIItem(), node));
+
+    ui->nodesTreeWidget->addTopLevelItem(GUIItem.getGUIItem());
+//    guiItems.emplace_back(node);
+//    auto item = (--guiItems.end())->getGUIItem(ui->nodesTreeWidget).release();
+//    ui->nodesTreeWidget->addTopLevelItem(item);
+//    ui->nodesTreeWidget->resizeColumnToContents(1);
+//    ui->nodesTreeWidget->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
 //    QTreeWidgetItem *item = new QTreeWidgetItem(ui->nodesTreeWidget);
 //    item->setText(0, QString::fromStdString(nodeID));
 //    item->addChild(new QTreeWidgetItem());
     //    ui->nodesTreeWidget->addTopLevelItem(item);
 }
 
-void NodesWindow::fillTreeView()
+void NodesWindow::loadNodes()
 {
     ui->nodesTreeWidget->clear();
 
@@ -36,12 +43,24 @@ void NodesWindow::fillTreeView()
 
     for (auto & node : nodes)
     {
-        auto files = clientInterface->getFiles(std::stoi(node.nodeID));
-        node.fileNames = files;
-        node.itemsIsLoaded = true;
         addNode(node);
-        selectedItemCounter[node.nodeID] = 0;
+//        auto files = clientInterface->getFiles(std::stoi(node.nodeID));
+//        node.fileNames = files;
+//        node.itemsIsLoaded = true;
+//        selectedItemCounter[node.nodeID] = 0;
     }
+}
+
+void NodesWindow::loadFilesInNode(std::string const nodeID, std::string const deletingDate)
+{
+    auto files = clientInterface->getFiles(std::stoi(nodeID));
+
+    ui->nodesTreeWidget->clear();
+
+    ui->nodesTreeWidget->addTopLevelItem(GUINodeItem(ui->nodesTreeWidget, "", "", GUINodeItem::GUINodeItemType::UpCom).getGUIItem());
+
+    for (auto file : files)
+       ui->nodesTreeWidget->addTopLevelItem(GUINodeItem(ui->nodesTreeWidget, file, deletingDate, GUINodeItem::GUINodeItemType::File).getGUIItem());
 }
 
 NodesWindow::~NodesWindow()
@@ -75,7 +94,10 @@ void NodesWindow::on_createNodeBtn_clicked()
 
         node.fileNames = filesStr;
         node.itemsIsLoaded = true;
-        addNode(node);
+
+        if (!currFocusInDir)
+            addNode(node);
+
         selectedItemCounter[node.nodeID] = 0;
         auto nodeID = static_cast<std::uint32_t>(std::stoi(node.nodeID));
         for (auto & x : files)
@@ -173,7 +195,7 @@ void NodesWindow::on_pushButton_clicked()
 
 void NodesWindow::on_updateBtn_clicked()
 {
-    fillTreeView();
+   // fillTreeView();
 }
 
 void NodesWindow::on_pushButton_2_clicked()
@@ -205,5 +227,20 @@ void NodesWindow::on_pushButton_2_clicked()
                 }
             }
         }
+    }
+}
+
+void NodesWindow::on_nodesTreeWidget_itemClicked(QTreeWidgetItem *item, int column)
+{
+    if (!currFocusInDir)
+    {
+        currFocusInDir = true;
+        auto selectedNode = guiNodes.at(item);
+        loadFilesInNode(selectedNode.nodeID, selectedNode.deletingDate);
+    }
+
+    else if (item->text(1) == "..")
+    {
+        loadNodes();
     }
 }
