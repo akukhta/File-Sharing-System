@@ -57,10 +57,31 @@ void NodesWindow::loadFilesInNode(std::string const nodeID, std::string const de
 
     ui->nodesTreeWidget->clear();
 
-    ui->nodesTreeWidget->addTopLevelItem(GUINodeItem(ui->nodesTreeWidget, "", "", GUINodeItem::GUINodeItemType::UpCom).getGUIItem());
+    ui->nodesTreeWidget->addTopLevelItem(GUINodeItem(ui->nodesTreeWidget, "..", "", GUINodeItem::GUINodeItemType::UpCom).getGUIItem());
 
     for (auto file : files)
-       ui->nodesTreeWidget->addTopLevelItem(GUINodeItem(ui->nodesTreeWidget, file, deletingDate, GUINodeItem::GUINodeItemType::File).getGUIItem());
+        ui->nodesTreeWidget->addTopLevelItem(GUINodeItem(ui->nodesTreeWidget, file, deletingDate, GUINodeItem::GUINodeItemType::File).getGUIItem());
+}
+
+std::vector<std::string> NodesWindow::getSelectedItems()
+{
+    std::vector<std::string> selectedNodes;
+
+    for (size_t i = 0; i < ui->nodesTreeWidget->topLevelItemCount(); i++)
+    {
+        if (ui->nodesTreeWidget->topLevelItem(i)->checkState(0))
+            selectedNodes.push_back(ui->nodesTreeWidget->topLevelItem(i)->text(2).toStdString());
+    }
+
+    return selectedNodes;
+}
+
+void NodesWindow::clearSelectection()
+{
+    for (size_t i = 0; i < ui->nodesTreeWidget->topLevelItemCount(); i++)
+    {
+        ui->nodesTreeWidget->topLevelItem(i)->setCheckState(0, Qt::CheckState::Unchecked);
+    }
 }
 
 NodesWindow::~NodesWindow()
@@ -159,38 +180,68 @@ void NodesWindow::on_nodesTreeWidget_itemChanged(QTreeWidgetItem *item, int colu
 
 void NodesWindow::on_pushButton_clicked()
 {
-    bool folderIsSelected = false;
-    std::string downloadingFolder;
+    std::string destFolder = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+        QDir::currentPath(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks).toStdString();
 
-    std::function<QTreeWidgetItem*(size_t)> nodes = [this](size_t index) {return ui->nodesTreeWidget->topLevelItem(index);};
-    std::function<QTreeWidgetItem*(size_t, size_t)> files = [this](size_t nodesIndex, size_t filesIndex) {return ui->nodesTreeWidget->topLevelItem(nodesIndex)->child(filesIndex);};
-
-    for (size_t nodesIndex = 0; nodesIndex < ui->nodesTreeWidget->topLevelItemCount(); nodesIndex++)
+    if (!currFocusInDir)
     {
-        auto nodeItem = nodes(nodesIndex);
-        if (nodeItem->checkState(0) == Qt::Unchecked)
-            continue;
-        else
-        {
-            for (size_t filesIndex = 0; filesIndex < nodeItem->childCount(); filesIndex++)
-            {
-                auto fileItem = files(nodesIndex, filesIndex);
-                if (fileItem->checkState(0) == Qt::Unchecked)
-                    continue;
-                else
-                {
-                    if (!folderIsSelected)
-                    {
-                        downloadingFolder =  QFileDialog::getExistingDirectory(this, tr("Open Directory"),
-                            QDir::currentPath(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks).toStdString();
-                        folderIsSelected = true;
-                    }
+        auto selectedNodes = getSelectedItems();
 
-                    clientInterface->receiveFile(fileItem->text(1).toStdString(), downloadingFolder, static_cast<std::uint32_t>(nodeItem->text(0).toUInt()));
-                }
+        for (std::string node : selectedNodes)
+        {
+            std::uint32_t currNodeInt = static_cast<std::uint32_t>(std::stoi(node));
+            auto files = clientInterface->getFiles(currNodeInt);
+
+            for (auto file : files)
+            {
+                clientInterface->receiveFile(file, destFolder, currNodeInt);
             }
         }
     }
+
+    else
+    {
+        auto selectedFiles = getSelectedItems();
+
+        for (auto file : selectedFiles)
+        {
+            clientInterface->receiveFile(file, destFolder, static_cast<std::uint32_t>(std::stoi(currentNode)));
+        }
+    }
+
+    clearSelectection();
+
+
+    // OLD
+//    std::function<QTreeWidgetItem*(size_t)> nodes = [this](size_t index) {return ui->nodesTreeWidget->topLevelItem(index);};
+//    std::function<QTreeWidgetItem*(size_t, size_t)> files = [this](size_t nodesIndex, size_t filesIndex) {return ui->nodesTreeWidget->topLevelItem(nodesIndex)->child(filesIndex);};
+
+//    for (size_t nodesIndex = 0; nodesIndex < ui->nodesTreeWidget->topLevelItemCount(); nodesIndex++)
+//    {
+//        auto nodeItem = nodes(nodesIndex);
+//        if (nodeItem->checkState(0) == Qt::Unchecked)
+//            continue;
+//        else
+//        {
+//            for (size_t filesIndex = 0; filesIndex < nodeItem->childCount(); filesIndex++)
+//            {
+//                auto fileItem = files(nodesIndex, filesIndex);
+//                if (fileItem->checkState(0) == Qt::Unchecked)
+//                    continue;
+//                else
+//                {
+//                    if (!folderIsSelected)
+//                    {
+//                        downloadingFolder =  QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+//                            QDir::currentPath(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks).toStdString();
+//                        folderIsSelected = true;
+//                    }
+
+//                    clientInterface->receiveFile(fileItem->text(1).toStdString(), downloadingFolder, static_cast<std::uint32_t>(nodeItem->text(0).toUInt()));
+//                }
+//            }
+//        }
+//    }
 }
 
 void NodesWindow::on_updateBtn_clicked()
@@ -232,15 +283,25 @@ void NodesWindow::on_pushButton_2_clicked()
 
 void NodesWindow::on_nodesTreeWidget_itemClicked(QTreeWidgetItem *item, int column)
 {
+
+    if (column == 0)
+        return;
+
     if (!currFocusInDir)
     {
         currFocusInDir = true;
+        currentNode = item->text(2).toStdString();
         auto selectedNode = guiNodes.at(item);
         loadFilesInNode(selectedNode.nodeID, selectedNode.deletingDate);
     }
 
-    else if (item->text(1) == "..")
+    else if (item->text(2) == "..")
     {
         loadNodes();
+        currFocusInDir = false;
     }
+
+    ui->nodesTreeWidget->repaint();
+    ui->nodesTreeWidget->update();
+    ui->nodesTreeWidget->model()->dataChanged(ui->nodesTreeWidget->model()->index(0,0), ui->nodesTreeWidget->model()->index(ui->nodesTreeWidget->model()->rowCount(),0));
 }
