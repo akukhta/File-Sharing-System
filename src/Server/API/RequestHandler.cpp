@@ -300,7 +300,6 @@ std::vector<char> RequestHandler::deleteFile(std::vector<char> &buffer)
     return writer.getBuffer();
 }
 
-
 //Method for session deleting, when client disconnects or pushes "log out" button.
 void RequestHandler::destroySession(int socketFD)
 {

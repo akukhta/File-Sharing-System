@@ -7,12 +7,14 @@ NodesWindow::NodesWindow(std::shared_ptr<ClientInterface> const & clientInterfac
 {
     ui->setupUi(this);
 
-    ui->nodesTreeWidget->setColumnCount(5);
-    ui->nodesTreeWidget->setHeaderLabels({"","","Name", "Life time", "size"});
-    ui->nodesTreeWidget->resizeColumnToContents(1);
-    ui->nodesTreeWidget->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
-    ui->nodesTreeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
-
+    ui->nodesTreeWidget->setColumnCount(4);
+    ui->nodesTreeWidget->setHeaderLabels({"","","Name", "Life time"});
+    ui->nodesTreeWidget->header()->resizeSection(0, 20);
+    ui->nodesTreeWidget->header()->resizeSection(1, 20);
+    ui->nodesTreeWidget->header()->resizeSection(2, 400);
+    ui->nodesTreeWidget->header()->resizeSection(3, 100);
+    ui->nodesTreeWidget->setIconSize(QSize(30,30));
+    ui->pushButton_2->setVisible(0);
     loadNodes();
 }
 
@@ -24,15 +26,6 @@ void NodesWindow::addNode(Node const &node)
     guiNodes.insert(std::make_pair(GUIItem.getGUIItem(), node));
 
     ui->nodesTreeWidget->addTopLevelItem(GUIItem.getGUIItem());
-//    guiItems.emplace_back(node);
-//    auto item = (--guiItems.end())->getGUIItem(ui->nodesTreeWidget).release();
-//    ui->nodesTreeWidget->addTopLevelItem(item);
-//    ui->nodesTreeWidget->resizeColumnToContents(1);
-//    ui->nodesTreeWidget->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
-//    QTreeWidgetItem *item = new QTreeWidgetItem(ui->nodesTreeWidget);
-//    item->setText(0, QString::fromStdString(nodeID));
-//    item->addChild(new QTreeWidgetItem());
-    //    ui->nodesTreeWidget->addTopLevelItem(item);
 }
 
 void NodesWindow::loadNodes()
@@ -44,10 +37,6 @@ void NodesWindow::loadNodes()
     for (auto & node : nodes)
     {
         addNode(node);
-//        auto files = clientInterface->getFiles(std::stoi(node.nodeID));
-//        node.fileNames = files;
-//        node.itemsIsLoaded = true;
-//        selectedItemCounter[node.nodeID] = 0;
     }
 }
 
@@ -211,74 +200,42 @@ void NodesWindow::on_pushButton_clicked()
 
     clearSelectection();
 
-
-    // OLD
-//    std::function<QTreeWidgetItem*(size_t)> nodes = [this](size_t index) {return ui->nodesTreeWidget->topLevelItem(index);};
-//    std::function<QTreeWidgetItem*(size_t, size_t)> files = [this](size_t nodesIndex, size_t filesIndex) {return ui->nodesTreeWidget->topLevelItem(nodesIndex)->child(filesIndex);};
-
-//    for (size_t nodesIndex = 0; nodesIndex < ui->nodesTreeWidget->topLevelItemCount(); nodesIndex++)
-//    {
-//        auto nodeItem = nodes(nodesIndex);
-//        if (nodeItem->checkState(0) == Qt::Unchecked)
-//            continue;
-//        else
-//        {
-//            for (size_t filesIndex = 0; filesIndex < nodeItem->childCount(); filesIndex++)
-//            {
-//                auto fileItem = files(nodesIndex, filesIndex);
-//                if (fileItem->checkState(0) == Qt::Unchecked)
-//                    continue;
-//                else
-//                {
-//                    if (!folderIsSelected)
-//                    {
-//                        downloadingFolder =  QFileDialog::getExistingDirectory(this, tr("Open Directory"),
-//                            QDir::currentPath(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks).toStdString();
-//                        folderIsSelected = true;
-//                    }
-
-//                    clientInterface->receiveFile(fileItem->text(1).toStdString(), downloadingFolder, static_cast<std::uint32_t>(nodeItem->text(0).toUInt()));
-//                }
-//            }
-//        }
-//    }
 }
 
 void NodesWindow::on_updateBtn_clicked()
 {
-   // fillTreeView();
+    if (!currFocusInDir)
+    {
+        loadNodes();
+    }
+    else
+    {
+        loadFilesInNode(currentNode, currentNodeDeletingDate);
+    }
 }
 
 void NodesWindow::on_pushButton_2_clicked()
 {
-#define TOP_LEVEL_ITEM(INDEX) ui->nodesTreeWidget->topLevelItem(INDEX)
-#define FILE(NODES_INDEX, FILES_INDEX) ui->nodesTreeWidget->topLevelItem(NODES_INDEX)->child(FILES_INDEX)
+    if (!currFocusInDir)
+        return;
 
     for (size_t i = 0; i < ui->nodesTreeWidget->topLevelItemCount(); i++)
     {
-        auto wholeNode = TOP_LEVEL_ITEM(i);
-
-        if (wholeNode->checkState(0) == Qt::Checked)
+        if (ui->nodesTreeWidget->topLevelItem(i)->checkState(0) == Qt::CheckState::Checked)
         {
-            for (size_t j = 0; j < wholeNode->childCount(); j++)
+            try
             {
-                auto file = FILE(i,j);
-
-                if (file->checkState(0) == Qt::Checked)
-                {
-                    try{
-                        clientInterface->deleteFile(static_cast<std::uint64_t>(wholeNode->text(0).toUInt()), file->text(1).toStdString());
-                        wholeNode->removeChild(file);
-                        j--;
-                    }
-                    catch (std::runtime_error const &err)
-                    {
-                        Configuration::showErrorDialog(err.what());
-                    }
-                }
+            clientInterface->deleteFile(static_cast<std::uint32_t>(std::stoi(currentNode)),
+                ui->nodesTreeWidget->topLevelItem(i)->text(2).toStdString());
+            loadFilesInNode(currentNode, currentNodeDeletingDate);
+            }
+            catch (std::runtime_error const &err)
+            {
+                Configuration::showErrorDialog(err.what());
             }
         }
     }
+
 }
 
 void NodesWindow::on_nodesTreeWidget_itemClicked(QTreeWidgetItem *item, int column)
@@ -290,15 +247,20 @@ void NodesWindow::on_nodesTreeWidget_itemClicked(QTreeWidgetItem *item, int colu
     if (!currFocusInDir)
     {
         currFocusInDir = true;
-        currentNode = item->text(2).toStdString();
         auto selectedNode = guiNodes.at(item);
+        currentNode = selectedNode.nodeID;
+        currentNodeDeletingDate = selectedNode.deletingDate;
         loadFilesInNode(selectedNode.nodeID, selectedNode.deletingDate);
+        ui->createNodeBtn->setVisible(0);
+        ui->pushButton_2->setVisible(1);
     }
 
     else if (item->text(2) == "..")
     {
         loadNodes();
         currFocusInDir = false;
+        ui->createNodeBtn->setVisible(1);
+        ui->pushButton_2->setVisible(0);
     }
 
     ui->nodesTreeWidget->repaint();

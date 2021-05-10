@@ -48,7 +48,7 @@ private:
     void loadFilesInNode(std::string const nodeID, std::string const deletingDate);
     bool currFocusInDir = false;
 
-    std::string currentNode;
+    std::string currentNode, currentNodeDeletingDate;
 
     std::vector<std::string> getSelectedItems();
     void clearSelectection();

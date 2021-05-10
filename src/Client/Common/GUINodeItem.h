@@ -17,9 +17,9 @@ public:
 
 private:
 
-    enum Icons {Node, Bin, Text, Mus, Vid, Code, Pic};
+    enum Icons {Node, Bin, Text, Mus, Vid, Code, Pic, Up};
 
-    const QIcon iconsArr[7] =
+    const QIcon iconsArr[8] =
     {
         QIcon("Resources/Node.png"),
         QIcon("Resources/Bin.png"),
@@ -27,7 +27,8 @@ private:
         QIcon("Resources/Mus.png"),
         QIcon("Resources/Vid.png"),
         QIcon("Resources/Code.png"),
-        QIcon("Resources/Pic.png")
+        QIcon("Resources/Pic.png"),
+        QIcon("Resources/Up.png")
     };
 
     QIcon filter(std::string const &name);

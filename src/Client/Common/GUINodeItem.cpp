@@ -1,17 +1,5 @@
 #include "GUINodeItem.h"
 
-//const QIcon GUINodeItem::iconsArr[7] =
-//{
-//    QIcon("Resources/Node.png"),
-//    QIcon("Resources/Bin.png"),
-//    QIcon("Resources/Text.png"),
-//    QIcon("Resources/Mus.png"),
-//    QIcon("Resources/Vid.png"),
-//    QIcon("Resources/Code.png"),
-//    QIcon("Resources/Pic.png")
-//};
-
-
 GUINodeItem::GUINodeItem(QTreeWidget *widget, std::string const &name, std::string const &deletingDate, GUINodeItemType type)
     : type(type)
 {
@@ -19,7 +7,10 @@ GUINodeItem::GUINodeItem(QTreeWidget *widget, std::string const &name, std::stri
     rootItem->setText(2, QString::fromStdString(name));
 
     if (type == GUINodeItemType::UpCom)
+    {
+        rootItem->setIcon(1, iconsArr[Up]);
         return;
+    }
 
     rootItem->setText(3, QString::fromStdString(deletingDate));
 
@@ -31,26 +22,8 @@ GUINodeItem::GUINodeItem(QTreeWidget *widget, std::string const &name, std::stri
     {
         rootItem->setIcon(1, filter(name));
     }
-    //rootItem->setForeground(2,QBrush(QPixmap("Resourses/Test.jpeg")));
     rootItem->setCheckState(0, Qt::Unchecked);
 
-//    if (!itemsIsLoaded)
-//    {
-//        rootItem->addChild(new QTreeWidgetItem());
-//    }
-
-//    else
-//    {
-//        for (auto file : fileNames)
-//        {
-//            auto item = new QTreeWidgetItem(rootItem.get());
-//            item->setText(1,QString::fromStdString(file));
-//            item->setText(2,QString::fromStdString(deletingDate));
-//            item->setCheckState(0, Qt::Unchecked);
-//        }
-//    }
-
-    //return std::move(rootItem);
 }
 
 QIcon GUINodeItem::filter(const std::string &name)

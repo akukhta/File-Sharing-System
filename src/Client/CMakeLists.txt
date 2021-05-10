@@ -107,6 +107,6 @@ endif()
 
 target_link_libraries(FSSClient PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
-file(COPY Resources
-     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/)
+file(COPY Resources/
+     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Resources/)
 
