@@ -12,6 +12,7 @@
 #include "Common/Logger.h"
 #include "BL/AccountManager.h"
 #include "API/RequestHandler.h"
+#include "BL/Crypter.h"
 
 class Server
 {

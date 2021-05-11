@@ -17,6 +17,8 @@ add_executable(FileSharingSystemServer
     BL/INodesManager.h
     BL/IFilesManager.h
     BL/FilesManager.h
+    BL/Crypter.h
+    BL/Crypter.cpp
     BL/FilesManager.cpp
     Data/MySQLDataBase.cpp
     Data/EMailManager.cpp
@@ -43,6 +45,7 @@ add_executable(FileSharingSystemServer
 
 target_link_libraries(FileSharingSystemServer pthread mariadbclient)
 target_compile_options(FileSharingSystemServer PRIVATE -Werror -Wall -Wextra)
+target_link_libraries(FileSharingSystemServer ${CMAKE_DL_LIBS})
 
 file(COPY Resources/email.sh
      DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
