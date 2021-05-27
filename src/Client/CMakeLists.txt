@@ -39,6 +39,7 @@ if(ANDROID)
     Client.cpp
     ClientInterface.h
     ClientInterface.cpp
+    ICrypter.h
     Common/Configuration.cpp
     Common/Configuration.h
     Common/FileRepresentation.h
@@ -49,6 +50,8 @@ if(ANDROID)
     Common/RequestReader.h
     Common/RequestWritter.h
     Common/ServerResults.h
+    Common/LinuxCrypter.h
+    Common/LinuxCrypter.cpp
     GUI/authorizationwindow.ui
     GUI/authorizationwindow.h
     GUI/authorizationwindow.cpp
@@ -77,6 +80,7 @@ else()
       Client.cpp
       ClientInterface.h
       ClientInterface.cpp
+      ICrypter.h
       Common/Configuration.cpp
       Common/Configuration.h
       Common/FileRepresentation.h
@@ -87,6 +91,8 @@ else()
       Common/RequestReader.h
       Common/RequestWritter.h
       Common/ServerResults.h
+      Common/LinuxCrypter.h
+      Common/LinuxCrypter.cpp
       GUI/authorizationwindow.ui
       GUI/authorizationwindow.h
       GUI/authorizationwindow.cpp
@@ -105,7 +111,8 @@ else()
   )
 endif()
 
-target_link_libraries(FSSClient PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(FSSClient ${CMAKE_DL_LIBS})
+target_link_libraries(FSSClient Qt${QT_VERSION_MAJOR}::Widgets)
 
 file(COPY Resources/
      DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Resources/)

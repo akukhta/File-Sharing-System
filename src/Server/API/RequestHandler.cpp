@@ -1,15 +1,32 @@
 #include "RequestHandler.h"
 
 RequestHandler::RequestHandler(std::unique_ptr<IAccountManager>  accountManager,
-        std::unique_ptr<INodesManager>  nodesManager, std::shared_ptr<IFilesManager>  filesManager) : accountManager(std::move(accountManager)),
-            nodesManager(std::move(nodesManager)), filesManager(std::move(filesManager))
+        std::unique_ptr<INodesManager>  nodesManager, std::shared_ptr<IFilesManager>  filesManager,  std::unique_ptr<Crypter> cryptographyHandler) : accountManager(std::move(accountManager)),
+            nodesManager(std::move(nodesManager)), filesManager(std::move(filesManager)), cryptographyHandler(std::move(cryptographyHandler))
 { }
 
 std::vector<char> RequestHandler::handle(std::vector<char> &buffer, int socketFD)
 {
     std::vector<char> answer;
+
+
+    std::cout << "Received block:" << std::endl;
+    for (auto byte : buffer)
+    {
+        std::cout << static_cast<std::uint16_t>(byte) << '\t';
+    }
+    std::cout << std::endl;
+
     ServerOperation action = static_cast<ServerOperation>(buffer[0]);
     buffer.erase(buffer.begin());
+
+    //Decrypting of buffer
+    try {
+        buffer = cryptographyHandler->cryptBuffer(socketFD, buffer);
+    }  catch (std::runtime_error const & err) {
+        Logger::log()->errorMessage(err.what());
+    }
+
     switch (action) {
     case ServerOperation::UserRegistration:
         answer = userRegistration(buffer, socketFD);
@@ -44,6 +61,14 @@ std::vector<char> RequestHandler::handle(std::vector<char> &buffer, int socketFD
     default:
         break;
     }
+
+    std::cout << "Returned block:" << std::endl;
+    for (auto byte : answer)
+    {
+        std::cout << static_cast<std::uint16_t>(byte) << '\t';
+    }
+    std::cout << std::endl;
+
     return answer;
 }
 
@@ -83,10 +108,12 @@ std::vector<char> RequestHandler::userAuthorization(std::vector<char> &buffer, i
         std::string const email = reader.read<std::string>();
         std::string const password = reader.read<std::string>();
         std::uint32_t sessionToken = accountManager->logIn(email, password, socketFD);
+
         if (sessionToken != AbstractAccountRepository::InvalidSessionToken)
         {
             writer.write<ServerResult>(ServerResult::Success);
             writer.write<std::uint32_t>(sessionToken);
+            cryptographyHandler->registerUserToCrypter(socketFD, email);
         }
         else
         {

@@ -1,6 +1,7 @@
 #include "ClientInterface.h"
 
-ClientInterface::ClientInterface(std::unique_ptr<Client> client) : client(std::move(client))
+ClientInterface::ClientInterface(std::unique_ptr<Client> client)
+    : client(std::move(client))
 {
     ;
 }
@@ -23,6 +24,12 @@ bool ClientInterface::authorize(std::string email, std::string password, bool is
     {
         sessionToken = reader.read<std::uint32_t>();
         isAuthorized = true;
+
+        if (Configuration::getOS() == Configuration::OS::Linux)
+        {
+            crypter = std::make_unique<LinuxCrypter>(email);
+        }
+
         return true;
     }
     else
@@ -37,7 +44,9 @@ std::vector<Node> ClientInterface::getNodes()
     RequestWritter writer;
     writer.write<char>(3);
     writer.write<std::uint32_t>(sessionToken);
-    client->sendToServer(writer.getBuffer());
+    auto buffer = writer.getBuffer();
+    buffer = crypter->crypt(buffer);
+    client->sendToServer(buffer);
     auto answer = client->receiveFromServer();
     RequestReader reader(answer);
     std::vector<Node> nodes;
@@ -49,6 +58,7 @@ std::vector<Node> ClientInterface::getNodes()
 
     else
     {
+        answer = crypter->crypt(answer);
         size_t nodesCount = reader.read<size_t>();
         for (size_t i = 0; i < nodesCount; i++)
         {

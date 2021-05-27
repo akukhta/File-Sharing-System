@@ -28,5 +28,9 @@ public:
     static void showErrorDialog(std::string const &errorMessage);
 
     static std::string getDeletingDate(long long lifeTimeInMins);
+
+    enum class OS {Linux, Windows};
+
+    static OS getOS();
 };
 

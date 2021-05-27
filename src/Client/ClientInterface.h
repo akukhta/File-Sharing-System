@@ -4,11 +4,16 @@
 #include <string>
 #include <chrono>
 #include "Client.h"
+#include "ICrypter.h"
 #include "Common/Configuration.h"
 #include "Common/RequestReader.h"
 #include "Common/RequestWritter.h"
 #include "Common/Node.h"
 #include "Common/FileRepresentation.h"
+
+#ifdef __linux__
+#include "Common/LinuxCrypter.h"
+#endif
 
 class ClientInterface
 {
@@ -31,5 +36,6 @@ private:
     void startFileSending(std::string const & fileName, std::uint32_t const nodeID);
     std::uint64_t startFileReceiving(std::string const & fileName, std::uint32_t const nodeID);
     bool isAuthorized = false;
+    std::unique_ptr<ICrypter> crypter;
 };
 

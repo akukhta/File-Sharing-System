@@ -33,3 +33,14 @@ std::string Configuration::getDeletingDate(long long lifeTimeInMins)
     oss << std::put_time(&tm, "%Y-%m-%d %H:%M:%S");
     return oss.str();
 }
+
+Configuration::OS Configuration::getOS()
+{
+#ifdef __linux__
+    return OS::Linux;
+#endif
+
+#ifdef _win32
+    return OS::Windows;
+#endif
+}

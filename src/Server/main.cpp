@@ -2,6 +2,7 @@
 #include "Data/AccountsRepository.h"
 #include "Data/NodesRepository.h"
 #include "BL/IAccountManager.h"
+#include "BL/Crypter.h"
 #include "Common/di.hpp"
 #include "API/Server.h"
 #include "Data/IDataBase.h"

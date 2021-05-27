@@ -3,6 +3,7 @@
 CryptoLib::CryptoLib(std::string Seed)
 {
     currentSeed = std::hash<std::string>()(Seed);
+    std::cout << "Current seed for " << Seed << " is " << currentSeed << std::endl;
     srand(currentSeed);
 }
 

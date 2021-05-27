@@ -1,23 +1,28 @@
 #include "Crypter.h"
+#include <iostream>
 
 Crypter::Crypter()
 {
-    dllHandler = dlopen("libCryptoLib.so",  RTLD_LAZY);
+    dllHandler = dlopen("./libCryptoLib.so",  RTLD_LAZY);
 
     if (dllHandler == nullptr)
         throw std::runtime_error("Failed to load security dll!");
 
     getInstance = reinterpret_cast<void* (*) (std::string)>(dlsym(dllHandler, "getInstance"));
     crypt = reinterpret_cast<std::vector<char> (*) (void *, std::vector<char> const &)>(dlsym(dllHandler,
-                                                                                              "crypt"));
+        "crypt"));
 }
 
-void Crypter::registerUserToCrypter(uint32_t sessionToken, std::string email)
+void Crypter::registerUserToCrypter(int sockfd, std::string email)
 {
-    loadedCrypters.insert(std::make_pair(sessionToken, getInstance(email)));
+    loadedCrypters.insert(std::make_pair(sockfd, getInstance(email)));
 }
 
-std::vector<char> Crypter::cryptBuffer(std::uint32_t sessionToken , const std::vector<char> &buffer)
+std::vector<char> Crypter::cryptBuffer(int sockfd , const std::vector<char> &buffer)
 {
-    return crypt(loadedCrypters[sessionToken], buffer);
+    if (loadedCrypters.find(sockfd) == loadedCrypters.end())
+        throw std::runtime_error("The client with " + std::to_string(sockfd) +
+            " socket's descriptor hasn't registered");
+
+    return crypt(loadedCrypters[sockfd], buffer);
 }

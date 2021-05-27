@@ -4,13 +4,13 @@
 #include "API/IRequestHandler.h"
 #include "BL/NodesManager.h"
 #include "BL/AccountManager.h"
-#include <BL/FilesManager.h>
+#include "BL/Crypter.h"
+#include "BL/FilesManager.h"
 #include "Common/RequestReader.h"
 #include "Common/RequestWritter.h"
 #include "Common/ServerResults.h"
 #include "Common/ClientException.h"
 #include "Common/Logger.h"
-
 
 //Class for user's requests treatment
 class RequestHandler : public IRequestHandler
@@ -18,7 +18,8 @@ class RequestHandler : public IRequestHandler
 public:
     RequestHandler(std::unique_ptr<IAccountManager> accountManager,
                    std::unique_ptr<INodesManager> nodesManager,
-                   std::shared_ptr<IFilesManager> filesManager);
+                   std::shared_ptr<IFilesManager> filesManager,
+                   std::unique_ptr<Crypter> cryptographyHandler);
 
     virtual std::vector<char> handle(std::vector<char> &buffer, int socketFD) override final;
     virtual void destroySession(int socketFD) override final;
@@ -35,8 +36,8 @@ private:
     std::unique_ptr<INodesManager> nodesManager;
     //Pointer to a files manager. This class used for any operaions with filesystem.
     std::shared_ptr<IFilesManager> filesManager;
-    //Only for test
-    //std::shared_ptr<DataBaseObject> dataBase;
+    //Unique pointer to crypter
+    std::unique_ptr<Crypter> cryptographyHandler;
     //Server's bussines logic
     std::vector<char> userRegistration(std::vector<char> &buffer, int socketFD); //Method for user registration. FIRST BYTE NUMBER - 0
     std::vector<char> userAuthorization(std::vector<char> &buffer, int socketFD); //Method for user authorization. FIRST BYTE NUMBER - 1
