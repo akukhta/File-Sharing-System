@@ -69,6 +69,7 @@ std::uint32_t NodesRepository::createNode(const std::uint32_t sessionToken, cons
 
 std::uint32_t  NodesRepository::generateID()
 {
+    //return std::uint32_t(12343225);
     if (nodesIDs.size() < 2)
         return rand() + 1; // If nodes' set contains too few elements
 

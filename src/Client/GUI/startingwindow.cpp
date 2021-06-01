@@ -6,6 +6,7 @@ StartingWindow::StartingWindow(std::shared_ptr<ClientInterface> &clientInterface
     ui(new Ui::StartingWindow)
 {
     ui->setupUi(this);
+    ui->pushButton_3->setVisible(false);
 
 }
 

@@ -83,8 +83,11 @@ Node ClientInterface::createNode(long long lifeTimeInMins)
     writer.write<std::uint32_t>(sessionToken);
     std::string const deletingDate = Configuration::getDeletingDate(lifeTimeInMins);
     writer.write<std::string>(deletingDate);
-    client->sendToServer(writer.getBuffer());
+    auto buffer = writer.getBuffer();
+    buffer = crypter->crypt(buffer);
+    client->sendToServer(buffer);
     auto answer = client->receiveFromServer();
+    answer = crypter->crypt(answer);
     RequestReader reader(answer);
 
     if (reader.read<ServerResult>() == ServerResult::Failure)
@@ -108,8 +111,11 @@ void ClientInterface::sendFile(std::string const & fileName, std::uint32_t const
         writer.write<std::uint32_t>(sessionToken);
         auto chunk = file.read();
         writer.write<std::vector<char>>(chunk);
-        client->sendToServer(writer.getBuffer());
+        auto buffer = writer.getBuffer();
+        buffer = crypter->crypt(buffer);
+        client->sendToServer(buffer);
         auto answer = client->receiveFromServer();
+        answer = crypter->crypt(answer);
         RequestReader reader(answer);
         if (reader.read<ServerResult>() == ServerResult::Failure)
             throw std::runtime_error(reader.read<std::string>());
@@ -128,8 +134,11 @@ void ClientInterface::receiveFile(std::string const & fileName,
         RequestWritter writer;
         writer.write<char>(7);
         writer.write<std::uint32_t>(sessionToken);
-        client->sendToServer(writer.getBuffer());
+        auto buffer = writer.getBuffer();
+        buffer = crypter->crypt(buffer);
+        client->sendToServer(buffer);
         auto answer = client->receiveFromServer();
+        answer = crypter->crypt(answer);
 
         RequestReader reader(answer);
 
@@ -151,8 +160,11 @@ void ClientInterface::startFileSending(std::string const & fileName, std::uint32
     writer.write<std::string>(nameWithoutPath);
     std::uint64_t fileSize = std::filesystem::file_size(fileName);
     writer.write<std::uint64_t>(fileSize);
-    client->sendToServer(writer.getBuffer());
+    auto buffer = writer.getBuffer();
+    buffer = crypter->crypt(buffer);
+    client->sendToServer(buffer);
     auto answer = client->receiveFromServer();
+    answer = crypter->crypt(answer);
     RequestReader reader(answer);
     if (reader.read<ServerResult>() == ServerResult::Failure)
         throw std::runtime_error("Couldn`t send file to server!");
@@ -165,8 +177,11 @@ std::uint64_t ClientInterface::startFileReceiving(std::string const & fileName, 
     writer.write<std::uint32_t>(sessionToken);
     writer.write<std::uint32_t>(nodeID);
     writer.write<std::string>(fileName);
-    client->sendToServer(writer.getBuffer());
+    auto buffer = writer.getBuffer();
+    buffer = crypter->crypt(buffer);
+    client->sendToServer(buffer);
     auto answer = client->receiveFromServer();
+    answer = crypter->crypt(answer);
     RequestReader reader(answer);
 
     if (reader.read<ServerResult>() == ServerResult::Failure)
@@ -183,8 +198,11 @@ std::vector<std::string> ClientInterface::getFiles(std::uint32_t nodeID)
     RequestWritter writer;
     writer.write<char>(9);
     writer.write<std::uint32_t>(nodeID);
-    client->sendToServer(writer.getBuffer());
+    auto buffer = writer.getBuffer();
+    buffer = crypter->crypt(buffer);
+    client->sendToServer(buffer);
     auto answer = client->receiveFromServer();
+    answer = crypter->crypt(answer);
     RequestReader reader(answer);
 
     if (reader.read<ServerResult>() == ServerResult::Failure)
@@ -209,8 +227,11 @@ void ClientInterface::deleteFile(std::uint32_t nodeID, const std::string &fileNa
     writer.write<char>(10);
     writer.write<std::uint32_t>(nodeID);
     writer.write<std::string>(fileName);
-    client->sendToServer(writer.getBuffer());
+    auto buffer = writer.getBuffer();
+    buffer = crypter->crypt(buffer);
+    client->sendToServer(buffer);
     auto answer = client->receiveFromServer();
+    answer = crypter->crypt(answer);
     RequestReader reader(answer);
 
     if (reader.read<ServerResult>() == ServerResult::Failure)

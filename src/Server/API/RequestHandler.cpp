@@ -9,23 +9,15 @@ std::vector<char> RequestHandler::handle(std::vector<char> &buffer, int socketFD
 {
     std::vector<char> answer;
 
-
-    std::cout << "Received block:" << std::endl;
-    for (auto byte : buffer)
-    {
-        std::cout << static_cast<std::uint16_t>(byte) << '\t';
-    }
-    std::cout << std::endl;
-
-    ServerOperation action = static_cast<ServerOperation>(buffer[0]);
-    buffer.erase(buffer.begin());
-
     //Decrypting of buffer
     try {
         buffer = cryptographyHandler->cryptBuffer(socketFD, buffer);
     }  catch (std::runtime_error const & err) {
         Logger::log()->errorMessage(err.what());
     }
+
+    ServerOperation action = static_cast<ServerOperation>(buffer[0]);
+    buffer.erase(buffer.begin());
 
     switch (action) {
     case ServerOperation::UserRegistration:
@@ -36,38 +28,39 @@ std::vector<char> RequestHandler::handle(std::vector<char> &buffer, int socketFD
         break;
     case ServerOperation::GetNodesList:
         answer = getListOfNodes(buffer);
+        answer = cryptographyHandler->cryptBuffer(socketFD, answer);
         break;
     case ServerOperation::CreateNewNode:
         answer = createNewNode(buffer);
+        answer = cryptographyHandler->cryptBuffer(socketFD, answer);
         break;
     case ServerOperation::StartReading:
         answer = startReadingFromFile(buffer);
+        answer = cryptographyHandler->cryptBuffer(socketFD, answer);
         break;
     case ServerOperation::StartWritting:
         answer = startWrittingToFile(buffer);
+        answer = cryptographyHandler->cryptBuffer(socketFD, answer);
         break;
     case ServerOperation::ReadPartOfFile:
         answer = readPartOfFile(buffer);
+        answer = cryptographyHandler->cryptBuffer(socketFD, answer);
         break;
     case ServerOperation::WritePartOfFile:
         answer = writePartOfFile(buffer);
+        answer = cryptographyHandler->cryptBuffer(socketFD, answer);
         break;
     case ServerOperation::GetFilesOfNode:
         answer = getFilesOfNode(buffer);
+        answer = cryptographyHandler->cryptBuffer(socketFD, answer);
         break;
     case ServerOperation::deleteFile:
         answer = deleteFile(buffer);
+        answer = cryptographyHandler->cryptBuffer(socketFD, answer);
         break;
     default:
         break;
     }
-
-    std::cout << "Returned block:" << std::endl;
-    for (auto byte : answer)
-    {
-        std::cout << static_cast<std::uint16_t>(byte) << '\t';
-    }
-    std::cout << std::endl;
 
     return answer;
 }
