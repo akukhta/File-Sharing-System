@@ -7,9 +7,12 @@
 class Crypter
 {
 public:
+
     Crypter();
     void registerUserToCrypter(int sockfd, std::string email);
     std::vector<char> cryptBuffer(int sockfd, std::vector<char> const & buffer);
+    void deleteCrypter(int sockfd);
+    ~Crypter();
 
 private:
 
@@ -25,7 +28,7 @@ private:
     void *dllHandler = nullptr;
     std::function<void* (std::string)> getInstance;
     std::function<std::vector<char> (void *, std::vector<char> const &)> crypt;
-
+    std::function<void (void *)> free;
 };
 
 

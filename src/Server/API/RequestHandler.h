@@ -60,6 +60,6 @@ private:
         ReadPartOfFile = 7,
         WritePartOfFile = 8,
         GetFilesOfNode = 9,
-        deleteFile,
+        deleteFile
     };
 };

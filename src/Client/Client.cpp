@@ -19,13 +19,6 @@ void Client::sendToServer(std::vector<char> const &buffer)
 {
     size_t size = buffer.size();
 
-    qDebug() << "Block for sending:\n";
-
-    for (auto byte : buffer)
-    {
-        qDebug() << std::hex << static_cast<std::uint8_t>(byte) << '\t';
-    }
-
     if (send(socketFD, reinterpret_cast<char*>(&size), sizeof(size_t),0) != sizeof(size_t))
     {
         throw std::runtime_error("Packet's size wasn't sended!");
@@ -47,13 +40,6 @@ std::vector<char> Client::receiveFromServer()
     if (recv(socketFD, buffer.data(), buffer.size(),0) != buffer.size())
     {
         throw std::runtime_error("Packet wasn't received!");
-    }
-
-    qDebug() << "Received block:\n";
-
-    for (auto byte : buffer)
-    {
-        qDebug() << std::hex << static_cast<std::uint8_t>(byte) << '\t';
     }
 
     return buffer;

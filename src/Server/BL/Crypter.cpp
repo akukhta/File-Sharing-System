@@ -11,6 +11,7 @@ Crypter::Crypter()
     getInstance = reinterpret_cast<void* (*) (std::string)>(dlsym(dllHandler, "getInstance"));
     crypt = reinterpret_cast<std::vector<char> (*) (void *, std::vector<char> const &)>(dlsym(dllHandler,
         "crypt"));
+    free = reinterpret_cast<void (*) (void *)>(dlsym(dllHandler, "free"));
 }
 
 void Crypter::registerUserToCrypter(int sockfd, std::string email)
@@ -25,4 +26,22 @@ std::vector<char> Crypter::cryptBuffer(int sockfd , const std::vector<char> &buf
             " socket's descriptor hasn't registered");
 
     return crypt(loadedCrypters[sockfd], buffer);
+}
+
+void Crypter::deleteCrypter(int sockfd)
+{
+    try
+    {
+        free(loadedCrypters.at(sockfd));
+        loadedCrypters.erase(loadedCrypters.find(sockfd));
+    }
+    catch (std::out_of_range const &ex)
+    {
+        return;
+    }
+}
+
+Crypter::~Crypter()
+{
+    dlclose(dllHandler);
 }

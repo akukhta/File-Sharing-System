@@ -36,3 +36,12 @@ CRYPTOLIB_EXPORT std::vector<char> crypt(void const * object, std::vector<char> 
     return static_cast<CryptoLib *>(object)->crypt(buffer);
 }
 
+#ifdef __cplusplus
+extern "C" CRYPTOLIB_EXPORT void free(void * object)
+#else
+CRYPTOLIB_EXPORT std::vector<char> crypt(void const * object, std::vector<char> const & buffer)
+#endif
+{
+    CryptoLib *ptr = static_cast<CryptoLib*>(object);
+    delete ptr;
+}

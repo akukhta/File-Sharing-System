@@ -3,7 +3,6 @@
 CryptoLib::CryptoLib(std::string Seed)
 {
     currentSeed = std::hash<std::string>()(Seed);
-    std::cout << "CryptoLib Objet has been created!" << std::endl;
     randomGenerator.seed(currentSeed);
 }
 

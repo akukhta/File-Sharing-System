@@ -324,4 +324,5 @@ std::vector<char> RequestHandler::deleteFile(std::vector<char> &buffer)
 void RequestHandler::destroySession(int socketFD)
 {
     accountManager->closeSession(socketFD);
+    cryptographyHandler->deleteCrypter(socketFD);
 }
